@@ -1,226 +1,218 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-br">
   <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="description" content="Setup de Leandro para trabalho e jogos." />
+    <meta charSet="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="preload" as="image" href="https://cdn.discordapp.com/avatars/260187024349331476/1b89ce0c450dec19db56356c42fe1225.webp?size=64" />
+    <link rel="stylesheet" href="styles.css" type="text/css" data-precedence="default" />
+    <title>ShiroDev</title>
+    <meta name="description" content="Sou especializado em gerenciamento de comunidades, com atuação em diversos projetos para clientes reconhecidos mundialmente." />
     <meta name="theme-color" content="#5865F2" />
-    <title>Setup | Leandro</title>
-    <link rel="stylesheet" href="styles.css" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="ShiroDev" />
+    <meta property="og:description" content="Sou especializado em gerenciamento de comunidades, com atuação em diversos projetos para clientes reconhecidos mundialmente." />
+    <link rel="icon" href="https://cdn.discordapp.com/avatars/260187024349331476/1b89ce0c450dec19db56356c42fe1225.webp?size=64" type="image/webp" />
   </head>
   <body>
-    <div class="background-stars"></div>
-    <div class="background-glow"></div>
-
-    <header class="topbar">
-      <div class="topbar-left">
-        <a href="index.html" class="brand">ShiroDev</a>
+    <canvas id="particles-canvas"></canvas>
+    <div class="fixed inset-0 pointer-events-none z-10">
+      <div class="absolute inset-0 bg-[radial-gradient(ellipse_at_top,rgba(88,101,242,0.08)_0%,transparent_50%)]"></div>
+      <div class="absolute inset-0 bg-gradient-to-b from-transparent to-[hsl(var(--background))]/90"></div>
+    </div>
+    <div class="relative z-20">
+      <header class="fixed top-0 left-0 right-0 z-50 bg-[hsl(var(--background))]/80 backdrop-blur-md border-b border-[hsl(var(--border))]/30">
+        <div class="container mx-auto px-4 h-16 flex items-center justify-between">
+          <div class="flex items-center w-16">
+            <a href="index.html" class="hover:opacity-80 transition-opacity">
+              <img src="https://cdn.discordapp.com/avatars/260187024349331476/1b89ce0c450dec19db56356c42fe1225.webp?size=64" alt="Leandro" class="w-8 h-8 rounded-full" />
+            </a>
+          </div>
+          <nav class="hidden md:flex items-center space-x-2">
+            <a href="index.html" class="relative px-4 py-2 text-base font-medium transition-all duration-300 group rounded-md text-[hsl(var(--muted-foreground))] hover:text-[hsl(var(--foreground))] hover:bg-[hsl(var(--secondary))]/30">Início<span class="absolute bottom-0 left-1/2 transform -translate-x-1/2 h-[3px] rounded-t-sm bg-[hsl(var(--primary))] transition-all duration-300 w-0 group-hover:w-2/3"></span></a>
+            <a href="projetos.html" class="relative px-4 py-2 text-base font-medium transition-all duration-300 group rounded-md text-[hsl(var(--muted-foreground))] hover:text-[hsl(var(--foreground))] hover:bg-[hsl(var(--secondary))]/30">Projetos<span class="absolute bottom-0 left-1/2 transform -translate-x-1/2 h-[3px] rounded-t-sm bg-[hsl(var(--primary))] transition-all duration-300 w-0 group-hover:w-2/3"></span></a>
+            <a href="setup.html" class="relative px-4 py-2 text-base font-medium transition-all duration-300 group rounded-md text-[hsl(var(--muted-foreground))] hover:text-[hsl(var(--foreground))] hover:bg-[hsl(var(--secondary))]/30">Setup<span class="absolute bottom-0 left-1/2 transform -translate-x-1/2 h-[3px] rounded-t-sm bg-[hsl(var(--primary))] transition-all duration-300 w-0 group-hover:w-2/3"></span></a>
+          </nav>
+          <div class="flex items-center justify-end w-16">
+            <audio loop="" preload="none" style="display:none">
+              <source src="audios/background-music.mp3" type="audio/mpeg" />
+            </audio>
+            <button class="inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 h-10 w-10 bg-secondary/50 hover:bg-secondary border border-border/50" title="Tocar música">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-muted-foreground">
+                <path d="M11 4.702a.705.705 0 0 0-1.203-.498L6.413 7.587A1.4 1.4 0 0 1 5.416 8H3a1 1 0 0 0-1 1v6a1 1 0 0 0 1 1h2.416a1.4 1.4 0 0 1 .997.413l3.383 3.384A.705.705 0 0 0 11 19.298z"></path>
+                <line x1="23" y1="9" x2="23" y2="15"></line>
+              </svg>
+            </button>
+          </div>
+        </div>
+      </header>
+      <div class="min-h-screen bg-[hsl(var(--background))] pt-24 pb-16">
+        <div class="container mx-auto px-4">
+          <div class="text-center mb-12">
+            <h1 class="text-4xl md:text-5xl font-bold text-white mb-4">Meu<!-- --><span class="text-[hsl(var(--primary))]">Setup</span></h1>
+            <p class="text-[hsl(var(--muted-foreground))] text-lg max-w-2xl mx-auto">Os equipamentos e ferramentas que uso no meu dia a dia para gerenciar comunidades e produzir conteúdo.</p>
+          </div>
+          <div class="max-w-3xl mx-auto mb-12 rounded-2xl overflow-hidden border border-[hsl(var(--border))]/30 bg-[hsl(var(--card))]/50 aspect-video flex items-center justify-center">
+            <div class="text-center text-[hsl(var(--muted-foreground))]">
+              <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="mx-auto mb-3 opacity-40">
+                <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+                <circle cx="8.5" cy="8.5" r="1.5"></circle>
+                <polyline points="21 15 16 10 5 21"></polyline>
+              </svg>
+              <p class="text-sm opacity-60">Foto do Setup</p>
+            </div>
+          </div>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-5xl mx-auto">
+            <div class="rounded-2xl bg-[hsl(var(--card))]/50 border border-[hsl(var(--border))]/30 p-6 hover:border-[hsl(var(--primary))]/30 transition-all duration-300">
+              <div class="flex items-center gap-3 mb-5">
+                <div class="w-10 h-10 rounded-lg bg-[hsl(var(--primary))]/20 text-[hsl(var(--primary))] flex items-center justify-center">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect>
+                    <line x1="8" y1="21" x2="16" y2="21"></line>
+                    <line x1="12" y1="17" x2="12" y2="21"></line>
+                  </svg>
+                </div>
+                <h3 class="text-lg font-bold text-white">Periféricos</h3>
+              </div>
+              <div class="space-y-3">
+                <div class="flex items-center justify-between py-2 border-b border-[hsl(var(--border))]/20 last:border-0">
+                  <span class="text-sm text-[hsl(var(--muted-foreground))]">Monitor</span>
+                  <span class="text-sm font-medium text-[hsl(var(--foreground))] text-right max-w-[60%]">LG 27GP850-B 27" 165Hz IPS</span>
+                </div>
+                <div class="flex items-center justify-between py-2 border-b border-[hsl(var(--border))]/20 last:border-0">
+                  <span class="text-sm text-[hsl(var(--muted-foreground))]">Teclado</span>
+                  <span class="text-sm font-medium text-[hsl(var(--foreground))] text-right max-w-[60%]">Keychron K8 Pro (Red switches)</span>
+                </div>
+                <div class="flex items-center justify-between py-2 border-b border-[hsl(var(--border))]/20 last:border-0">
+                  <span class="text-sm text-[hsl(var(--muted-foreground))]">Mouse</span>
+                  <span class="text-sm font-medium text-[hsl(var(--foreground))] text-right max-w-[60%]">Logitech G Pro X Superlight</span>
+                </div>
+                <div class="flex items-center justify-between py-2 border-b border-[hsl(var(--border))]/20 last:border-0">
+                  <span class="text-sm text-[hsl(var(--muted-foreground))]">Headset</span>
+                  <span class="text-sm font-medium text-[hsl(var(--foreground))] text-right max-w-[60%]">HyperX Cloud Alpha S</span>
+                </div>
+                <div class="flex items-center justify-between py-2 border-b border-[hsl(var(--border))]/20 last:border-0">
+                  <span class="text-sm text-[hsl(var(--muted-foreground))]">Webcam</span>
+                  <span class="text-sm font-medium text-[hsl(var(--foreground))] text-right max-w-[60%]">Logitech C920 HD Pro</span>
+                </div>
+              </div>
+            </div>
+            <div class="rounded-2xl bg-[hsl(var(--card))]/50 border border-[hsl(var(--border))]/30 p-6 hover:border-[hsl(var(--primary))]/30 transition-all duration-300">
+              <div class="flex items-center gap-3 mb-5">
+                <div class="w-10 h-10 rounded-lg bg-[hsl(var(--primary))]/20 text-[hsl(var(--primary))] flex items-center justify-center">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <rect x="4" y="4" width="16" height="16" rx="2" ry="2"></rect>
+                    <rect x="9" y="9" width="6" height="6"></rect>
+                    <line x1="9" y1="1" x2="9" y2="4"></line>
+                    <line x1="15" y1="1" x2="15" y2="4"></line>
+                    <line x1="9" y1="20" x2="9" y2="23"></line>
+                    <line x1="15" y1="20" x2="15" y2="23"></line>
+                    <line x1="20" y1="9" x2="23" y2="9"></line>
+                    <line x1="20" y1="14" x2="23" y2="14"></line>
+                    <line x1="1" y1="9" x2="4" y2="9"></line>
+                    <line x1="1" y1="14" x2="4" y2="14"></line>
+                  </svg>
+                </div>
+                <h3 class="text-lg font-bold text-white">Hardware</h3>
+              </div>
+              <div class="space-y-3">
+                <div class="flex items-center justify-between py-2 border-b border-[hsl(var(--border))]/20 last:border-0">
+                  <span class="text-sm text-[hsl(var(--muted-foreground))]">CPU</span>
+                  <span class="text-sm font-medium text-[hsl(var(--foreground))] text-right max-w-[60%]">Intel Core i7-13700K</span>
+                </div>
+                <div class="flex items-center justify-between py-2 border-b border-[hsl(var(--border))]/20 last:border-0">
+                  <span class="text-sm text-[hsl(var(--muted-foreground))]">GPU</span>
+                  <span class="text-sm font-medium text-[hsl(var(--foreground))] text-right max-w-[60%]">NVIDIA RTX 4070 Ti</span>
+                </div>
+                <div class="flex items-center justify-between py-2 border-b border-[hsl(var(--border))]/20 last:border-0">
+                  <span class="text-sm text-[hsl(var(--muted-foreground))]">RAM</span>
+                  <span class="text-sm font-medium text-[hsl(var(--foreground))] text-right max-w-[60%]">32GB DDR5 5600MHz</span>
+                </div>
+                <div class="flex items-center justify-between py-2 border-b border-[hsl(var(--border))]/20 last:border-0">
+                  <span class="text-sm text-[hsl(var(--muted-foreground))]">Armazenamento</span>
+                  <span class="text-sm font-medium text-[hsl(var(--foreground))] text-right max-w-[60%]">Samsung 980 Pro 2TB NVMe</span>
+                </div>
+                <div class="flex items-center justify-between py-2 border-b border-[hsl(var(--border))]/20 last:border-0">
+                  <span class="text-sm text-[hsl(var(--muted-foreground))]">Placa-mãe</span>
+                  <span class="text-sm font-medium text-[hsl(var(--foreground))] text-right max-w-[60%]">ASUS ROG Strix Z790-E</span>
+                </div>
+              </div>
+            </div>
+            <div class="rounded-2xl bg-[hsl(var(--card))]/50 border border-[hsl(var(--border))]/30 p-6 hover:border-[hsl(var(--primary))]/30 transition-all duration-300">
+              <div class="flex items-center gap-3 mb-5">
+                <div class="w-10 h-10 rounded-lg bg-[hsl(var(--primary))]/20 text-[hsl(var(--primary))] flex items-center justify-center">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="16 18 22 12 16 6"></polyline>
+                    <polyline points="8 6 2 12 8 18"></polyline>
+                  </svg>
+                </div>
+                <h3 class="text-lg font-bold text-white">Software</h3>
+              </div>
+              <div class="space-y-3">
+                <div class="flex items-center justify-between py-2 border-b border-[hsl(var(--border))]/20 last:border-0">
+                  <span class="text-sm text-[hsl(var(--muted-foreground))]">OS</span>
+                  <span class="text-sm font-medium text-[hsl(var(--foreground))] text-right max-w-[60%]">Windows 11 Pro</span>
+                </div>
+                <div class="flex items-center justify-between py-2 border-b border-[hsl(var(--border))]/20 last:border-0">
+                  <span class="text-sm text-[hsl(var(--muted-foreground))]">Navegador</span>
+                  <span class="text-sm font-medium text-[hsl(var(--foreground))] text-right max-w-[60%]">Arc Browser</span>
+                </div>
+                <div class="flex items-center justify-between py-2 border-b border-[hsl(var(--border))]/20 last:border-0">
+                  <span class="text-sm text-[hsl(var(--muted-foreground))]">Editor</span>
+                  <span class="text-sm font-medium text-[hsl(var(--foreground))] text-right max-w-[60%]">VS Code</span>
+                </div>
+                <div class="flex items-center justify-between py-2 border-b border-[hsl(var(--border))]/20 last:border-0">
+                  <span class="text-sm text-[hsl(var(--muted-foreground))]">Bot Framework</span>
+                  <span class="text-sm font-medium text-[hsl(var(--foreground))] text-right max-w-[60%]">Discord.py / discord.js</span>
+                </div>
+                <div class="flex items-center justify-between py-2 border-b border-[hsl(var(--border))]/20 last:border-0">
+                  <span class="text-sm text-[hsl(var(--muted-foreground))]">Design</span>
+                  <span class="text-sm font-medium text-[hsl(var(--foreground))] text-right max-w-[60%]">Figma + Canva</span>
+                </div>
+              </div>
+            </div>
+            <div class="rounded-2xl bg-[hsl(var(--card))]/50 border border-[hsl(var(--border))]/30 p-6 hover:border-[hsl(var(--primary))]/30 transition-all duration-300">
+              <div class="flex items-center gap-3 mb-5">
+                <div class="w-10 h-10 rounded-lg bg-[hsl(var(--primary))]/20 text-[hsl(var(--primary))] flex items-center justify-center">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"></path>
+                    <path d="M19 10v2a7 7 0 0 1-14 0v-2"></path>
+                    <line x1="12" y1="19" x2="12" y2="23"></line>
+                    <line x1="8" y1="23" x2="16" y2="23"></line>
+                  </svg>
+                </div>
+                <h3 class="text-lg font-bold text-white">Áudio &amp; Streaming</h3>
+              </div>
+              <div class="space-y-3">
+                <div class="flex items-center justify-between py-2 border-b border-[hsl(var(--border))]/20 last:border-0">
+                  <span class="text-sm text-[hsl(var(--muted-foreground))]">Microfone</span>
+                  <span class="text-sm font-medium text-[hsl(var(--foreground))] text-right max-w-[60%]">Blue Yeti X</span>
+                </div>
+                <div class="flex items-center justify-between py-2 border-b border-[hsl(var(--border))]/20 last:border-0">
+                  <span class="text-sm text-[hsl(var(--muted-foreground))]">Interface de Áudio</span>
+                  <span class="text-sm font-medium text-[hsl(var(--foreground))] text-right max-w-[60%]">Focusrite Scarlett Solo</span>
+                </div>
+                <div class="flex items-center justify-between py-2 border-b border-[hsl(var(--border))]/20 last:border-0">
+                  <span class="text-sm text-[hsl(var(--muted-foreground))]">Software de Áudio</span>
+                  <span class="text-sm font-medium text-[hsl(var(--foreground))] text-right max-w-[60%]">REAPER + RTX Voice</span>
+                </div>
+                <div class="flex items-center justify-between py-2 border-b border-[hsl(var(--border))]/20 last:border-0">
+                  <span class="text-sm text-[hsl(var(--muted-foreground))]">Streaming</span>
+                  <span class="text-sm font-medium text-[hsl(var(--foreground))] text-right max-w-[60%]">OBS Studio</span>
+                </div>
+                <div class="flex items-center justify-between py-2 border-b border-[hsl(var(--border))]/20 last:border-0">
+                  <span class="text-sm text-[hsl(var(--muted-foreground))]">Mixer Virtual</span>
+                  <span class="text-sm font-medium text-[hsl(var(--foreground))] text-right max-w-[60%]">VoiceMeeter Banana</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="text-center mt-12">
+            <p class="text-[hsl(var(--muted-foreground))] text-sm max-w-lg mx-auto">Setup atualizado constantemente. Caso tenha dúvidas sobre algum item específico, sinta-se à vontade para perguntar!</p>
+            <a href="https://discord.com/users/668242345640198154" target="_blank" rel="noopener noreferrer" class="mt-4 px-6 py-3 bg-[hsl(var(--secondary))]/50 hover:bg-[hsl(var(--secondary))] text-[hsl(var(--foreground))] font-semibold rounded-lg border border-[hsl(var(--border))]/50 transition-all duration-300 hover:-translate-y-0.5 inline-block">Perguntar no Discord</a>
+          </div>
+        </div>
       </div>
-
-      <nav class="topnav" aria-label="Navegação principal">
-        <a href="index.html" class="nav-link">Início</a>
-        <a href="projetos.html" class="nav-link">Projetos</a>
-        <a href="setup.html" class="nav-link active">Setup</a>
-      </nav>
-
-      <button class="sound-button" type="button" aria-label="Ativar música">
-        <span class="sound-icon" aria-hidden="true"></span>
-      </button>
-    </header>
-
-    <main>
-      <section id="setup" class="section section-panel setup-section">
-        <div class="section-headline">
-          <h2>MEU <span>SETUP</span></h2>
-          <p>
-            Conheça todos os equipamentos que uso para trabalhar, criar conteúdo e jogar. Cada item
-            foi escolhido com cuidado para garantir a melhor experiência.
-          </p>
-        </div>
-
-        <div class="setup-subsection">
-          <div class="setup-subsection-header">
-            <div>
-              <span class="section-label">Monitores</span>
-              <h3>Os monitores que eu uso</h3>
-            </div>
-          </div>
-          <div class="setup-grid">
-            <article class="setup-card">
-              <div class="setup-card-title">
-                <span class="setup-icon">🖥️</span>
-                <div>
-                  <h3>Monitor Principal</h3>
-                  <span class="setup-meta">BenQ Zowie 400Hz</span>
-                </div>
-              </div>
-              <div class="setup-image monitor-main"></div>
-              <div class="setup-tag">XL2566X</div>
-            </article>
-
-            <article class="setup-card">
-              <div class="setup-card-title">
-                <span class="setup-icon">🖥️</span>
-                <div>
-                  <h3>Monitor Secundário</h3>
-                  <span class="setup-meta">AOC 240Hz</span>
-                </div>
-              </div>
-              <div class="setup-image monitor-secondary"></div>
-              <div class="setup-tag">24G2W1GB</div>
-            </article>
-
-            <article class="setup-card">
-              <div class="setup-card-title">
-                <span class="setup-icon">🖥️</span>
-                <div>
-                  <h3>Monitor Terciário</h3>
-                  <span class="setup-meta">Acer 144Hz</span>
-                </div>
-              </div>
-              <div class="setup-image monitor-tertiary"></div>
-              <div class="setup-tag">KG241Q</div>
-            </article>
-          </div>
-        </div>
-
-        <div class="setup-subsection">
-          <div class="setup-subsection-header">
-            <div>
-              <span class="section-label">Áudio</span>
-              <h3>Equipamentos de som</h3>
-            </div>
-          </div>
-          <div class="setup-grid">
-            <article class="setup-card">
-              <div class="setup-card-title">
-                <span class="setup-icon">🎧</span>
-                <div>
-                  <h3>Headset</h3>
-                  <span class="setup-meta">HyperX Cloud Alpha S Blackout</span>
-                </div>
-              </div>
-              <div class="setup-image audio-headset"></div>
-            </article>
-
-            <article class="setup-card">
-              <div class="setup-card-title">
-                <span class="setup-icon">🎧</span>
-                <div>
-                  <h3>Fone de ouvido</h3>
-                  <span class="setup-meta">HyperX Cloud Earbuds II</span>
-                </div>
-              </div>
-              <div class="setup-image audio-earbuds"></div>
-            </article>
-
-            <article class="setup-card">
-              <div class="setup-card-title">
-                <span class="setup-icon">🎙️</span>
-                <div>
-                  <h3>Microfone</h3>
-                  <span class="setup-meta">Shure MV7</span>
-                </div>
-              </div>
-              <div class="setup-image audio-mic"></div>
-            </article>
-          </div>
-        </div>
-
-        <div class="setup-subsection">
-          <div class="setup-subsection-header">
-            <div>
-              <span class="section-label">Periféricos</span>
-              <h3>Hardware de controle</h3>
-            </div>
-          </div>
-          <div class="setup-grid">
-            <article class="setup-card">
-              <div class="setup-card-title">
-                <span class="setup-icon">⌨️</span>
-                <div>
-                  <h3>Teclado</h3>
-                  <span class="setup-meta">Mchoose Ace 68</span>
-                </div>
-              </div>
-              <div class="setup-image peripheral-keyboard"></div>
-            </article>
-
-            <article class="setup-card">
-              <div class="setup-card-title">
-                <span class="setup-icon">🖱️</span>
-                <div>
-                  <h3>Mouse</h3>
-                  <span class="setup-meta">Razer Viper V3 Pro Sentinels</span>
-                </div>
-              </div>
-              <div class="setup-image peripheral-mouse"></div>
-            </article>
-
-            <article class="setup-card">
-              <div class="setup-card-title">
-                <span class="setup-icon">🧩</span>
-                <div>
-                  <h3>Mousepad</h3>
-                  <span class="setup-meta">Superglide Glass</span>
-                </div>
-              </div>
-              <div class="setup-image peripheral-mousepad"></div>
-            </article>
-          </div>
-        </div>
-
-        <div class="setup-subsection">
-          <div class="setup-subsection-header">
-            <div>
-              <span class="section-label">Hardware</span>
-              <h3>Peças internas</h3>
-            </div>
-          </div>
-          <div class="setup-grid setup-grid--small">
-            <article class="setup-card setup-card--small">
-              <h3>Processador</h3>
-              <span class="setup-meta">AMD Ryzen 7 7800X3D</span>
-            </article>
-            <article class="setup-card setup-card--small">
-              <h3>Placa de Vídeo</h3>
-              <span class="setup-meta">MSI RTX 3070 VENTUS 2X</span>
-            </article>
-            <article class="setup-card setup-card--small">
-              <h3>Placa Mãe</h3>
-              <span class="setup-meta">Asus TUF X670E-Plus WiFi</span>
-            </article>
-            <article class="setup-card setup-card--small">
-              <h3>Memória RAM</h3>
-              <span class="setup-meta">Kings Fury Beast 64gb (2x32) 6000MHz DDR5</span>
-            </article>
-            <article class="setup-card setup-card--small">
-              <h3>Armazenamento</h3>
-              <span class="setup-meta">SSD NVMe M.2 2TB</span>
-            </article>
-            <article class="setup-card setup-card--small">
-              <h3>Fonte</h3>
-              <span class="setup-meta">EVGA 700W 80 Plus White</span>
-            </article>
-            <article class="setup-card setup-card--small">
-              <h3>Cooler</h3>
-              <span class="setup-meta">Noctua NH-D15</span>
-            </article>
-            <article class="setup-card setup-card--small">
-              <h3>Gabinete</h3>
-              <span class="setup-meta">Strafe Infernal Dragon</span>
-            </article>
-          </div>
-        </div>
-      </section>
-    </main>
-
-    <footer class="page-footer">
-      <p>© <span id="year"></span> ShiroDev. Todos os direitos reservados.</p>
-    </footer>
-
-    <div id="background-player"></div>
-    <script src="https://www.youtube.com/iframe_api"></script>
-    <script src="script.js"></script>
+    </div>
+    <script src="script.js" defer="defer"></script>
   </body>
 </html>
