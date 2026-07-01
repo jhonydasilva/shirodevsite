@@ -1,109 +1,207 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-br">
   <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="description" content="Site pessoal de Shiro, especialista em gestão de comunidades e projetos de grande escala." />
+    <meta charSet="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="preload" as="image" href="https://cdn.discordapp.com/avatars/260187024349331476/1b89ce0c450dec19db56356c42fe1225.webp?size=64" />
+    <link rel="preload" as="image" href="https://cdn.discordapp.com/avatars/260187024349331476/1b89ce0c450dec19db56356c42fe1225.webp?size=256" />
+    <link rel="preload" as="image" href="https://cdn.discordapp.com/clan-badges/306276944780066819/0aef9ab1ef7bce17811e4907a2801cc8.png?size=64" />
+    <link rel="preload" as="image" href="https://cdn-icons-png.flaticon.com/512/5968/5968756.png" />
+    <link rel="preload" as="image" href="https://upload.wikimedia.org/wikipedia/commons/4/4a/MarvelGamesLogo2024.jpg" />
+    <link rel="preload" as="image" href="https://cdn-icons-png.flaticon.com/512/5968/5968756.png" />
+    <link rel="preload" as="image" href="https://media.discordapp.net/attachments/1203003708250656859/1521702497813794926/aKMe7JPAoq06Ao6cJcCMtQUj0vcPi6gSY5lnN2F4nz9-bBCCnVVvoXEskgvBJK8gGdE.png?ex=6a467423&is=6a4522a3&hm=d33f0777bb5d772c09735c3cc734b45cd608aabd661e5b6be8014e2d55e93216&=&format=webp&quality=lossless" />
+    <link rel="preload" as="image" href="https://upload.wikimedia.org/wikipedia/commons/thumb/1/10/Userbox_creeper.svg/960px-Userbox_creeper.svg.png?_=20210122104938" />
+    <link rel="preload" as="image" href="https://1000logos.net/wp-content/uploads/2021/03/PUBG-logo.png" />
+    <link rel="stylesheet" href="styles.css" type="text/css" data-precedence="default" />
+    <title>ShiroDev</title>
+    <meta name="description" content="Sou especializado em gerenciamento de comunidades, com atuação em diversos projetos para clientes reconhecidos mundialmente." />
     <meta name="theme-color" content="#5865F2" />
-    <title>Shiro</title>
-    <link rel="stylesheet" href="styles.css" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="ShiroDev" />
+    <meta property="og:description" content="Sou especializado em gerenciamento de comunidades, com atuação em diversos projetos para clientes reconhecidos mundialmente." />
+    <link rel="icon" href="https://cdn.discordapp.com/avatars/260187024349331476/1b89ce0c450dec19db56356c42fe1225.webp?size=64" type="image/webp" />
   </head>
   <body>
-    <div class="page-loader" id="page-loader">
-      <div class="loader-card">
-        <div class="loader-circle"></div>
-        <h2>Carregando perfil</h2>
-        <p>Preparando o conteúdo...</p>
-        <div class="loader-bar"><span></span></div>
+    <canvas id="particles-canvas"></canvas>
+    <div class="intro-gate" data-intro-gate role="dialog" aria-modal="true" aria-labelledby="intro-gate-title" aria-describedby="intro-gate-description">
+      <div class="intro-gate__content">
+        <h1 id="intro-gate-title">Bem-vindo(a)</h1>
+        <p id="intro-gate-description">Minhas experiências e projetos estão por aqui</p>
+        <button class="intro-gate__button" type="button" data-intro-view>Visualizar</button>
       </div>
     </div>
-
-    <div class="background-stars"></div>
-    <div class="background-glow"></div>
-
-    <header class="topbar">
-      <div class="topbar-left">
-        <a href="index.html" class="brand">Shiro</a>
-      </div>
-
-      <nav class="topnav" aria-label="Navegação principal">
-        <a href="index.html" class="nav-link active">Início</a>
-        <a href="projetos.html" class="nav-link">Projetos</a>
-        <a href="setup.html" class="nav-link">Setup</a>
-      </nav>
-
-      <button class="sound-button" type="button" aria-label="Ativar música">
-        <span class="sound-icon" aria-hidden="true"></span>
-      </button>
-    </header>
-
-    <main>
-      <section id="home" class="section hero-section">
-        <div class="hero-inner">
-          <div class="hero-copy">
-            <h1>
-              <span>ShiroDev</span>
-              <span class="hero-emoji">�</span>
-            </h1>
-            <p class="hero-description">
-              Olá! Me chamo <strong>Shiro</strong> e tenho 19 anos. Sou um entusiasta apaixonado em
-              construir, crescer e gerenciar grandes comunidades para jogos, organizações e marcas.
-            </p>
-            <p class="hero-description">
-              Estou há <strong>10 anos</strong> liderando as maiores comunidades da América do Sul e
-              possuo uma vasta experiência para potencializar seu projeto. Se você precisar de um
-              servidor conforme suas necessidades, estou aqui para te ajudar!
-            </p>
-
-            <div class="hero-badges">
-              <span>Construção</span>
-              <span>Gestão</span>
-              <span>Moderação</span>
-              <span>Desenvolvimento</span>
-            </div>
-
-            <div class="hero-middle-text">
-              CONFIADO POR MILHARES DE <span class="hero-highlight">MARCAS</span> NO DISCORD, INCLUINDO
-            </div>
-
-            <div class="brand-carousel">
-              <div class="brand-track" aria-label="Marcas confiadas">
-                <div class="brand-item brand-item--logo"><img src="https://www.svgrepo.com/show/353655/discord-icon.svg" alt="Discord Admins" class="brand-icon" /><span>Discord Admins</span></div>
-                <div class="brand-item brand-item--logo"><img src="https://indiefist.com/images/indiefist-logo.webp" alt="IndieFist Games" class="brand-icon" /><span>IndieFist Games</span></div>
-                <div class="brand-item brand-item--logo"><img src="https://www.svgrepo.com/show/353655/discord-icon.svg" alt="Discord" class="brand-icon" /><span>Discord</span></div>
-                <div class="brand-item brand-item--logo"><img src="https://media.discordapp.net/attachments/1203003708250656859/1521702497813794926/aKMe7JPAoq06Ao6cJcCMtQUj0vcPi6gSY5lnN2F4nz9-bBCCnVVvoXEskgvBJK8gGdE.png?ex=6a45cb63&is=6a4479e3&hm=b8c8cf68ebb6b288ac4d25821b0ddbf5c5a5b2a46b30a52cc7f61f6a840f55e4&=&format=webp&quality=lossless" alt="Keplerians Horror Games" class="brand-icon" /><span>Keplerians Horror Games</span></div>
-                <div class="brand-item brand-item--logo"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/10/Userbox_creeper.svg/960px-Userbox_creeper.svg.png?_=20210122104938" alt="Minecraft" class="brand-icon" /><span>Minecraft</span></div>
-                <div class="brand-item brand-item--logo"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/f6/PUBG_Corporation_Logo.svg/960px-PUBG_Corporation_Logo.svg.png?_=20210328181453" alt="PUBG Corp." class="brand-icon" /><span>PUBG Corp.</span></div>
-                <div class="brand-item brand-item--logo"><img src="https://www.svgrepo.com/show/353655/discord-icon.svg" alt="Discord Admins" class="brand-icon" /><span>Discord Admins</span></div>
-                <div class="brand-item brand-item--logo"><img src="https://indiefist.com/images/indiefist-logo.webp" alt="IndieFist Games" class="brand-icon" /><span>IndieFist Games</span></div>
-                <div class="brand-item brand-item--logo"><img src="https://www.svgrepo.com/show/353655/discord-icon.svg" alt="Discord" class="brand-icon" /><span>Discord</span></div>
-                <div class="brand-item brand-item--logo"><img src="https://media.discordapp.net/attachments/1203003708250656859/1521702497813794926/aKMe7JPAoq06Ao6cJcCMtQUj0vcPi6gSY5lnN2F4nz9-bBCCnVVvoXEskgvBJK8gGdE.png?ex=6a45cb63&is=6a4479e3&hm=b8c8cf68ebb6b288ac4d25821b0ddbf5c5a5b2a46b30a52cc7f61f6a840f55e4&=&format=webp&quality=lossless" alt="Keplerians Horror Games" class="brand-icon" /><span>Keplerians Horror Games</span></div>
-                <div class="brand-item brand-item--logo"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/10/Userbox_creeper.svg/960px-Userbox_creeper.svg.png?_=20210122104938" alt="Minecraft" class="brand-icon" /><span>Minecraft</span></div>
-                <div class="brand-item brand-item--logo"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/f6/PUBG_Corporation_Logo.svg/960px-PUBG_Corporation_Logo.svg.png?_=20210328181453" alt="PUBG Corp." class="brand-icon" /><span>PUBG Corp.</span></div>
+    <div class="fixed inset-0 pointer-events-none z-10">
+      <div class="absolute inset-0 bg-[radial-gradient(ellipse_at_top,rgba(88,101,242,0.08)_0%,transparent_50%)]"></div>
+      <div class="absolute inset-0 bg-gradient-to-b from-transparent to-[hsl(var(--background))]/90"></div>
+    </div>
+    <div class="relative z-20">
+      <header class="fixed top-0 left-0 right-0 z-50 bg-[hsl(var(--background))]/80 backdrop-blur-md border-b border-[hsl(var(--border))]/30">
+        <div class="container mx-auto px-4 h-16 flex items-center justify-between">
+          <div class="flex items-center w-16">
+            <a href="index.html" class="hover:opacity-80 transition-opacity">
+              <img src="https://cdn.discordapp.com/avatars/260187024349331476/1b89ce0c450dec19db56356c42fe1225.webp?size=64" alt="ShiroDev" class="w-8 h-8 rounded-full" />
+            </a>
+          </div>
+          <nav class="hidden md:flex items-center space-x-2">
+            <a href="index.html" class="relative px-4 py-2 text-base font-medium transition-all duration-300 group rounded-md text-[hsl(var(--muted-foreground))] hover:text-[hsl(var(--foreground))] hover:bg-[hsl(var(--secondary))]/30">Início<span class="absolute bottom-0 left-1/2 transform -translate-x-1/2 h-[3px] rounded-t-sm bg-[hsl(var(--primary))] transition-all duration-300 w-0 group-hover:w-2/3"></span></a>
+            <a href="projetos.html" class="relative px-4 py-2 text-base font-medium transition-all duration-300 group rounded-md text-[hsl(var(--muted-foreground))] hover:text-[hsl(var(--foreground))] hover:bg-[hsl(var(--secondary))]/30">Projetos<span class="absolute bottom-0 left-1/2 transform -translate-x-1/2 h-[3px] rounded-t-sm bg-[hsl(var(--primary))] transition-all duration-300 w-0 group-hover:w-2/3"></span></a>
+            <a href="setup.html" class="relative px-4 py-2 text-base font-medium transition-all duration-300 group rounded-md text-[hsl(var(--muted-foreground))] hover:text-[hsl(var(--foreground))] hover:bg-[hsl(var(--secondary))]/30">Setup<span class="absolute bottom-0 left-1/2 transform -translate-x-1/2 h-[3px] rounded-t-sm bg-[hsl(var(--primary))] transition-all duration-300 w-0 group-hover:w-2/3"></span></a>
+          </nav>
+          <div class="flex items-center justify-end w-16">
+            <audio loop="" preload="none" style="display:none">
+              <source src="audios/background-music.mp3" type="audio/mpeg" />
+            </audio>
+            <button class="inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 h-10 w-10 bg-secondary/50 hover:bg-secondary border border-border/50" title="Tocar música">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-muted-foreground">
+                <path d="M11 4.702a.705.705 0 0 0-1.203-.498L6.413 7.587A1.4 1.4 0 0 1 5.416 8H3a1 1 0 0 0-1 1v6a1 1 0 0 0 1 1h2.416a1.4 1.4 0 0 1 .997.413l3.383 3.384A.705.705 0 0 0 11 19.298z"></path>
+                <line x1="23" y1="9" x2="23" y2="15"></line>
+              </svg>
+            </button>
+          </div>
+        </div>
+      </header>
+      <section class="h-screen bg-[hsl(var(--background))] relative overflow-hidden flex flex-col">
+        <div class="relative z-20 container mx-auto px-4 pt-4 flex-1 flex flex-col justify-center">
+          <div class="text-center max-w-4xl mx-auto" style="margin-top:-8rem">
+            <div class="flex justify-center mb-6">
+              <div class="relative" style="width:140px;height:140px">
+                <img src="https://cdn.discordapp.com/avatars/260187024349331476/1b89ce0c450dec19db56356c42fe1225.webp?size=256" alt="Leandro" class="rounded-full shadow-xl select-none pointer-events-none absolute animate-float" draggable="false" style="width:120px;height:120px;top:10px;left:10px;box-shadow:rgba(14,13,13,0.25) 0px 0px 20px, rgba(88,101,242,0.3) 0px 0px 40px" />
+                <div class="absolute rounded-full pointer-events-none animate-pulse-ring" style="width:120px;height:120px;top:10px;left:10px;background:linear-gradient(45deg, rgba(88,101,242,0.2), transparent 70%)"></div>
               </div>
             </div>
+            <h1 class="text-4xl md:text-5xl font-bold text-white mb-4 leading-tight">
+              <div class="flex items-center justify-center gap-3">
+                <span class="text-white">ShiroDev</span>
+                <img src="https://cdn.discordapp.com/clan-badges/306276944780066819/0aef9ab1ef7bce17811e4907a2801cc8.png?size=64" alt="Clan badge" class="w-8 h-8 rounded-full shadow-lg animate-fade-in" draggable="false" style="user-select:none;transform:translateY(9px)" />
+              </div>
+            </h1>
+            <div class="text-[hsl(var(--muted-foreground))] mb-8 max-w-3xl mx-auto leading-relaxed space-y-4">
+              <p class="text-base sm:text-lg md:text-xl">Olá! Me chamo<!-- --> <span class="text-[hsl(var(--foreground))] font-semibold">Shiro</span> <!-- -->e tenho 19 anos. Sou um entusiasta apaixonado em construir, crescer e gerenciar grandes e pequenas comunidades para jogos, organizações e marcas.</p>
+              <p class="text-base sm:text-lg md:text-xl">Estou há<!-- --> <span class="text-[hsl(var(--primary))] font-semibold">10 anos</span> <!-- -->liderando as maiores e menores comunidades da América do Sul e possuo uma vasta experiência para potencializar seu projeto. Se você precisar de um servidor conforme suas necessidades, estou aqui para te ajudar!</p>
+            </div>
+            <div class="flex flex-wrap justify-center gap-3 mb-8 max-w-3xl mx-auto">
+              <span class="px-3 py-1 bg-[hsl(var(--primary))]/20 text-[hsl(var(--primary))] border border-[hsl(var(--primary))]/30 rounded-full text-sm font-medium">Construção</span>
+              <span class="px-3 py-1 bg-[hsl(var(--primary))]/20 text-[hsl(var(--primary))] border border-[hsl(var(--primary))]/30 rounded-full text-sm font-medium">Gestão</span>
+              <span class="px-3 py-1 bg-[hsl(var(--primary))]/20 text-[hsl(var(--primary))] border border-[hsl(var(--primary))]/30 rounded-full text-sm font-medium">Moderação</span>
+              <span class="px-3 py-1 bg-[hsl(var(--primary))]/20 text-[hsl(var(--primary))] border border-[hsl(var(--primary))]/30 rounded-full text-sm font-medium">Desenvolvimento</span>
+            </div>
+            <div class="flex flex-wrap justify-center gap-4">
+            </div>
           </div>
-
-          <div class="hero-visual">
-            <div class="avatar-frame">
-              <img
-                class="avatar"
-                src="https://images-ext-1.discordapp.net/external/O0TThkEZjTuwEALsqPGUo8psBrv38DU7g8DqcFu4Euo/%3Fsize%3D4096%26ignore%3Dtrue/https/cdn.discordapp.com/avatars/668242345640198154/60be138f0cd5765eb10fc4ae8f4771f2.png?format=webp&quality=lossless&width=656&height=656"
-                alt="Shiro"
-              />
-              <div class="avatar-glow"></div>
+        </div>
+        <div class="relative z-20 pb-8" style="margin-top:-10rem">
+          <div class="container mx-auto px-4 py-8">
+            <div class="text-center mb-4">
+              <h2 class="text-xs font-bold text-[hsl(var(--muted-foreground))] tracking-widest uppercase">Confiado por milhares de<!-- --><span class="text-[hsl(var(--primary))]">Marcas</span><!-- -->no Discord, incluindo</h2>
+            </div>
+            <div class="relative overflow-hidden h-28 max-w-5xl mx-auto">
+              <div class="absolute left-0 top-0 bottom-0 w-24 bg-gradient-to-r from-[hsl(var(--background))] via-[hsl(var(--background))]/70 to-transparent z-10 pointer-events-none"></div>
+              <div class="absolute right-0 top-0 bottom-0 w-24 bg-gradient-to-l from-[hsl(var(--background))] via-[hsl(var(--background))]/70 to-transparent z-10 pointer-events-none"></div>
+              <div class="flex items-center h-full">
+                <div class="flex animate-slide space-x-12 whitespace-nowrap">
+                  <div class="inline-flex items-center space-x-4 px-4 py-0 rounded-xl hover:bg-[hsl(var(--card))]/40 transition-all duration-300 cursor-pointer group flex-none">
+                    <img src="https://cdn-icons-png.flaticon.com/512/5968/5968756.png" alt="Discord Admins" class="object-contain group-hover:scale-105 transition-all duration-300 rounded-lg w-24 h-24" style="transform:translateY(-3px)" draggable="false" />
+                    <span class="text-sm font-medium text-[hsl(var(--foreground))] group-hover:text-[hsl(var(--primary))] transition-colors">Discord Admins</span>
+                  </div>
+                  <div class="inline-flex items-center space-x-4 px-4 py-0 rounded-xl hover:bg-[hsl(var(--card))]/40 transition-all duration-300 cursor-pointer group flex-none">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/4/4a/MarvelGamesLogo2024.jpg" alt="Marvel Games" class="object-contain group-hover:scale-105 transition-all duration-300 rounded-lg w-24 h-24" draggable="false" />
+                    <span class="text-sm font-medium text-[hsl(var(--foreground))] group-hover:text-[hsl(var(--primary))] transition-colors">Marvel Games</span>
+                  </div>
+                  <div class="inline-flex items-center space-x-4 px-4 py-0 rounded-xl hover:bg-[hsl(var(--card))]/40 transition-all duration-300 cursor-pointer group flex-none">
+                    <img src="https://cdn-icons-png.flaticon.com/512/5968/5968756.png" alt="Discord" class="object-contain group-hover:scale-105 transition-all duration-300 rounded-lg w-10 h-10" draggable="false" />
+                    <span class="text-sm font-medium text-[hsl(var(--foreground))] group-hover:text-[hsl(var(--primary))] transition-colors">Discord</span>
+                  </div>
+                  <div class="inline-flex items-center space-x-4 px-4 py-0 rounded-xl hover:bg-[hsl(var(--card))]/40 transition-all duration-300 cursor-pointer group flex-none">
+                    <img src="https://media.discordapp.net/attachments/1203003708250656859/1521702497813794926/aKMe7JPAoq06Ao6cJcCMtQUj0vcPi6gSY5lnN2F4nz9-bBCCnVVvoXEskgvBJK8gGdE.png?ex=6a467423&is=6a4522a3&hm=d33f0777bb5d772c09735c3cc734b45cd608aabd661e5b6be8014e2d55e93216&=&format=webp&quality=lossless" alt="Keplerians Horror Games" class="object-contain group-hover:scale-105 transition-all duration-300 rounded-lg w-20 h-20" draggable="false" />
+                    <span class="text-sm font-medium text-[hsl(var(--foreground))] group-hover:text-[hsl(var(--primary))] transition-colors">Keplerians Horror Games</span>
+                  </div>
+                  <div class="inline-flex items-center space-x-4 px-4 py-0 rounded-xl hover:bg-[hsl(var(--card))]/40 transition-all duration-300 cursor-pointer group flex-none">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/10/Userbox_creeper.svg/960px-Userbox_creeper.svg.png?_=20210122104938" alt="Minecraft" class="object-contain group-hover:scale-105 transition-all duration-300 rounded-lg w-16 h-16" draggable="false" />
+                    <span class="text-sm font-medium text-[hsl(var(--foreground))] group-hover:text-[hsl(var(--primary))] transition-colors">Minecraft</span>
+                  </div>
+                  <div class="inline-flex items-center space-x-4 px-4 py-0 rounded-xl hover:bg-[hsl(var(--card))]/40 transition-all duration-300 cursor-pointer group flex-none">
+                    <img src="https://1000logos.net/wp-content/uploads/2021/03/PUBG-logo.png" alt="PUBG Corp." class="object-contain group-hover:scale-105 transition-all duration-300 rounded-lg w-10 h-10" draggable="false" />
+                    <span class="text-sm font-medium text-[hsl(var(--foreground))] group-hover:text-[hsl(var(--primary))] transition-colors">PUBG Corp.</span>
+                  </div>
+                  <div class="inline-flex items-center space-x-4 px-4 py-0 rounded-xl hover:bg-[hsl(var(--card))]/40 transition-all duration-300 cursor-pointer group flex-none">
+                    <img src="https://cdn-icons-png.flaticon.com/512/5968/5968756.png" alt="Discord Admins" class="object-contain group-hover:scale-105 transition-all duration-300 rounded-lg w-24 h-24" style="transform:translateY(-3px)" draggable="false" />
+                    <span class="text-sm font-medium text-[hsl(var(--foreground))] group-hover:text-[hsl(var(--primary))] transition-colors">Discord Admins</span>
+                  </div>
+                  <div class="inline-flex items-center space-x-4 px-4 py-0 rounded-xl hover:bg-[hsl(var(--card))]/40 transition-all duration-300 cursor-pointer group flex-none">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/4/4a/MarvelGamesLogo2024.jpg" alt="Marvel Games" class="object-contain group-hover:scale-105 transition-all duration-300 rounded-lg w-24 h-24" draggable="false" />
+                    <span class="text-sm font-medium text-[hsl(var(--foreground))] group-hover:text-[hsl(var(--primary))] transition-colors">Marvel Games</span>
+                  </div>
+                  <div class="inline-flex items-center space-x-4 px-4 py-0 rounded-xl hover:bg-[hsl(var(--card))]/40 transition-all duration-300 cursor-pointer group flex-none">
+                    <img src="https://cdn-icons-png.flaticon.com/512/5968/5968756.png" alt="Discord" class="object-contain group-hover:scale-105 transition-all duration-300 rounded-lg w-10 h-10" draggable="false" />
+                    <span class="text-sm font-medium text-[hsl(var(--foreground))] group-hover:text-[hsl(var(--primary))] transition-colors">Discord</span>
+                  </div>
+                  <div class="inline-flex items-center space-x-4 px-4 py-0 rounded-xl hover:bg-[hsl(var(--card))]/40 transition-all duration-300 cursor-pointer group flex-none">
+                    <img src="https://media.discordapp.net/attachments/1203003708250656859/1521702497813794926/aKMe7JPAoq06Ao6cJcCMtQUj0vcPi6gSY5lnN2F4nz9-bBCCnVVvoXEskgvBJK8gGdE.png?ex=6a467423&is=6a4522a3&hm=d33f0777bb5d772c09735c3cc734b45cd608aabd661e5b6be8014e2d55e93216&=&format=webp&quality=lossless" alt="Keplerians Horror Games" class="object-contain group-hover:scale-105 transition-all duration-300 rounded-lg w-20 h-20" draggable="false" />
+                    <span class="text-sm font-medium text-[hsl(var(--foreground))] group-hover:text-[hsl(var(--primary))] transition-colors">Keplerians Horror Games</span>
+                  </div>
+                  <div class="inline-flex items-center space-x-4 px-4 py-0 rounded-xl hover:bg-[hsl(var(--card))]/40 transition-all duration-300 cursor-pointer group flex-none">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/10/Userbox_creeper.svg/960px-Userbox_creeper.svg.png?_=20210122104938" alt="Minecraft" class="object-contain group-hover:scale-105 transition-all duration-300 rounded-lg w-16 h-16" draggable="false" />
+                    <span class="text-sm font-medium text-[hsl(var(--foreground))] group-hover:text-[hsl(var(--primary))] transition-colors">Minecraft</span>
+                  </div>
+                  <div class="inline-flex items-center space-x-4 px-4 py-0 rounded-xl hover:bg-[hsl(var(--card))]/40 transition-all duration-300 cursor-pointer group flex-none">
+                    <img src="https://1000logos.net/wp-content/uploads/2021/03/PUBG-logo.png" alt="PUBG Corp." class="object-contain group-hover:scale-105 transition-all duration-300 rounded-lg w-10 h-10" draggable="false" />
+                    <span class="text-sm font-medium text-[hsl(var(--foreground))] group-hover:text-[hsl(var(--primary))] transition-colors">PUBG Corp.</span>
+                  </div>
+                  <div class="inline-flex items-center space-x-4 px-4 py-0 rounded-xl hover:bg-[hsl(var(--card))]/40 transition-all duration-300 cursor-pointer group flex-none">
+                    <img src="https://cdn-icons-png.flaticon.com/512/5968/5968756.png" alt="Discord Admins" class="object-contain group-hover:scale-105 transition-all duration-300 rounded-lg w-24 h-24" style="transform:translateY(-3px)" draggable="false" />
+                    <span class="text-sm font-medium text-[hsl(var(--foreground))] group-hover:text-[hsl(var(--primary))] transition-colors">Discord Admins</span>
+                  </div>
+                  <div class="inline-flex items-center space-x-4 px-4 py-0 rounded-xl hover:bg-[hsl(var(--card))]/40 transition-all duration-300 cursor-pointer group flex-none">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/4/4a/MarvelGamesLogo2024.jpg" alt="Marvel Games" class="object-contain group-hover:scale-105 transition-all duration-300 rounded-lg w-24 h-24" draggable="false" />
+                    <span class="text-sm font-medium text-[hsl(var(--foreground))] group-hover:text-[hsl(var(--primary))] transition-colors">Marvel Games</span>
+                  </div>
+                  <div class="inline-flex items-center space-x-4 px-4 py-0 rounded-xl hover:bg-[hsl(var(--card))]/40 transition-all duration-300 cursor-pointer group flex-none">
+                    <img src="https://cdn-icons-png.flaticon.com/512/5968/5968756.png" alt="Discord" class="object-contain group-hover:scale-105 transition-all duration-300 rounded-lg w-10 h-10" draggable="false" />
+                    <span class="text-sm font-medium text-[hsl(var(--foreground))] group-hover:text-[hsl(var(--primary))] transition-colors">Discord</span>
+                  </div>
+                  <div class="inline-flex items-center space-x-4 px-4 py-0 rounded-xl hover:bg-[hsl(var(--card))]/40 transition-all duration-300 cursor-pointer group flex-none">
+                    <img src="https://media.discordapp.net/attachments/1203003708250656859/1521702497813794926/aKMe7JPAoq06Ao6cJcCMtQUj0vcPi6gSY5lnN2F4nz9-bBCCnVVvoXEskgvBJK8gGdE.png?ex=6a467423&is=6a4522a3&hm=d33f0777bb5d772c09735c3cc734b45cd608aabd661e5b6be8014e2d55e93216&=&format=webp&quality=lossless" alt="Keplerians Horror Games" class="object-contain group-hover:scale-105 transition-all duration-300 rounded-lg w-20 h-20" draggable="false" />
+                    <span class="text-sm font-medium text-[hsl(var(--foreground))] group-hover:text-[hsl(var(--primary))] transition-colors">Keplerians Horror Games</span>
+                  </div>
+                  <div class="inline-flex items-center space-x-4 px-4 py-0 rounded-xl hover:bg-[hsl(var(--card))]/40 transition-all duration-300 cursor-pointer group flex-none">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/10/Userbox_creeper.svg/960px-Userbox_creeper.svg.png?_=20210122104938" alt="Minecraft" class="object-contain group-hover:scale-105 transition-all duration-300 rounded-lg w-16 h-16" draggable="false" />
+                    <span class="text-sm font-medium text-[hsl(var(--foreground))] group-hover:text-[hsl(var(--primary))] transition-colors">Minecraft.</span>
+                  </div>
+                  <div class="inline-flex items-center space-x-4 px-4 py-0 rounded-xl hover:bg-[hsl(var(--card))]/40 transition-all duration-300 cursor-pointer group flex-none">
+                    <img src="https://1000logos.net/wp-content/uploads/2021/03/PUBG-logo.png" alt="PUBG Corp." class="object-contain group-hover:scale-105 transition-all duration-300 rounded-lg w-10 h-10" draggable="false" />
+                    <span class="text-sm font-medium text-[hsl(var(--foreground))] group-hover:text-[hsl(var(--primary))] transition-colors">PUBG Corp.</span>
+                  </div>
+                  <div class="inline-flex items-center space-x-4 px-4 py-0 rounded-xl hover:bg-[hsl(var(--card))]/40 transition-all duration-300 cursor-pointer group flex-none">
+                    <img src="https://cdn-icons-png.flaticon.com/512/5968/5968756.png" alt="Discord Admins" class="object-contain group-hover:scale-105 transition-all duration-300 rounded-lg w-24 h-24" style="transform:translateY(-3px)" draggable="false" />
+                    <span class="text-sm font-medium text-[hsl(var(--foreground))] group-hover:text-[hsl(var(--primary))] transition-colors">Discord Admins</span>
+                  </div>
+                  <div class="inline-flex items-center space-x-4 px-4 py-0 rounded-xl hover:bg-[hsl(var(--card))]/40 transition-all duration-300 cursor-pointer group flex-none">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/4/4a/MarvelGamesLogo2024.jpg" alt="Marvel Games" class="object-contain group-hover:scale-105 transition-all duration-300 rounded-lg w-24 h-24" draggable="false" />
+                    <span class="text-sm font-medium text-[hsl(var(--foreground))] group-hover:text-[hsl(var(--primary))] transition-colors">Marvel Games</span>
+                  </div>
+                  <div class="inline-flex items-center space-x-4 px-4 py-0 rounded-xl hover:bg-[hsl(var(--card))]/40 transition-all duration-300 cursor-pointer group flex-none">
+                    <img src="https://cdn-icons-png.flaticon.com/512/5968/5968756.png" alt="Discord" class="object-contain group-hover:scale-105 transition-all duration-300 rounded-lg w-10 h-10" draggable="false" />
+                    <span class="text-sm font-medium text-[hsl(var(--foreground))] group-hover:text-[hsl(var(--primary))] transition-colors">Discord</span>
+                  </div>
+                  <div class="inline-flex items-center space-x-4 px-4 py-0 rounded-xl hover:bg-[hsl(var(--card))]/40 transition-all duration-300 cursor-pointer group flex-none">
+                    <img src="https://media.discordapp.net/attachments/1203003708250656859/1521702497813794926/aKMe7JPAoq06Ao6cJcCMtQUj0vcPi6gSY5lnN2F4nz9-bBCCnVVvoXEskgvBJK8gGdE.png?ex=6a467423&is=6a4522a3&hm=d33f0777bb5d772c09735c3cc734b45cd608aabd661e5b6be8014e2d55e93216&=&format=webp&quality=lossless" alt="Keplerians Horror Games" class="object-contain group-hover:scale-105 transition-all duration-300 rounded-lg w-20 h-20" draggable="false" />
+                    <span class="text-sm font-medium text-[hsl(var(--foreground))] group-hover:text-[hsl(var(--primary))] transition-colors">Keplerians Horror Games</span>
+                  </div>
+                  <div class="inline-flex items-center space-x-4 px-4 py-0 rounded-xl hover:bg-[hsl(var(--card))]/40 transition-all duration-300 cursor-pointer group flex-none">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/10/Userbox_creeper.svg/960px-Userbox_creeper.svg.png?_=20210122104938" alt="Minecraft" class="object-contain group-hover:scale-105 transition-all duration-300 rounded-lg w-16 h-16" draggable="false" />
+                    <span class="text-sm font-medium text-[hsl(var(--foreground))] group-hover:text-[hsl(var(--primary))] transition-colors">Minecraft</span>
+                  </div>
+                  <div class="inline-flex items-center space-x-4 px-4 py-0 rounded-xl hover:bg-[hsl(var(--card))]/40 transition-all duration-300 cursor-pointer group flex-none">
+                    <img src="https://1000logos.net/wp-content/uploads/2021/03/PUBG-logo.png" alt="PUBG Corp." class="object-contain group-hover:scale-105 transition-all duration-300 rounded-lg w-10 h-10" draggable="false" />
+                    <span class="text-sm font-medium text-[hsl(var(--foreground))] group-hover:text-[hsl(var(--primary))] transition-colors">PUBG Corp.</span>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </div>
       </section>
-    </main>
-
-    <footer class="page-footer">
-      <p>© <span id="year"></span> ShiroDev. Todos os direitos reservados.</p>
-    </footer>
-
-    <div id="background-player"></div>
-    <script src="https://www.youtube.com/iframe_api"></script>
-    <script src="script.js"></script>
+    </div>
+    <script src="script.js" defer="defer"></script>
   </body>
 </html>
