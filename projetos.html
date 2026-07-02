@@ -4,12 +4,14 @@
     <meta charSet="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link rel="preload" as="image" href="https://cdn.discordapp.com/avatars/260187024349331476/1b89ce0c450dec19db56356c42fe1225.webp?size=64" />
-    <link rel="preload" as="image" href="https://i.imgur.com/2Hclj1c.png" />
-    <link rel="preload" as="image" href="https://i.imgur.com/6PGWkzH.png" />
-    <link rel="preload" as="image" href="https://i.imgur.com/7WstaEb.png" />
-    <link rel="preload" as="image" href="https://i.imgur.com/YaODWNL.png" />
-    <link rel="preload" as="image" href="https://i.imgur.com/O3Yco2N.png" />
-    <link rel="preload" as="image" href="https://i.imgur.com/VbQwGac.png" />
+    <link rel="preload" as="image" href="https://cdn.discordapp.com/avatars/260187024349331476/1b89ce0c450dec19db56356c42fe1225.webp?size=256" />
+    <link rel="preload" as="image" href="https://cdn.discordapp.com/clan-badges/306276944780066819/0aef9ab1ef7bce17811e4907a2801cc8.png?size=64" />
+    <link rel="preload" as="image" href="https://cdn-icons-png.flaticon.com/512/5968/5968756.png" />
+    <link rel="preload" as="image" href="https://upload.wikimedia.org/wikipedia/commons/4/4a/MarvelGamesLogo2024.jpg" />
+    <link rel="preload" as="image" href="https://cdn-icons-png.flaticon.com/512/5968/5968756.png" />
+    <link rel="preload" as="image" href="https://media.discordapp.net/attachments/1203003708250656859/1521702497813794926/aKMe7JPAoq06Ao6cJcCMtQUj0vcPi6gSY5lnN2F4nz9-bBCCnVVvoXEskgvBJK8gGdE.png?ex=6a467423&is=6a4522a3&hm=d33f0777bb5d772c09735c3cc734b45cd608aabd661e5b6be8014e2d55e93216&=&format=webp&quality=lossless" />
+    <link rel="preload" as="image" href="https://upload.wikimedia.org/wikipedia/commons/thumb/1/10/Userbox_creeper.svg/960px-Userbox_creeper.svg.png?_=20210122104938" />
+    <link rel="preload" as="image" href="https://1000logos.net/wp-content/uploads/2021/03/PUBG-logo.png" />
     <link rel="stylesheet" href="styles.css" type="text/css" data-precedence="default" />
     <title>ShiroDev</title>
     <meta name="description" content="Sou especializado em gerenciamento de comunidades, com atuação em diversos projetos para clientes reconhecidos mundialmente." />
@@ -21,6 +23,13 @@
   </head>
   <body>
     <canvas id="particles-canvas"></canvas>
+    <div class="intro-gate" data-intro-gate role="dialog" aria-modal="true" aria-labelledby="intro-gate-title" aria-describedby="intro-gate-description">
+      <div class="intro-gate__content">
+        <h1 id="intro-gate-title">Bem-vindo(a)</h1>
+        <p id="intro-gate-description">Minhas experiências e projetos estão por aqui</p>
+        <button class="intro-gate__button" type="button" data-intro-view>Visualizar</button>
+      </div>
+    </div>
     <div class="fixed inset-0 pointer-events-none z-10">
       <div class="absolute inset-0 bg-[radial-gradient(ellipse_at_top,rgba(88,101,242,0.08)_0%,transparent_50%)]"></div>
       <div class="absolute inset-0 bg-gradient-to-b from-transparent to-[hsl(var(--background))]/90"></div>
@@ -30,7 +39,7 @@
         <div class="container mx-auto px-4 h-16 flex items-center justify-between">
           <div class="flex items-center w-16">
             <a href="index.html" class="hover:opacity-80 transition-opacity">
-              <img src="https://cdn.discordapp.com/avatars/260187024349331476/1b89ce0c450dec19db56356c42fe1225.webp?size=64" alt="Leandro" class="w-8 h-8 rounded-full" />
+              <img src="https://cdn.discordapp.com/avatars/260187024349331476/1b89ce0c450dec19db56356c42fe1225.webp?size=64" alt="ShiroDev" class="w-8 h-8 rounded-full" />
             </a>
           </div>
           <nav class="hidden md:flex items-center space-x-2">
@@ -51,266 +60,148 @@
           </div>
         </div>
       </header>
-      <div class="min-h-screen bg-[hsl(var(--background))] pt-24 pb-16">
-        <div class="container mx-auto px-4">
-          <div class="text-center mb-12">
-            <h1 class="text-4xl md:text-5xl font-bold text-white mb-4">ESTIVE<!-- --> <span class="text-[hsl(var(--primary))]">POR AQUI...</span> </h1>
-            <p class="text-[hsl(var(--muted-foreground))] text-lg max-w-2xl mx-auto">Descubra os servidores onde apliquei minha experiência em gestão, moderação e desenvolvimento.</p>
-          </div>
-          <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-12 max-w-3xl mx-auto">
-            <div class="text-center p-4 rounded-xl bg-[hsl(var(--card))]/50 border border-[hsl(var(--border))]/30">
-              <div class="text-2xl font-bold text-[hsl(var(--primary))]">10+</div>
-              <div class="text-xs text-[hsl(var(--muted-foreground))] mt-1">Anos de Exp.</div>
-            </div>
-            <div class="text-center p-4 rounded-xl bg-[hsl(var(--card))]/50 border border-[hsl(var(--border))]/30">
-              <div class="text-2xl font-bold text-[hsl(var(--primary))]">9+</div>
-              <div class="text-xs text-[hsl(var(--muted-foreground))] mt-1">Projetos</div>
-            </div>
-            <div class="text-center p-4 rounded-xl bg-[hsl(var(--card))]/50 border border-[hsl(var(--border))]/30">
-              <div class="text-2xl font-bold text-[hsl(var(--primary))]">150K+</div>
-              <div class="text-xs text-[hsl(var(--muted-foreground))] mt-1">Membros Gerenciados</div>
-            </div>
-            <div class="text-center p-4 rounded-xl bg-[hsl(var(--card))]/50 border border-[hsl(var(--border))]/30">
-              <div class="text-2xl font-bold text-[hsl(var(--primary))]">6+</div>
-              <div class="text-xs text-[hsl(var(--muted-foreground))] mt-1">Clientes Globais</div>
-            </div>
-          </div>
-          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto">
-            <div class="rounded-2xl border border-blue-500/30 bg-gradient-to-br from-blue-500/20 to-purple-500/20 backdrop-blur-sm p-6 hover:scale-[1.02] transition-all duration-300 hover:shadow-2xl group">
-              <div class="flex items-start gap-4 mb-4">
-                <div class="w-14 h-14 rounded-xl bg-[hsl(var(--background))]/50 flex items-center justify-center flex-shrink-0 overflow-hidden">
-                  <img src="https://media.discordapp.net/attachments/1203003708250656859/1521702497813794926/aKMe7JPAoq06Ao6cJcCMtQUj0vcPi6gSY5lnN2F4nz9-bBCCnVVvoXEskgvBJK8gGdE.png?ex=6a467423&is=6a4522a3&hm=d33f0777bb5d772c09735c3cc734b45cd608aabd661e5b6be8014e2d55e93216&=&format=webp&quality=lossless" alt="KEPLERIANS HORROR GAMES" class="w-10 h-10 object-contain" />
-                </div>
-                <div class="flex-1">
-                  <h3 class="text-lg font-bold text-white mb-1">KEPLERIANS HORROR GAMES</h3>
-                  <div class="flex items-center gap-2">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-[hsl(var(--primary))]">
-                      <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
-                      <circle cx="9" cy="7" r="4"></circle>
-                      <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
-                      <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
-                    </svg>
-                    <span class="text-sm text-[hsl(var(--primary))] font-semibold">40.000k+<!-- --> Membros</span>
-                  </div>
-                </div>
-              </div>
-              <p class="text-sm text-[hsl(var(--muted-foreground))] leading-relaxed mb-4">Gerenciamento e estruturação do servidor oficial da Keplerians Horror Games, responsável pelo jogo IceCream e Evil Nun. Comunidade com mais de 40.000 membros.</p>
-              <div class="flex flex-wrap gap-2">
-                <span class="px-2.5 py-1 bg-[hsl(var(--background))]/40 text-[hsl(var(--foreground))]/80 rounded-full text-xs font-medium border border-[hsl(var(--border))]/30">Gestão</span>
-                <span class="px-2.5 py-1 bg-[hsl(var(--background))]/40 text-[hsl(var(--foreground))]/80 rounded-full text-xs font-medium border border-[hsl(var(--border))]/30">Moderação</span>
-                <span class="px-2.5 py-1 bg-[hsl(var(--background))]/40 text-[hsl(var(--foreground))]/80 rounded-full text-xs font-medium border border-[hsl(var(--border))]/30">Estruturação</span>
+      <section class="h-screen bg-[hsl(var(--background))] relative overflow-hidden flex flex-col">
+        <div class="relative z-20 container mx-auto px-4 pt-4 flex-1 flex flex-col justify-center">
+          <div class="text-center max-w-4xl mx-auto" style="margin-top:-8rem">
+            <div class="flex justify-center mb-6">
+              <div class="relative" style="width:140px;height:140px">
+                <img src="https://cdn.discordapp.com/avatars/260187024349331476/1b89ce0c450dec19db56356c42fe1225.webp?size=256" alt="Leandro" class="rounded-full shadow-xl select-none pointer-events-none absolute animate-float" draggable="false" style="width:120px;height:120px;top:10px;left:10px;box-shadow:rgba(14,13,13,0.25) 0px 0px 20px, rgba(88,101,242,0.3) 0px 0px 40px" />
+                <div class="absolute rounded-full pointer-events-none animate-pulse-ring" style="width:120px;height:120px;top:10px;left:10px;background:linear-gradient(45deg, rgba(88,101,242,0.2), transparent 70%)"></div>
               </div>
             </div>
-            <div class="rounded-2xl border border-red-500/30 bg-gradient-to-br from-red-500/20 to-orange-500/20 backdrop-blur-sm p-6 hover:scale-[1.02] transition-all duration-300 hover:shadow-2xl group">
-              <div class="flex items-start gap-4 mb-4">
-                <div class="w-14 h-14 rounded-xl bg-[hsl(var(--background))]/50 flex items-center justify-center flex-shrink-0 overflow-hidden">
-                  <img src="https://images-ext-1.discordapp.net/external/WkQXkNr_DuC1vk3bd6qpYYTbjm1c9Jtj-tJV7bT2x-c/%3Fsize%3D4096/https/cdn.discordapp.com/icons/530323326300585984/fd23aa38b1d2b1cde24c4982d42100f1.png?format=webp&quality=lossless" alt="INDIEFIST GAMES" class="w-10 h-10 object-contain" />
-                </div>
-                <div class="flex-1">
-                  <h3 class="text-lg font-bold text-white mb-1">INDIEFIST GAMES</h3>
-                  <div class="flex items-center gap-2">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-[hsl(var(--primary))]">
-                      <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
-                      <circle cx="9" cy="7" r="4"></circle>
-                      <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
-                      <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
-                    </svg>
-                    <span class="text-sm text-[hsl(var(--primary))] font-semibold">3.000K+<!-- --> Membros</span>
-                  </div>
-                </div>
+            <h1 class="text-4xl md:text-5xl font-bold text-white mb-4 leading-tight">
+              <div class="flex items-center justify-center gap-3">
+                <span class="text-white">ShiroDev</span>
+                <img src="https://cdn.discordapp.com/clan-badges/306276944780066819/0aef9ab1ef7bce17811e4907a2801cc8.png?size=64" alt="Clan badge" class="w-8 h-8 rounded-full shadow-lg animate-fade-in" draggable="false" style="user-select:none;transform:translateY(9px)" />
               </div>
-              <p class="text-sm text-[hsl(var(--muted-foreground))] leading-relaxed mb-4">Servidor oficial da IndieFist Games. Criação da estrutura completa, canais, bots e gerenciamento da comunidade.</p>
-              <div class="flex flex-wrap gap-2">
-                <span class="px-2.5 py-1 bg-[hsl(var(--background))]/40 text-[hsl(var(--foreground))]/80 rounded-full text-xs font-medium border border-[hsl(var(--border))]/30">Construção</span>
-                <span class="px-2.5 py-1 bg-[hsl(var(--background))]/40 text-[hsl(var(--foreground))]/80 rounded-full text-xs font-medium border border-[hsl(var(--border))]/30">Gestão</span>
-                <span class="px-2.5 py-1 bg-[hsl(var(--background))]/40 text-[hsl(var(--foreground))]/80 rounded-full text-xs font-medium border border-[hsl(var(--border))]/30">Desenvolvimento</span>
-              </div>
+            </h1>
+            <div class="text-[hsl(var(--muted-foreground))] mb-8 max-w-3xl mx-auto leading-relaxed space-y-4">
+              <p class="text-base sm:text-lg md:text-xl">Olá! Me chamo<!-- --> <span class="text-[hsl(var(--foreground))] font-semibold">Shiro</span> <!-- -->e tenho 19 anos. Sou um entusiasta apaixonado em construir, crescer e gerenciar grandes e pequenas comunidades para jogos, organizações e marcas.</p>
+              <p class="text-base sm:text-lg md:text-xl">Estou há<!-- --> <span class="text-[hsl(var(--primary))] font-semibold">10 anos</span> <!-- -->liderando as maiores e menores comunidades da América do Sul e possuo uma vasta experiência para potencializar seu projeto. Se você precisar de um servidor conforme suas necessidades, estou aqui para te ajudar!</p>
             </div>
-            <div class="rounded-2xl border border-indigo-500/30 bg-gradient-to-br from-indigo-500/20 to-blue-500/20 backdrop-blur-sm p-6 hover:scale-[1.02] transition-all duration-300 hover:shadow-2xl group">
-              <div class="flex items-start gap-4 mb-4">
-                <div class="w-14 h-14 rounded-xl bg-[hsl(var(--background))]/50 flex items-center justify-center flex-shrink-0 overflow-hidden">
-                  <img src="https://images-ext-1.discordapp.net/external/cn_U6m-BDe4z7KEYBFsXEbn1M7dfddFwYCLrwgRwrus/https/yt3.googleusercontent.com/7q9YArsbAFAE5CtmFsN-PvBPOTELd5xQDwiWTdaEKcH1dc9Tujl5iCoL9cxeSONGqQKHbHrH%3Ds160-c-k-c0x00ffffff-no-rj?format=webp" alt="CABANA DO TAYR" class="w-10 h-10 object-contain" />
-                </div>
-                <div class="flex-1">
-                  <h3 class="text-lg font-bold text-white mb-1">CABANA DO TAYR</h3>
-                  <div class="flex items-center gap-2">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-[hsl(var(--primary))]">
-                      <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
-                      <circle cx="9" cy="7" r="4"></circle>
-                      <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
-                      <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
-                    </svg>
-                    <span class="text-sm text-[hsl(var(--primary))] font-semibold">14.000k+<!-- --> Membros</span>
-                  </div>
-                </div>
-              </div>
-              <p class="text-sm text-[hsl(var(--muted-foreground))] leading-relaxed mb-4">Parceria com o Tayr para suporte e gerenciamento, incluindo moderação e eventos da comunidade oficial de um dos YouTuber mais viralizado em Vlogs e Games.</p>
-              <div class="flex flex-wrap gap-2">
-                <span class="px-2.5 py-1 bg-[hsl(var(--background))]/40 text-[hsl(var(--foreground))]/80 rounded-full text-xs font-medium border border-[hsl(var(--border))]/30">Moderação</span>
-                <span class="px-2.5 py-1 bg-[hsl(var(--background))]/40 text-[hsl(var(--foreground))]/80 rounded-full text-xs font-medium border border-[hsl(var(--border))]/30">Administração Geral</span>
-                <span class="px-2.5 py-1 bg-[hsl(var(--background))]/40 text-[hsl(var(--foreground))]/80 rounded-full text-xs font-medium border border-[hsl(var(--border))]/30">Eventos</span>
-                <span class="px-2.5 py-1 bg-[hsl(var(--background))]/40 text-[hsl(var(--foreground))]/80 rounded-full text-xs font-medium border border-[hsl(var(--border))]/30">Suporte</span>
-              </div>
+            <div class="flex flex-wrap justify-center gap-3 mb-8 max-w-3xl mx-auto">
+              <span class="px-3 py-1 bg-[hsl(var(--primary))]/20 text-[hsl(var(--primary))] border border-[hsl(var(--primary))]/30 rounded-full text-sm font-medium">Construção</span>
+              <span class="px-3 py-1 bg-[hsl(var(--primary))]/20 text-[hsl(var(--primary))] border border-[hsl(var(--primary))]/30 rounded-full text-sm font-medium">Gestão</span>
+              <span class="px-3 py-1 bg-[hsl(var(--primary))]/20 text-[hsl(var(--primary))] border border-[hsl(var(--primary))]/30 rounded-full text-sm font-medium">Moderação</span>
+              <span class="px-3 py-1 bg-[hsl(var(--primary))]/20 text-[hsl(var(--primary))] border border-[hsl(var(--primary))]/30 rounded-full text-sm font-medium">Desenvolvimento</span>
             </div>
-            <div class="rounded-2xl border border-red-500/30 bg-gradient-to-br from-red-500/20 to-pink-500/20 backdrop-blur-sm p-6 hover:scale-[1.02] transition-all duration-300 hover:shadow-2xl group">
-              <div class="flex items-start gap-4 mb-4">
-                <div class="w-14 h-14 rounded-xl bg-[hsl(var(--background))]/50 flex items-center justify-center flex-shrink-0 overflow-hidden">
-                  <img src="https://images-ext-1.discordapp.net/external/qhS46idNT28EG0OUmSh5-KxGtmXSMCKK6_oaMn0hhUY/https/yt3.googleusercontent.com/tf525HRMWBoBFxpGr1M5e3mG1hN7rjJ2I1t26g2j8fkrNJ-gx-eYZXKV_4y8-xqcv3FBOnS98Q%3Ds160-c-k-c0x00ffffff-no-rj?format=webp" alt="FAMÍLIA SMURF" class="w-10 h-10 object-contain" />
-                </div>
-                <div class="flex-1">
-                  <h3 class="text-lg font-bold text-white mb-1">FAMÍLIA SMURF</h3>
-                  <div class="flex items-center gap-2">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-[hsl(var(--primary))]">
-                      <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
-                      <circle cx="9" cy="7" r="4"></circle>
-                      <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
-                      <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
-                    </svg>
-                    <span class="text-sm text-[hsl(var(--primary))] font-semibold">50.000k+<!-- --> Membros</span>
-                  </div>
-                </div>
-              </div>
-              <p class="text-sm text-[hsl(var(--muted-foreground))] leading-relaxed mb-4">Gerenciamento da comunidade de um YouTuber voltado para a comunidade de jogadores do Roblox e fãs.</p>
-              <div class="flex flex-wrap gap-2">
-                <span class="px-2.5 py-1 bg-[hsl(var(--background))]/40 text-[hsl(var(--foreground))]/80 rounded-full text-xs font-medium border border-[hsl(var(--border))]/30">Gestão</span>
-                <span class="px-2.5 py-1 bg-[hsl(var(--background))]/40 text-[hsl(var(--foreground))]/80 rounded-full text-xs font-medium border border-[hsl(var(--border))]/30">Moderação</span>
-                <span class="px-2.5 py-1 bg-[hsl(var(--background))]/40 text-[hsl(var(--foreground))]/80 rounded-full text-xs font-medium border border-[hsl(var(--border))]/30">Esports</span>
-              </div>
+            <div class="flex flex-wrap justify-center gap-4">
             </div>
-            <div class="rounded-2xl border border-blue-600/30 bg-gradient-to-br from-blue-600/20 to-cyan-500/20 backdrop-blur-sm p-6 hover:scale-[1.02] transition-all duration-300 hover:shadow-2xl group">
-              <div class="flex items-start gap-4 mb-4">
-                <div class="w-14 h-14 rounded-xl bg-[hsl(var(--background))]/50 flex items-center justify-center flex-shrink-0 overflow-hidden">
-                  <img src="https://cdn.discordapp.com/icons/967105149896097882/fadad14e5990b5098b4274701443bf7b.png?size=2048" alt="🍅 REINO FELKY" class="w-10 h-10 object-contain" />
-                </div>
-                <div class="flex-1">
-                  <h3 class="text-lg font-bold text-white mb-1">🍅 REINO FELKY</h3>
-                  <div class="flex items-center gap-2">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-[hsl(var(--primary))]">
-                      <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
-                      <circle cx="9" cy="7" r="4"></circle>
-                      <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
-                      <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
-                    </svg>
-                    <span class="text-sm text-[hsl(var(--primary))] font-semibold">3.000k+<!-- --> Membros</span>
-                  </div>
-                </div>
-              </div>
-              <p class="text-sm text-[hsl(var(--muted-foreground))] leading-relaxed mb-4">Servidor oficial Tomate mais querido do YouTube, fazendo parte da gestão geral da comunidade e recrutamento e líder de moderação.</p>
-              <div class="flex flex-wrap gap-2">
-                <span class="px-2.5 py-1 bg-[hsl(var(--background))]/40 text-[hsl(var(--foreground))]/80 rounded-full text-xs font-medium border border-[hsl(var(--border))]/30">Gestão</span>
-                <span class="px-2.5 py-1 bg-[hsl(var(--background))]/40 text-[hsl(var(--foreground))]/80 rounded-full text-xs font-medium border border-[hsl(var(--border))]/30">Recrutamento</span>
-                <span class="px-2.5 py-1 bg-[hsl(var(--background))]/40 text-[hsl(var(--foreground))]/80 rounded-full text-xs font-medium border border-[hsl(var(--border))]/30">Moderação</span>
-              </div>
-            </div>
-            <div class="rounded-2xl border border-yellow-500/30 bg-gradient-to-br from-yellow-500/20 to-orange-500/20 backdrop-blur-sm p-6 hover:scale-[1.02] transition-all duration-300 hover:shadow-2xl group">
-              <div class="flex items-start gap-4 mb-4">
-                <div class="w-14 h-14 rounded-xl bg-[hsl(var(--background))]/50 flex items-center justify-center flex-shrink-0 overflow-hidden">
-                  <img src="https://cdn.discordapp.com/icons/379350892945866752/13708210def3fffbd13749388669126f.png?size=2048" alt="PIRATAS" class="w-10 h-10 object-contain" />
-                </div>
-                <div class="flex-1">
-                  <h3 class="text-lg font-bold text-white mb-1">PIRATAS</h3>
-                  <div class="flex items-center gap-2">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-[hsl(var(--primary))]">
-                      <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
-                      <circle cx="9" cy="7" r="4"></circle>
-                      <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
-                      <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
-                    </svg>
-                    <span class="text-sm text-[hsl(var(--primary))] font-semibold">20.000+<!-- --> Membros</span>
-                  </div>
-                </div>
-              </div>
-              <p class="text-sm text-[hsl(var(--muted-foreground))] leading-relaxed mb-4">Servidor oficial do Davy Jones, líder moderativo, moderativa e suporte via ticket.</p>
-              <div class="flex flex-wrap gap-2">
-                <span class="px-2.5 py-1 bg-[hsl(var(--background))]/40 text-[hsl(var(--foreground))]/80 rounded-full text-xs font-medium border border-[hsl(var(--border))]/30">Liderança</span>
-                <span class="px-2.5 py-1 bg-[hsl(var(--background))]/40 text-[hsl(var(--foreground))]/80 rounded-full text-xs font-medium border border-[hsl(var(--border))]/30">Eventos</span>
-                <span class="px-2.5 py-1 bg-[hsl(var(--background))]/40 text-[hsl(var(--foreground))]/80 rounded-full text-xs font-medium border border-[hsl(var(--border))]/30">Moderação</span>
-              </div>
-            </div>
-            <div class="rounded-2xl border border-blue-600/30 bg-gradient-to-br from-blue-600/20 to-cyan-500/20 backdrop-blur-sm p-6 hover:scale-[1.02] transition-all duration-300 hover:shadow-2xl group">
-              <div class="flex items-start gap-4 mb-4">
-                <div class="w-14 h-14 rounded-xl bg-[hsl(var(--background))]/50 flex items-center justify-center flex-shrink-0 overflow-hidden">
-                  <img src="https://cdn.discordapp.com/icons/745049338396409886/c1043518d2b1eb3ec9c7584fb460d281.png?size=2048" alt="Servidor da Fhany" class="w-10 h-10 object-contain" />
-                </div>
-                <div class="flex-1">
-                  <h3 class="text-lg font-bold text-white mb-1">SERVIDOR DA FHANY</h3>
-                  <div class="flex items-center gap-2">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-[hsl(var(--primary))]">
-                      <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
-                      <circle cx="9" cy="7" r="4"></circle>
-                      <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
-                      <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
-                    </svg>
-                    <span class="text-sm text-[hsl(var(--primary))] font-semibold">19.000k+<!-- --> Membros</span>
-                  </div>
-                </div>
-              </div>
-              <p class="text-sm text-[hsl(var(--muted-foreground))] leading-relaxed mb-4">Servidor oficial da Fhany, parte administrativo, moderativa e suporte via ticket.</p>
-              <div class="flex flex-wrap gap-2">
-                <span class="px-2.5 py-1 bg-[hsl(var(--background))]/40 text-[hsl(var(--foreground))]/80 rounded-full text-xs font-medium border border-[hsl(var(--border))]/30">Gestão</span>
-                <span class="px-2.5 py-1 bg-[hsl(var(--background))]/40 text-[hsl(var(--foreground))]/80 rounded-full text-xs font-medium border border-[hsl(var(--border))]/30">Eventos</span>
-                <span class="px-2.5 py-1 bg-[hsl(var(--background))]/40 text-[hsl(var(--foreground))]/80 rounded-full text-xs font-medium border border-[hsl(var(--border))]/30">Moderação</span>
-              </div>
-            </div>
-            <div class="rounded-2xl border border-blue-600/30 bg-gradient-to-br from-blue-600/20 to-cyan-500/20 backdrop-blur-sm p-6 hover:scale-[1.02] transition-all duration-300 hover:shadow-2xl group">
-              <div class="flex items-start gap-4 mb-4">
-                <div class="w-14 h-14 rounded-xl bg-[hsl(var(--background))]/50 flex items-center justify-center flex-shrink-0 overflow-hidden">
-                  <img src="https://cdn.discordapp.com/icons/966852188708163645/8136ec02c5a3b29c853de3e961e667a3.png?size=2048" alt="DETONADORES" class="w-10 h-10 object-contain" />
-                </div>
-                <div class="flex-1">
-                  <h3 class="text-lg font-bold text-white mb-1">DETONADORES</h3>
-                  <div class="flex items-center gap-2">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-[hsl(var(--primary))]">
-                      <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
-                      <circle cx="9" cy="7" r="4"></circle>
-                      <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
-                      <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
-                    </svg>
-                    <span class="text-sm text-[hsl(var(--primary))] font-semibold">450+<!-- --> Membros</span>
- </div>
-                </div>
-              </div>
-              <p class="text-sm text-[hsl(var(--muted-foreground))] leading-relaxed mb-4">Gerenciamento e estruturação do servidor oficial do Detonix, parceiro do MUSHMC e KAIZENMC.</p>
-              <div class="flex flex-wrap gap-2">
-                <span class="px-2.5 py-1 bg-[hsl(var(--background))]/40 text-[hsl(var(--foreground))]/80 rounded-full text-xs font-medium border border-[hsl(var(--border))]/30">Gestão</span>
-                <span class="px-2.5 py-1 bg-[hsl(var(--background))]/40 text-[hsl(var(--foreground))]/80 rounded-full text-xs font-medium border border-[hsl(var(--border))]/30">Moderação</span>
-                <span class="px-2.5 py-1 bg-[hsl(var(--background))]/40 text-[hsl(var(--foreground))]/80 rounded-full text-xs font-medium border border-[hsl(var(--border))]/30">Estruturação</span>
-              </div>
-            </div>
-            <div class="rounded-2xl border border-blue-600/30 bg-gradient-to-br from-blue-600/20 to-cyan-500/20 backdrop-blur-sm p-6 hover:scale-[1.02] transition-all duration-300 hover:shadow-2xl group">
-              <div class="flex items-start gap-4 mb-4">
-                <div class="w-14 h-14 rounded-xl bg-[hsl(var(--background))]/50 flex items-center justify-center flex-shrink-0 overflow-hidden">
-                  <img src="https://cdn.discordapp.com/icons/1429168337652547597/6e3b3a991fc0ee10ecab4346be040507.png?size=2048" alt="RECLAMAPROSERVER🏹" class="w-10 h-10 object-contain" />
-                </div>
-                <div class="flex-1">
-                  <h3 class="text-lg font-bold text-white mb-1">RECLAMAPROSERVER🏹</h3>
-                  <div class="flex items-center gap-2">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-[hsl(var(--primary))]">
-                      <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
-                      <circle cx="9" cy="7" r="4"></circle>
-                      <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
-                      <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
-                    </svg>
-                    <span class="text-sm text-[hsl(var(--primary))] font-semibold">200+<!-- --> Membros</span>
-                  </div>
-                </div>
-              </div>
-              <p class="text-sm text-[hsl(var(--muted-foreground))] leading-relaxed mb-4">Construção e gerenciamento do servidor oficial do Koover, com foco em interação com os fãs e engajamento da comunidade.</p>
-              <div class="flex flex-wrap gap-2">
-                <span class="px-2.5 py-1 bg-[hsl(var(--background))]/40 text-[hsl(var(--foreground))]/80 rounded-full text-xs font-medium border border-[hsl(var(--border))]/30">Construção</span>
-                <span class="px-2.5 py-1 bg-[hsl(var(--background))]/40 text-[hsl(var(--foreground))]/80 rounded-full text-xs font-medium border border-[hsl(var(--border))]/30">Torneios</span>
-                <span class="px-2.5 py-1 bg-[hsl(var(--background))]/40 text-[hsl(var(--foreground))]/80 rounded-full text-xs font-medium border border-[hsl(var(--border))]/30">Gestão</span>
-              </div>
-            </div>
-          </div>
-          <div class="text-center mt-16">
-            <p class="text-[hsl(var(--muted-foreground))] mb-6 text-lg">Quer seu projeto na lista? Entre em contato!</p>
-            <a href="https://discord.com/users/668242345640198154" target="_blank" rel="noopener noreferrer" class="px-8 py-4 bg-[hsl(var(--primary))] hover:bg-[hsl(var(--primary))]/90 text-white font-semibold rounded-lg transition-all duration-300 shadow-lg hover:shadow-xl hover:-translate-y-0.5 inline-block">Falar com ShiroDev</a>
           </div>
         </div>
-      </div>
+        <div class="relative z-20 pb-8" style="margin-top:-10rem">
+          <div class="container mx-auto px-4 py-8">
+            <div class="text-center mb-4">
+              <h2 class="text-xs font-bold text-[hsl(var(--muted-foreground))] tracking-widest uppercase">Confiado por milhares de<!-- --><span class="text-[hsl(var(--primary))]">Marcas</span><!-- -->no Discord, incluindo</h2>
+            </div>
+            <div class="relative overflow-hidden h-28 max-w-5xl mx-auto">
+              <div class="absolute left-0 top-0 bottom-0 w-24 bg-gradient-to-r from-[hsl(var(--background))] via-[hsl(var(--background))]/70 to-transparent z-10 pointer-events-none"></div>
+              <div class="absolute right-0 top-0 bottom-0 w-24 bg-gradient-to-l from-[hsl(var(--background))] via-[hsl(var(--background))]/70 to-transparent z-10 pointer-events-none"></div>
+              <div class="flex items-center h-full">
+                <div class="flex animate-slide space-x-12 whitespace-nowrap">
+                  <div class="inline-flex items-center space-x-4 px-4 py-0 rounded-xl hover:bg-[hsl(var(--card))]/40 transition-all duration-300 cursor-pointer group flex-none">
+                    <img src="https://cdn-icons-png.flaticon.com/512/5968/5968756.png" alt="Discord Admins" class="object-contain group-hover:scale-105 transition-all duration-300 rounded-lg w-24 h-24" style="transform:translateY(-3px)" draggable="false" />
+                    <span class="text-sm font-medium text-[hsl(var(--foreground))] group-hover:text-[hsl(var(--primary))] transition-colors">Discord Admins</span>
+                  </div>
+                  <div class="inline-flex items-center space-x-4 px-4 py-0 rounded-xl hover:bg-[hsl(var(--card))]/40 transition-all duration-300 cursor-pointer group flex-none">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/4/4a/MarvelGamesLogo2024.jpg" alt="Marvel Games" class="object-contain group-hover:scale-105 transition-all duration-300 rounded-lg w-24 h-24" draggable="false" />
+                    <span class="text-sm font-medium text-[hsl(var(--foreground))] group-hover:text-[hsl(var(--primary))] transition-colors">Marvel Games</span>
+                  </div>
+                  <div class="inline-flex items-center space-x-4 px-4 py-0 rounded-xl hover:bg-[hsl(var(--card))]/40 transition-all duration-300 cursor-pointer group flex-none">
+                    <img src="https://cdn-icons-png.flaticon.com/512/5968/5968756.png" alt="Discord" class="object-contain group-hover:scale-105 transition-all duration-300 rounded-lg w-10 h-10" draggable="false" />
+                    <span class="text-sm font-medium text-[hsl(var(--foreground))] group-hover:text-[hsl(var(--primary))] transition-colors">Discord</span>
+                  </div>
+                  <div class="inline-flex items-center space-x-4 px-4 py-0 rounded-xl hover:bg-[hsl(var(--card))]/40 transition-all duration-300 cursor-pointer group flex-none">
+                    <img src="https://media.discordapp.net/attachments/1203003708250656859/1521702497813794926/aKMe7JPAoq06Ao6cJcCMtQUj0vcPi6gSY5lnN2F4nz9-bBCCnVVvoXEskgvBJK8gGdE.png?ex=6a467423&is=6a4522a3&hm=d33f0777bb5d772c09735c3cc734b45cd608aabd661e5b6be8014e2d55e93216&=&format=webp&quality=lossless" alt="Keplerians Horror Games" class="object-contain group-hover:scale-105 transition-all duration-300 rounded-lg w-20 h-20" draggable="false" />
+                    <span class="text-sm font-medium text-[hsl(var(--foreground))] group-hover:text-[hsl(var(--primary))] transition-colors">Keplerians Horror Games</span>
+                  </div>
+                  <div class="inline-flex items-center space-x-4 px-4 py-0 rounded-xl hover:bg-[hsl(var(--card))]/40 transition-all duration-300 cursor-pointer group flex-none">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/10/Userbox_creeper.svg/960px-Userbox_creeper.svg.png?_=20210122104938" alt="Minecraft" class="object-contain group-hover:scale-105 transition-all duration-300 rounded-lg w-16 h-16" draggable="false" />
+                    <span class="text-sm font-medium text-[hsl(var(--foreground))] group-hover:text-[hsl(var(--primary))] transition-colors">Minecraft</span>
+                  </div>
+                  <div class="inline-flex items-center space-x-4 px-4 py-0 rounded-xl hover:bg-[hsl(var(--card))]/40 transition-all duration-300 cursor-pointer group flex-none">
+                    <img src="https://1000logos.net/wp-content/uploads/2021/03/PUBG-logo.png" alt="PUBG Corp." class="object-contain group-hover:scale-105 transition-all duration-300 rounded-lg w-10 h-10" draggable="false" />
+                    <span class="text-sm font-medium text-[hsl(var(--foreground))] group-hover:text-[hsl(var(--primary))] transition-colors">PUBG Corp.</span>
+                  </div>
+                  <div class="inline-flex items-center space-x-4 px-4 py-0 rounded-xl hover:bg-[hsl(var(--card))]/40 transition-all duration-300 cursor-pointer group flex-none">
+                    <img src="https://cdn-icons-png.flaticon.com/512/5968/5968756.png" alt="Discord Admins" class="object-contain group-hover:scale-105 transition-all duration-300 rounded-lg w-24 h-24" style="transform:translateY(-3px)" draggable="false" />
+                    <span class="text-sm font-medium text-[hsl(var(--foreground))] group-hover:text-[hsl(var(--primary))] transition-colors">Discord Admins</span>
+                  </div>
+                  <div class="inline-flex items-center space-x-4 px-4 py-0 rounded-xl hover:bg-[hsl(var(--card))]/40 transition-all duration-300 cursor-pointer group flex-none">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/4/4a/MarvelGamesLogo2024.jpg" alt="Marvel Games" class="object-contain group-hover:scale-105 transition-all duration-300 rounded-lg w-24 h-24" draggable="false" />
+                    <span class="text-sm font-medium text-[hsl(var(--foreground))] group-hover:text-[hsl(var(--primary))] transition-colors">Marvel Games</span>
+                  </div>
+                  <div class="inline-flex items-center space-x-4 px-4 py-0 rounded-xl hover:bg-[hsl(var(--card))]/40 transition-all duration-300 cursor-pointer group flex-none">
+                    <img src="https://cdn-icons-png.flaticon.com/512/5968/5968756.png" alt="Discord" class="object-contain group-hover:scale-105 transition-all duration-300 rounded-lg w-10 h-10" draggable="false" />
+                    <span class="text-sm font-medium text-[hsl(var(--foreground))] group-hover:text-[hsl(var(--primary))] transition-colors">Discord</span>
+                  </div>
+                  <div class="inline-flex items-center space-x-4 px-4 py-0 rounded-xl hover:bg-[hsl(var(--card))]/40 transition-all duration-300 cursor-pointer group flex-none">
+                    <img src="https://media.discordapp.net/attachments/1203003708250656859/1521702497813794926/aKMe7JPAoq06Ao6cJcCMtQUj0vcPi6gSY5lnN2F4nz9-bBCCnVVvoXEskgvBJK8gGdE.png?ex=6a467423&is=6a4522a3&hm=d33f0777bb5d772c09735c3cc734b45cd608aabd661e5b6be8014e2d55e93216&=&format=webp&quality=lossless" alt="Keplerians Horror Games" class="object-contain group-hover:scale-105 transition-all duration-300 rounded-lg w-20 h-20" draggable="false" />
+                    <span class="text-sm font-medium text-[hsl(var(--foreground))] group-hover:text-[hsl(var(--primary))] transition-colors">Keplerians Horror Games</span>
+                  </div>
+                  <div class="inline-flex items-center space-x-4 px-4 py-0 rounded-xl hover:bg-[hsl(var(--card))]/40 transition-all duration-300 cursor-pointer group flex-none">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/10/Userbox_creeper.svg/960px-Userbox_creeper.svg.png?_=20210122104938" alt="Minecraft" class="object-contain group-hover:scale-105 transition-all duration-300 rounded-lg w-16 h-16" draggable="false" />
+                    <span class="text-sm font-medium text-[hsl(var(--foreground))] group-hover:text-[hsl(var(--primary))] transition-colors">Minecraft</span>
+                  </div>
+                  <div class="inline-flex items-center space-x-4 px-4 py-0 rounded-xl hover:bg-[hsl(var(--card))]/40 transition-all duration-300 cursor-pointer group flex-none">
+                    <img src="https://1000logos.net/wp-content/uploads/2021/03/PUBG-logo.png" alt="PUBG Corp." class="object-contain group-hover:scale-105 transition-all duration-300 rounded-lg w-10 h-10" draggable="false" />
+                    <span class="text-sm font-medium text-[hsl(var(--foreground))] group-hover:text-[hsl(var(--primary))] transition-colors">PUBG Corp.</span>
+                  </div>
+                  <div class="inline-flex items-center space-x-4 px-4 py-0 rounded-xl hover:bg-[hsl(var(--card))]/40 transition-all duration-300 cursor-pointer group flex-none">
+                    <img src="https://cdn-icons-png.flaticon.com/512/5968/5968756.png" alt="Discord Admins" class="object-contain group-hover:scale-105 transition-all duration-300 rounded-lg w-24 h-24" style="transform:translateY(-3px)" draggable="false" />
+                    <span class="text-sm font-medium text-[hsl(var(--foreground))] group-hover:text-[hsl(var(--primary))] transition-colors">Discord Admins</span>
+                  </div>
+                  <div class="inline-flex items-center space-x-4 px-4 py-0 rounded-xl hover:bg-[hsl(var(--card))]/40 transition-all duration-300 cursor-pointer group flex-none">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/4/4a/MarvelGamesLogo2024.jpg" alt="Marvel Games" class="object-contain group-hover:scale-105 transition-all duration-300 rounded-lg w-24 h-24" draggable="false" />
+                    <span class="text-sm font-medium text-[hsl(var(--foreground))] group-hover:text-[hsl(var(--primary))] transition-colors">Marvel Games</span>
+                  </div>
+                  <div class="inline-flex items-center space-x-4 px-4 py-0 rounded-xl hover:bg-[hsl(var(--card))]/40 transition-all duration-300 cursor-pointer group flex-none">
+                    <img src="https://cdn-icons-png.flaticon.com/512/5968/5968756.png" alt="Discord" class="object-contain group-hover:scale-105 transition-all duration-300 rounded-lg w-10 h-10" draggable="false" />
+                    <span class="text-sm font-medium text-[hsl(var(--foreground))] group-hover:text-[hsl(var(--primary))] transition-colors">Discord</span>
+                  </div>
+                  <div class="inline-flex items-center space-x-4 px-4 py-0 rounded-xl hover:bg-[hsl(var(--card))]/40 transition-all duration-300 cursor-pointer group flex-none">
+                    <img src="https://media.discordapp.net/attachments/1203003708250656859/1521702497813794926/aKMe7JPAoq06Ao6cJcCMtQUj0vcPi6gSY5lnN2F4nz9-bBCCnVVvoXEskgvBJK8gGdE.png?ex=6a467423&is=6a4522a3&hm=d33f0777bb5d772c09735c3cc734b45cd608aabd661e5b6be8014e2d55e93216&=&format=webp&quality=lossless" alt="Keplerians Horror Games" class="object-contain group-hover:scale-105 transition-all duration-300 rounded-lg w-20 h-20" draggable="false" />
+                    <span class="text-sm font-medium text-[hsl(var(--foreground))] group-hover:text-[hsl(var(--primary))] transition-colors">Keplerians Horror Games</span>
+                  </div>
+                  <div class="inline-flex items-center space-x-4 px-4 py-0 rounded-xl hover:bg-[hsl(var(--card))]/40 transition-all duration-300 cursor-pointer group flex-none">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/10/Userbox_creeper.svg/960px-Userbox_creeper.svg.png?_=20210122104938" alt="Minecraft" class="object-contain group-hover:scale-105 transition-all duration-300 rounded-lg w-16 h-16" draggable="false" />
+                    <span class="text-sm font-medium text-[hsl(var(--foreground))] group-hover:text-[hsl(var(--primary))] transition-colors">Minecraft.</span>
+                  </div>
+                  <div class="inline-flex items-center space-x-4 px-4 py-0 rounded-xl hover:bg-[hsl(var(--card))]/40 transition-all duration-300 cursor-pointer group flex-none">
+                    <img src="https://1000logos.net/wp-content/uploads/2021/03/PUBG-logo.png" alt="PUBG Corp." class="object-contain group-hover:scale-105 transition-all duration-300 rounded-lg w-10 h-10" draggable="false" />
+                    <span class="text-sm font-medium text-[hsl(var(--foreground))] group-hover:text-[hsl(var(--primary))] transition-colors">PUBG Corp.</span>
+                  </div>
+                  <div class="inline-flex items-center space-x-4 px-4 py-0 rounded-xl hover:bg-[hsl(var(--card))]/40 transition-all duration-300 cursor-pointer group flex-none">
+                    <img src="https://cdn-icons-png.flaticon.com/512/5968/5968756.png" alt="Discord Admins" class="object-contain group-hover:scale-105 transition-all duration-300 rounded-lg w-24 h-24" style="transform:translateY(-3px)" draggable="false" />
+                    <span class="text-sm font-medium text-[hsl(var(--foreground))] group-hover:text-[hsl(var(--primary))] transition-colors">Discord Admins</span>
+                  </div>
+                  <div class="inline-flex items-center space-x-4 px-4 py-0 rounded-xl hover:bg-[hsl(var(--card))]/40 transition-all duration-300 cursor-pointer group flex-none">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/4/4a/MarvelGamesLogo2024.jpg" alt="Marvel Games" class="object-contain group-hover:scale-105 transition-all duration-300 rounded-lg w-24 h-24" draggable="false" />
+                    <span class="text-sm font-medium text-[hsl(var(--foreground))] group-hover:text-[hsl(var(--primary))] transition-colors">Marvel Games</span>
+                  </div>
+                  <div class="inline-flex items-center space-x-4 px-4 py-0 rounded-xl hover:bg-[hsl(var(--card))]/40 transition-all duration-300 cursor-pointer group flex-none">
+                    <img src="https://cdn-icons-png.flaticon.com/512/5968/5968756.png" alt="Discord" class="object-contain group-hover:scale-105 transition-all duration-300 rounded-lg w-10 h-10" draggable="false" />
+                    <span class="text-sm font-medium text-[hsl(var(--foreground))] group-hover:text-[hsl(var(--primary))] transition-colors">Discord</span>
+                  </div>
+                  <div class="inline-flex items-center space-x-4 px-4 py-0 rounded-xl hover:bg-[hsl(var(--card))]/40 transition-all duration-300 cursor-pointer group flex-none">
+                    <img src="https://media.discordapp.net/attachments/1203003708250656859/1521702497813794926/aKMe7JPAoq06Ao6cJcCMtQUj0vcPi6gSY5lnN2F4nz9-bBCCnVVvoXEskgvBJK8gGdE.png?ex=6a467423&is=6a4522a3&hm=d33f0777bb5d772c09735c3cc734b45cd608aabd661e5b6be8014e2d55e93216&=&format=webp&quality=lossless" alt="Keplerians Horror Games" class="object-contain group-hover:scale-105 transition-all duration-300 rounded-lg w-20 h-20" draggable="false" />
+                    <span class="text-sm font-medium text-[hsl(var(--foreground))] group-hover:text-[hsl(var(--primary))] transition-colors">Keplerians Horror Games</span>
+                  </div>
+                  <div class="inline-flex items-center space-x-4 px-4 py-0 rounded-xl hover:bg-[hsl(var(--card))]/40 transition-all duration-300 cursor-pointer group flex-none">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/10/Userbox_creeper.svg/960px-Userbox_creeper.svg.png?_=20210122104938" alt="Minecraft" class="object-contain group-hover:scale-105 transition-all duration-300 rounded-lg w-16 h-16" draggable="false" />
+                    <span class="text-sm font-medium text-[hsl(var(--foreground))] group-hover:text-[hsl(var(--primary))] transition-colors">Minecraft</span>
+                  </div>
+                  <div class="inline-flex items-center space-x-4 px-4 py-0 rounded-xl hover:bg-[hsl(var(--card))]/40 transition-all duration-300 cursor-pointer group flex-none">
+                    <img src="https://1000logos.net/wp-content/uploads/2021/03/PUBG-logo.png" alt="PUBG Corp." class="object-contain group-hover:scale-105 transition-all duration-300 rounded-lg w-10 h-10" draggable="false" />
+                    <span class="text-sm font-medium text-[hsl(var(--foreground))] group-hover:text-[hsl(var(--primary))] transition-colors">PUBG Corp.</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
     </div>
-    
     <script src="script.js" defer="defer"></script>
   </body>
 </html>
