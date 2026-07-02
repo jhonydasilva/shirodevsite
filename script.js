@@ -1,5 +1,6 @@
 (function () {
   var AUDIO_PLAYING_KEY = "shirodev:audio-playing";
+  var INTERNAL_NAVIGATION_KEY = "shirodev:internal-navigation";
   var MUSIC_VOLUME = 0.03;
   var INTERNAL_PAGES = {
     "index.html": true,
@@ -20,6 +21,30 @@
       window.localStorage.setItem(key, value);
     } catch (error) {
       // Browsers can restrict localStorage when the site is opened as a local file.
+    }
+  }
+
+  function sessionGet(key) {
+    try {
+      return window.sessionStorage.getItem(key);
+    } catch (error) {
+      return null;
+    }
+  }
+
+  function sessionSet(key, value) {
+    try {
+      window.sessionStorage.setItem(key, value);
+    } catch (error) {
+      // Session storage can be unavailable for local files in some browsers.
+    }
+  }
+
+  function sessionRemove(key) {
+    try {
+      window.sessionStorage.removeItem(key);
+    } catch (error) {
+      // Session storage can be unavailable for local files in some browsers.
     }
   }
 
@@ -339,6 +364,33 @@
     return pageFromUrl(window.location.href);
   }
 
+  function redirectToHome() {
+    var homeUrl = new URL("index.html", window.location.href);
+    if (homeUrl.href !== window.location.href) {
+      window.location.replace(homeUrl.href);
+    }
+  }
+
+  function ensureHomeEntryPage() {
+    var page = currentPage();
+    var isHomeUrl = page === "index.html";
+    var hasIntroGate = document.querySelector("[data-intro-gate]") !== null;
+
+    if (isHomeUrl && !hasIntroGate) {
+      redirectToHome();
+      return;
+    }
+
+    if (page !== "setup.html") return;
+
+    if (sessionGet(INTERNAL_NAVIGATION_KEY) === "true") {
+      sessionRemove(INTERNAL_NAVIGATION_KEY);
+      return;
+    }
+
+    redirectToHome();
+  }
+
   function setupActiveNav() {
     var page = currentPage();
     var inactiveClasses = "text-[hsl(var(--muted-foreground))] hover:text-[hsl(var(--foreground))] hover:bg-[hsl(var(--secondary))]/30";
@@ -429,10 +481,22 @@
       if (!link || !isInternalPageLink(link)) return;
 
       event.preventDefault();
+      var targetPage = pageFromUrl(link.href);
 
-      navigateInternally(link.href).then(null, function () {
-        window.location.href = link.href;
-      });
+      if (targetPage === "setup.html") {
+        sessionSet(INTERNAL_NAVIGATION_KEY, "true");
+      } else {
+        sessionRemove(INTERNAL_NAVIGATION_KEY);
+      }
+
+      navigateInternally(link.href)
+        .then(function () {
+          if (targetPage === "setup.html") {
+            sessionRemove(INTERNAL_NAVIGATION_KEY);
+          }
+        }, function () {
+          window.location.href = link.href;
+        });
     });
 
     window.addEventListener("popstate", function () {
@@ -442,6 +506,7 @@
     });
   }
 
+  ensureHomeEntryPage();
   setupActiveNav();
   setupParticles();
   setupAudioButtons();
