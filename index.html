@@ -1,207 +1,2467 @@
 <!DOCTYPE html>
 <html lang="pt-br">
-  <head>
-    <meta charSet="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <link rel="preload" as="image" href="https://cdn.discordapp.com/avatars/260187024349331476/1b89ce0c450dec19db56356c42fe1225.webp?size=64" />
-    <link rel="preload" as="image" href="https://cdn.discordapp.com/avatars/260187024349331476/1b89ce0c450dec19db56356c42fe1225.webp?size=256" />
-    <link rel="preload" as="image" href="https://cdn.discordapp.com/clan-badges/306276944780066819/0aef9ab1ef7bce17811e4907a2801cc8.png?size=64" />
-    <link rel="preload" as="image" href="https://cdn-icons-png.flaticon.com/512/5968/5968756.png" />
-    <link rel="preload" as="image" href="https://upload.wikimedia.org/wikipedia/commons/4/4a/MarvelGamesLogo2024.jpg" />
-    <link rel="preload" as="image" href="https://cdn-icons-png.flaticon.com/512/5968/5968756.png" />
-    <link rel="preload" as="image" href="https://media.discordapp.net/attachments/1203003708250656859/1521702497813794926/aKMe7JPAoq06Ao6cJcCMtQUj0vcPi6gSY5lnN2F4nz9-bBCCnVVvoXEskgvBJK8gGdE.png?ex=6a467423&is=6a4522a3&hm=d33f0777bb5d772c09735c3cc734b45cd608aabd661e5b6be8014e2d55e93216&=&format=webp&quality=lossless" />
-    <link rel="preload" as="image" href="https://upload.wikimedia.org/wikipedia/commons/thumb/1/10/Userbox_creeper.svg/960px-Userbox_creeper.svg.png?_=20210122104938" />
-    <link rel="preload" as="image" href="https://1000logos.net/wp-content/uploads/2021/03/PUBG-logo.png" />
-    <link rel="stylesheet" href="styles.css" type="text/css" data-precedence="default" />
-    <title>ShiroDev</title>
-    <meta name="description" content="Sou especializado em gerenciamento de comunidades, com atuação em diversos projetos para clientes reconhecidos mundialmente." />
-    <meta name="theme-color" content="#5865F2" />
-    <meta property="og:type" content="website" />
-    <meta property="og:title" content="ShiroDev" />
-    <meta property="og:description" content="Sou especializado em gerenciamento de comunidades, com atuação em diversos projetos para clientes reconhecidos mundialmente." />
-    <link rel="icon" href="https://cdn.discordapp.com/avatars/260187024349331476/1b89ce0c450dec19db56356c42fe1225.webp?size=64" type="image/webp" />
-  </head>
-  <body>
-    <canvas id="particles-canvas"></canvas>
-    <div class="intro-gate" data-intro-gate role="dialog" aria-modal="true" aria-labelledby="intro-gate-title" aria-describedby="intro-gate-description">
-      <div class="intro-gate__content">
-        <h1 id="intro-gate-title">Bem-vindo(a)</h1>
-        <p id="intro-gate-description">Minhas experiências e projetos estão por aqui</p>
-        <button class="intro-gate__button" type="button" data-intro-view>Visualizar</button>
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <link rel="stylesheet" href="styles.css" type="text/css" />
+
+  <title>ShiroDev</title>
+
+  <meta
+    name="description"
+    content="Sou especializado em gerenciamento de comunidades, com atuação em diversos projetos para clientes reconhecidos mundialmente."
+  />
+
+  <meta name="theme-color" content="#5865F2" />
+
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="ShiroDev" />
+  <meta
+    property="og:description"
+    content="Sou especializado em gerenciamento de comunidades, com atuação em diversos projetos para clientes reconhecidos mundialmente."
+  />
+
+  <!-- FAVICON -->
+  <link rel="icon" href="assets/copo.png" type="image/png" />
+
+  <style>
+
+    /* =========================================================
+       ÁREA DO CLIENTE
+    ========================================================= */
+
+    .client-area-button {
+      height: 40px;
+
+      padding: 0 16px;
+
+      border-radius: 10px;
+
+      border: 1px solid rgba(88, 101, 242, 0.75);
+
+      background:
+        linear-gradient(
+          135deg,
+          rgba(88, 101, 242, 0.18),
+          rgba(33, 150, 243, 0.18)
+        );
+
+      color: #fff;
+
+      display: inline-flex;
+
+      align-items: center;
+
+      justify-content: center;
+
+      gap: 8px;
+
+      font-size: 14px;
+
+      font-weight: 700;
+
+      cursor: pointer;
+
+      white-space: nowrap;
+
+      transition: 0.25s ease;
+
+      box-shadow:
+        0 0 0 1px rgba(88, 101, 242, 0.08),
+        0 0 22px rgba(88, 101, 242, 0.16);
+    }
+
+    .client-area-button:hover {
+      transform: translateY(-2px);
+
+      border-color: #5865f2;
+
+      background:
+        linear-gradient(
+          135deg,
+          rgba(88, 101, 242, 0.35),
+          rgba(33, 150, 243, 0.25)
+        );
+
+      box-shadow:
+        0 8px 28px rgba(88, 101, 242, 0.30);
+    }
+
+
+
+    /* FUNDO DO MODAL */
+
+    .client-overlay {
+
+      position: fixed;
+
+      inset: 0;
+
+      z-index: 99999;
+
+      background: rgba(3, 6, 14, 0.82);
+
+      backdrop-filter: blur(10px);
+
+      display: flex;
+
+      align-items: center;
+
+      justify-content: center;
+
+      padding: 24px;
+
+      opacity: 0;
+
+      visibility: hidden;
+
+      pointer-events: none;
+
+      transition:
+        opacity 0.25s ease,
+        visibility 0.25s ease;
+    }
+
+
+    .client-overlay.is-open {
+
+      opacity: 1;
+
+      visibility: visible;
+
+      pointer-events: auto;
+    }
+
+
+
+    /* CONTAINER LOGIN */
+
+    .client-login-shell {
+
+      position: relative;
+
+      width: min(1050px, 94vw);
+
+      min-height: 590px;
+
+      display: grid;
+
+      grid-template-columns: 46% 54%;
+
+      overflow: hidden;
+
+      border-radius: 22px;
+
+      border:
+        1px solid rgba(255, 255, 255, 0.12);
+
+      box-shadow:
+        0 35px 100px rgba(0, 0, 0, 0.60);
+
+      transform:
+        translateY(15px)
+        scale(0.985);
+
+      transition:
+        transform 0.25s ease;
+    }
+
+
+    .client-overlay.is-open
+    .client-login-shell {
+
+      transform:
+        translateY(0)
+        scale(1);
+    }
+
+
+
+    /* BOTÃO FECHAR */
+
+    .client-close {
+
+      position: absolute;
+
+      top: 15px;
+
+      right: 18px;
+
+      z-index: 10;
+
+      width: 42px;
+
+      height: 42px;
+
+      border: 0;
+
+      border-radius: 50%;
+
+      background: transparent;
+
+      color: #717680;
+
+      font-size: 34px;
+
+      line-height: 1;
+
+      cursor: pointer;
+
+      transition: 0.2s;
+    }
+
+
+    .client-close:hover {
+
+      background:
+        rgba(0, 0, 0, 0.06);
+
+      color: #111827;
+    }
+
+
+
+    /* =========================================================
+       LADO ESQUERDO
+    ========================================================= */
+
+    .client-login-brand {
+
+      position: relative;
+
+      padding: 58px 56px;
+
+      display: flex;
+
+      flex-direction: column;
+
+      overflow: hidden;
+
+      color: white;
+
+      background:
+
+        radial-gradient(
+          circle at 25% 18%,
+          rgba(88, 101, 242, 0.30),
+          transparent 35%
+        ),
+
+        linear-gradient(
+          145deg,
+          #121a39 0%,
+          #18275b 45%,
+          #0c132c 100%
+        );
+    }
+
+
+
+    .client-login-brand::before {
+
+      content: "";
+
+      position: absolute;
+
+      width: 360px;
+
+      height: 60px;
+
+      left: -100px;
+
+      bottom: 95px;
+
+      border-radius: 999px;
+
+      background:
+        rgba(255, 255, 255, 0.035);
+
+      transform:
+        rotate(-32deg);
+    }
+
+
+
+    .client-login-brand::after {
+
+      content: "";
+
+      position: absolute;
+
+      width: 280px;
+
+      height: 42px;
+
+      left: 70px;
+
+      bottom: 25px;
+
+      border-radius: 999px;
+
+      background:
+        rgba(255, 255, 255, 0.035);
+
+      transform:
+        rotate(-32deg);
+    }
+
+
+
+    /* LOGO */
+
+    .client-brand-name {
+
+      position: relative;
+
+      z-index: 2;
+
+      display: flex;
+
+      align-items: center;
+
+      gap: 12px;
+
+      font-size: 31px;
+
+      font-weight: 800;
+    }
+
+
+    .client-brand-name img {
+
+      width: 55px;
+
+      height: 55px;
+
+      object-fit: contain;
+    }
+
+
+    .client-brand-accent {
+
+      color: #5865f2;
+    }
+
+
+
+    /* TEXTO DIGITANDO */
+
+    .client-typewriter-wrap {
+
+      position: relative;
+
+      z-index: 2;
+
+      display: flex;
+
+      align-items: center;
+
+      flex: 1;
+    }
+
+
+    .client-typewriter {
+
+      margin:
+        30px
+        0
+        20px;
+
+      max-width: 420px;
+
+      font-family:
+        "Courier New",
+        monospace;
+
+      font-size:
+        clamp(
+          22px,
+          2.1vw,
+          31px
+        );
+
+      line-height: 1.5;
+
+      font-weight: 700;
+
+      letter-spacing:
+        -0.02em;
+    }
+
+
+
+    /* | PISCANDO */
+
+    .client-caret {
+
+      display:
+        inline-block;
+
+      color:
+        #8ca7ff;
+
+      text-shadow:
+        0 0 12px
+        #5865f2;
+
+      animation:
+        clientBlink
+        0.8s
+        steps(1)
+        infinite;
+    }
+
+
+    @keyframes clientBlink {
+
+      0%,
+      48% {
+
+        opacity: 1;
+      }
+
+      49%,
+      100% {
+
+        opacity: 0;
+      }
+    }
+
+
+
+    /* =========================================================
+       LADO DIREITO
+    ========================================================= */
+
+    .client-login-form-panel {
+
+      background:
+        #f7f7f5;
+
+      color:
+        #0f172a;
+
+      display:
+        flex;
+
+      align-items:
+        center;
+
+      justify-content:
+        center;
+
+      padding:
+        64px
+        70px;
+    }
+
+
+    .client-login-form {
+
+      width: 100%;
+
+      max-width: 465px;
+    }
+
+
+    .client-login-form h2 {
+
+      font-size: 42px;
+
+      line-height: 1.1;
+
+      margin:
+        0
+        0
+        50px;
+
+      font-weight: 800;
+
+      color:
+        #17213a;
+    }
+
+
+
+    /* CAMPOS */
+
+    .client-field {
+
+      display: block;
+
+      margin-bottom: 28px;
+    }
+
+
+    .client-field-label {
+
+      display:
+        flex;
+
+      align-items:
+        center;
+
+      gap:
+        7px;
+
+      width:
+        max-content;
+
+      margin:
+        0
+        0
+        -10px
+        13px;
+
+      padding:
+        0
+        8px;
+
+      background:
+        #f7f7f5;
+
+      color:
+        #203467;
+
+      font-size:
+        14px;
+
+      font-weight:
+        500;
+
+      position:
+        relative;
+
+      z-index:
+        2;
+    }
+
+
+
+    .client-field > input,
+
+    .client-password-wrap {
+
+      width:
+        100%;
+
+      height:
+        58px;
+
+      border:
+        2px solid
+        #516bb7;
+
+      border-radius:
+        8px;
+
+      background:
+        transparent;
+
+      color:
+        #18213a;
+
+      outline:
+        none;
+
+      transition:
+        0.2s;
+    }
+
+
+
+    .client-field > input {
+
+      padding:
+        0
+        16px;
+
+      font-size:
+        15px;
+    }
+
+
+
+    .client-password-wrap {
+
+      display:
+        flex;
+
+      align-items:
+        center;
+    }
+
+
+    .client-password-wrap input {
+
+      width:
+        100%;
+
+      height:
+        100%;
+
+      border:
+        0;
+
+      background:
+        transparent;
+
+      outline:
+        none;
+
+      padding:
+        0
+        52px
+        0
+        16px;
+
+      color:
+        #18213a;
+
+      font-size:
+        15px;
+    }
+
+
+
+    .client-field > input:focus,
+
+    .client-password-wrap:focus-within {
+
+      border-color:
+        #5865f2;
+
+      box-shadow:
+        0 0 0
+        3px
+        rgba(88, 101, 242, 0.12);
+    }
+
+
+
+    /* OLHINHO */
+
+    .client-password-toggle {
+
+      width:
+        46px;
+
+      height:
+        46px;
+
+      margin-left:
+        -48px;
+
+      border:
+        0;
+
+      background:
+        transparent;
+
+      color:
+        #4059a8;
+
+      display:
+        flex;
+
+      align-items:
+        center;
+
+      justify-content:
+        center;
+
+      cursor:
+        pointer;
+    }
+
+
+
+    /* ESQUECEU SENHA */
+
+    .client-forgot {
+
+      display:
+        block;
+
+      margin:
+        -12px
+        0
+        36px
+        auto;
+
+      border:
+        0;
+
+      background:
+        transparent;
+
+      color:
+        #7180b4;
+
+      font-size:
+        13px;
+
+      opacity:
+        0.75;
+
+      cursor:
+        default;
+    }
+
+
+
+    /* BOTÃO ENTRAR */
+
+    .client-submit {
+
+      width:
+        100%;
+
+      height:
+        54px;
+
+      border:
+        0;
+
+      border-radius:
+        8px;
+
+      background:
+
+        linear-gradient(
+          90deg,
+          #5865f2,
+          #4775ec
+        );
+
+      color:
+        #ffffff;
+
+      font-size:
+        15px;
+
+      font-weight:
+        700;
+
+      cursor:
+        pointer;
+
+      box-shadow:
+        0
+        8px
+        20px
+        rgba(88, 101, 242, 0.25);
+
+      transition:
+        0.2s;
+    }
+
+
+    .client-submit:hover {
+
+      transform:
+        translateY(-2px);
+
+      filter:
+        brightness(1.08);
+    }
+
+
+
+    .client-login-note {
+
+      min-height:
+        20px;
+
+      margin:
+        14px
+        0
+        0;
+
+      text-align:
+        center;
+
+      font-size:
+        13px;
+
+      color:
+        #6b7280;
+    }
+
+
+
+    body.client-modal-open {
+
+      overflow:
+        hidden;
+    }
+
+
+
+    /* =========================================================
+       RESPONSIVO
+    ========================================================= */
+
+    @media
+    (max-width: 820px) {
+
+      .client-area-button {
+
+        padding:
+          0
+          12px;
+      }
+
+
+      .client-area-button span {
+
+        display:
+          none;
+      }
+
+
+      .client-login-shell {
+
+        grid-template-columns:
+          1fr;
+
+        max-height:
+          92vh;
+
+        overflow-y:
+          auto;
+
+        min-height:
+          0;
+      }
+
+
+      .client-login-brand {
+
+        min-height:
+          260px;
+
+        padding:
+          38px
+          28px;
+      }
+
+
+      .client-brand-name {
+
+        font-size:
+          25px;
+      }
+
+
+      .client-brand-name img {
+
+        width:
+          45px;
+
+        height:
+          45px;
+      }
+
+
+      .client-typewriter {
+
+        font-size:
+          21px;
+
+        margin-top:
+          28px;
+      }
+
+
+      .client-login-form-panel {
+
+        padding:
+          48px
+          28px;
+      }
+
+
+      .client-login-form h2 {
+
+        font-size:
+          34px;
+
+        margin-bottom:
+          38px;
+      }
+    }
+
+
+
+    @media
+    (max-width: 520px) {
+
+      .client-overlay {
+
+        padding:
+          12px;
+      }
+
+
+      .client-login-brand {
+
+        min-height:
+          220px;
+      }
+
+
+      .client-login-form-panel {
+
+        padding:
+          38px
+          20px;
+      }
+    }
+
+  </style>
+</head>
+
+
+<body>
+
+  <canvas id="particles-canvas"></canvas>
+
+
+
+  <!-- ======================================================
+       INTRO
+  ======================================================= -->
+
+  <div
+    class="intro-gate"
+    data-intro-gate
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="intro-gate-title"
+    aria-describedby="intro-gate-description"
+  >
+
+    <div class="intro-gate__content">
+
+      <h1 id="intro-gate-title">
+        Bem-vindo(a)
+      </h1>
+
+      <p id="intro-gate-description">
+        Minhas experiências e projetos estão por aqui
+      </p>
+
+      <button
+        class="intro-gate__button"
+        type="button"
+        data-intro-view
+      >
+        Visualizar
+      </button>
+
+    </div>
+
+  </div>
+
+
+
+  <!-- EFEITOS DE FUNDO -->
+
+  <div
+    class="fixed inset-0 pointer-events-none z-10"
+  >
+
+    <div
+      class="absolute inset-0 bg-[radial-gradient(ellipse_at_top,rgba(88,101,242,0.08)_0%,transparent_50%)]"
+    ></div>
+
+    <div
+      class="absolute inset-0 bg-gradient-to-b from-transparent to-[hsl(var(--background))]/90"
+    ></div>
+
+  </div>
+
+
+
+  <div class="relative z-20">
+
+
+
+    <!-- ======================================================
+         HEADER
+    ======================================================= -->
+
+    <header
+      class="fixed top-0 left-0 right-0 z-50 bg-[hsl(var(--background))]/80 backdrop-blur-md border-b border-[hsl(var(--border))]/30"
+    >
+
+      <div
+        class="container mx-auto px-4 h-16 flex items-center justify-between"
+      >
+
+
+        <!-- LOGO -->
+
+        <div
+          class="flex items-center w-16"
+        >
+
+          <a
+            href="index.html"
+            class="hover:opacity-80 transition-opacity"
+          >
+
+            <img
+              src="assets/copo.png"
+              alt="ShiroDev"
+              class="w-9 h-9 object-contain"
+            />
+
+          </a>
+
+        </div>
+
+
+
+        <!-- MENU -->
+
+        <nav
+          class="hidden md:flex items-center space-x-2"
+        >
+
+          <a
+            href="index.html"
+            class="relative px-4 py-2 text-base font-medium transition-all duration-300 group rounded-md text-[hsl(var(--muted-foreground))] hover:text-[hsl(var(--foreground))] hover:bg-[hsl(var(--secondary))]/30"
+          >
+            Início
+
+            <span
+              class="absolute bottom-0 left-1/2 transform -translate-x-1/2 h-[3px] rounded-t-sm bg-[hsl(var(--primary))] transition-all duration-300 w-0 group-hover:w-2/3"
+            ></span>
+
+          </a>
+
+
+          <a
+            href="projetos.html"
+            class="relative px-4 py-2 text-base font-medium transition-all duration-300 group rounded-md text-[hsl(var(--muted-foreground))] hover:text-[hsl(var(--foreground))] hover:bg-[hsl(var(--secondary))]/30"
+          >
+            Projetos
+
+            <span
+              class="absolute bottom-0 left-1/2 transform -translate-x-1/2 h-[3px] rounded-t-sm bg-[hsl(var(--primary))] transition-all duration-300 w-0 group-hover:w-2/3"
+            ></span>
+
+          </a>
+
+
+          <a
+            href="setup.html"
+            class="relative px-4 py-2 text-base font-medium transition-all duration-300 group rounded-md text-[hsl(var(--muted-foreground))] hover:text-[hsl(var(--foreground))] hover:bg-[hsl(var(--secondary))]/30"
+          >
+            Setup
+
+            <span
+              class="absolute bottom-0 left-1/2 transform -translate-x-1/2 h-[3px] rounded-t-sm bg-[hsl(var(--primary))] transition-all duration-300 w-0 group-hover:w-2/3"
+            ></span>
+
+          </a>
+
+        </nav>
+
+
+
+        <!-- DIREITA HEADER -->
+
+        <div
+          class="flex items-center justify-end gap-3"
+        >
+
+
+          <!-- MÚSICA -->
+
+          <audio
+            loop
+            preload="none"
+            style="display:none"
+          >
+
+            <source
+              src="audios/background-music.mp3"
+              type="audio/mpeg"
+            />
+
+          </audio>
+
+
+
+          <button
+            class="inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 h-10 w-10 bg-secondary/50 hover:bg-secondary border border-border/50"
+            title="Tocar música"
+          >
+
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="20"
+              height="20"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              class="text-muted-foreground"
+            >
+
+              <path
+                d="M11 4.702a.705.705 0 0 0-1.203-.498L6.413 7.587A1.4 1.4 0 0 1 5.416 8H3a1 1 0 0 0-1 1v6a1 1 0 0 0 1 1h2.416a1.4 1.4 0 0 1 .997.413l3.383 3.384A.705.705 0 0 0 11 19.298z"
+              ></path>
+
+              <line
+                x1="23"
+                y1="9"
+                x2="23"
+                y2="15"
+              ></line>
+
+            </svg>
+
+          </button>
+
+
+
+          <!-- ÁREA DO CLIENTE -->
+
+          <button
+            type="button"
+            class="client-area-button"
+            data-client-open
+          >
+
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="18"
+              height="18"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2.2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+
+              <path
+                d="M20 21a8 8 0 0 0-16 0"
+              ></path>
+
+              <circle
+                cx="12"
+                cy="7"
+                r="4"
+              ></circle>
+
+            </svg>
+
+            <span>
+              Área do Cliente
+            </span>
+
+          </button>
+
+        </div>
+
       </div>
-    </div>
-    <div class="fixed inset-0 pointer-events-none z-10">
-      <div class="absolute inset-0 bg-[radial-gradient(ellipse_at_top,rgba(88,101,242,0.08)_0%,transparent_50%)]"></div>
-      <div class="absolute inset-0 bg-gradient-to-b from-transparent to-[hsl(var(--background))]/90"></div>
-    </div>
-    <div class="relative z-20">
-      <header class="fixed top-0 left-0 right-0 z-50 bg-[hsl(var(--background))]/80 backdrop-blur-md border-b border-[hsl(var(--border))]/30">
-        <div class="container mx-auto px-4 h-16 flex items-center justify-between">
-          <div class="flex items-center w-16">
-            <a href="index.html" class="hover:opacity-80 transition-opacity">
-              <img src="https://cdn.discordapp.com/avatars/260187024349331476/1b89ce0c450dec19db56356c42fe1225.webp?size=64" alt="ShiroDev" class="w-8 h-8 rounded-full" />
-            </a>
+
+    </header>
+
+
+
+    <!-- ======================================================
+         INÍCIO
+    ======================================================= -->
+
+    <section
+      class="h-screen bg-[hsl(var(--background))] relative overflow-hidden flex flex-col"
+    >
+
+
+      <div
+        class="relative z-20 container mx-auto px-4 pt-4 flex-1 flex flex-col justify-center"
+      >
+
+
+        <div
+          class="text-center max-w-4xl mx-auto"
+          style="margin-top:-8rem"
+        >
+
+
+
+          <!-- COPO -->
+
+          <div
+            class="flex justify-center mb-6"
+          >
+
+            <div
+              class="relative"
+              style="width:160px;height:160px"
+            >
+
+              <img
+                src="assets/copo.png"
+                alt="ShiroDev"
+                draggable="false"
+
+                class="
+                  select-none
+                  pointer-events-none
+                  absolute
+                  animate-float
+                  object-contain
+                "
+
+                style="
+                  width:150px;
+                  height:150px;
+                  top:5px;
+                  left:5px;
+
+                  filter:
+                    drop-shadow(
+                      0
+                      0
+                      28px
+                      rgba(88,101,242,.35)
+                    );
+                "
+              />
+
+            </div>
+
           </div>
-          <nav class="hidden md:flex items-center space-x-2">
-            <a href="index.html" class="relative px-4 py-2 text-base font-medium transition-all duration-300 group rounded-md text-[hsl(var(--muted-foreground))] hover:text-[hsl(var(--foreground))] hover:bg-[hsl(var(--secondary))]/30">Início<span class="absolute bottom-0 left-1/2 transform -translate-x-1/2 h-[3px] rounded-t-sm bg-[hsl(var(--primary))] transition-all duration-300 w-0 group-hover:w-2/3"></span></a>
-            <a href="projetos.html" class="relative px-4 py-2 text-base font-medium transition-all duration-300 group rounded-md text-[hsl(var(--muted-foreground))] hover:text-[hsl(var(--foreground))] hover:bg-[hsl(var(--secondary))]/30">Projetos<span class="absolute bottom-0 left-1/2 transform -translate-x-1/2 h-[3px] rounded-t-sm bg-[hsl(var(--primary))] transition-all duration-300 w-0 group-hover:w-2/3"></span></a>
-            <a href="setup.html" class="relative px-4 py-2 text-base font-medium transition-all duration-300 group rounded-md text-[hsl(var(--muted-foreground))] hover:text-[hsl(var(--foreground))] hover:bg-[hsl(var(--secondary))]/30">Setup<span class="absolute bottom-0 left-1/2 transform -translate-x-1/2 h-[3px] rounded-t-sm bg-[hsl(var(--primary))] transition-all duration-300 w-0 group-hover:w-2/3"></span></a>
-          </nav>
-          <div class="flex items-center justify-end w-16">
-            <audio loop="" preload="none" style="display:none">
-              <source src="audios/background-music.mp3" type="audio/mpeg" />
-            </audio>
-            <button class="inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 h-10 w-10 bg-secondary/50 hover:bg-secondary border border-border/50" title="Tocar música">
-              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-muted-foreground">
-                <path d="M11 4.702a.705.705 0 0 0-1.203-.498L6.413 7.587A1.4 1.4 0 0 1 5.416 8H3a1 1 0 0 0-1 1v6a1 1 0 0 0 1 1h2.416a1.4 1.4 0 0 1 .997.413l3.383 3.384A.705.705 0 0 0 11 19.298z"></path>
-                <line x1="23" y1="9" x2="23" y2="15"></line>
-              </svg>
-            </button>
+
+
+
+          <!-- NOME -->
+
+          <h1
+            class="text-4xl md:text-5xl font-bold text-white mb-4 leading-tight"
+          >
+
+            <div
+              class="flex items-center justify-center gap-3"
+            >
+
+              <span
+                class="text-white"
+              >
+                ShiroDev
+              </span>
+
+
+              <img
+                src="https://cdn.discordapp.com/clan-badges/306276944780066819/0aef9ab1ef7bce17811e4907a2801cc8.png?size=64"
+
+                alt="Clan badge"
+
+                class="
+                  w-8
+                  h-8
+                  rounded-full
+                  shadow-lg
+                  animate-fade-in
+                "
+
+                draggable="false"
+
+                style="
+                  user-select:none;
+                  transform:translateY(9px)
+                "
+              />
+
+            </div>
+
+          </h1>
+
+
+
+          <!-- DESCRIÇÃO -->
+
+          <div
+            class="text-[hsl(var(--muted-foreground))] mb-8 max-w-3xl mx-auto leading-relaxed space-y-4"
+          >
+
+            <p
+              class="text-base sm:text-lg md:text-xl"
+            >
+
+              Olá! Me chamo
+
+              <span
+                class="text-[hsl(var(--foreground))] font-semibold"
+              >
+                Shiro
+              </span>
+
+              e tenho 19 anos.
+
+              Sou um entusiasta apaixonado
+              em construir, crescer e gerenciar
+              grandes e pequenas comunidades
+              para jogos, organizações e marcas.
+
+            </p>
+
+
+
+            <p
+              class="text-base sm:text-lg md:text-xl"
+            >
+
+              Estou há
+
+              <span
+                class="text-[hsl(var(--primary))] font-semibold"
+              >
+                10 anos
+              </span>
+
+              liderando as maiores e menores
+              comunidades da América do Sul
+              e possuo uma vasta experiência
+              para potencializar seu projeto.
+
+              Se você precisar de um servidor
+              conforme suas necessidades,
+              estou aqui para te ajudar!
+
+            </p>
+
           </div>
+
+
+
+          <!-- TAGS -->
+
+          <div
+            class="flex flex-wrap justify-center gap-3 mb-8 max-w-3xl mx-auto"
+          >
+
+            <span
+              class="px-3 py-1 bg-[hsl(var(--primary))]/20 text-[hsl(var(--primary))] border border-[hsl(var(--primary))]/30 rounded-full text-sm font-medium"
+            >
+              Construção
+            </span>
+
+
+            <span
+              class="px-3 py-1 bg-[hsl(var(--primary))]/20 text-[hsl(var(--primary))] border border-[hsl(var(--primary))]/30 rounded-full text-sm font-medium"
+            >
+              Gestão
+            </span>
+
+
+            <span
+              class="px-3 py-1 bg-[hsl(var(--primary))]/20 text-[hsl(var(--primary))] border border-[hsl(var(--primary))]/30 rounded-full text-sm font-medium"
+            >
+              Moderação
+            </span>
+
+
+            <span
+              class="px-3 py-1 bg-[hsl(var(--primary))]/20 text-[hsl(var(--primary))] border border-[hsl(var(--primary))]/30 rounded-full text-sm font-medium"
+            >
+              Desenvolvimento
+            </span>
+
+          </div>
+
+
+          <div
+            class="flex flex-wrap justify-center gap-4"
+          ></div>
+
         </div>
-      </header>
-      <section class="h-screen bg-[hsl(var(--background))] relative overflow-hidden flex flex-col">
-        <div class="relative z-20 container mx-auto px-4 pt-4 flex-1 flex flex-col justify-center">
-          <div class="text-center max-w-4xl mx-auto" style="margin-top:-8rem">
-            <div class="flex justify-center mb-6">
-              <div class="relative" style="width:140px;height:140px">
-                <img src="https://cdn.discordapp.com/avatars/260187024349331476/1b89ce0c450dec19db56356c42fe1225.webp?size=256" alt="Leandro" class="rounded-full shadow-xl select-none pointer-events-none absolute animate-float" draggable="false" style="width:120px;height:120px;top:10px;left:10px;box-shadow:rgba(14,13,13,0.25) 0px 0px 20px, rgba(88,101,242,0.3) 0px 0px 40px" />
-                <div class="absolute rounded-full pointer-events-none animate-pulse-ring" style="width:120px;height:120px;top:10px;left:10px;background:linear-gradient(45deg, rgba(88,101,242,0.2), transparent 70%)"></div>
-              </div>
-            </div>
-            <h1 class="text-4xl md:text-5xl font-bold text-white mb-4 leading-tight">
-              <div class="flex items-center justify-center gap-3">
-                <span class="text-white">ShiroDev</span>
-                <img src="https://cdn.discordapp.com/clan-badges/306276944780066819/0aef9ab1ef7bce17811e4907a2801cc8.png?size=64" alt="Clan badge" class="w-8 h-8 rounded-full shadow-lg animate-fade-in" draggable="false" style="user-select:none;transform:translateY(9px)" />
-              </div>
-            </h1>
-            <div class="text-[hsl(var(--muted-foreground))] mb-8 max-w-3xl mx-auto leading-relaxed space-y-4">
-              <p class="text-base sm:text-lg md:text-xl">Olá! Me chamo<!-- --> <span class="text-[hsl(var(--foreground))] font-semibold">Shiro</span> <!-- -->e tenho 19 anos. Sou um entusiasta apaixonado em construir, crescer e gerenciar grandes e pequenas comunidades para jogos, organizações e marcas.</p>
-              <p class="text-base sm:text-lg md:text-xl">Estou há<!-- --> <span class="text-[hsl(var(--primary))] font-semibold">10 anos</span> <!-- -->liderando as maiores e menores comunidades da América do Sul e possuo uma vasta experiência para potencializar seu projeto. Se você precisar de um servidor conforme suas necessidades, estou aqui para te ajudar!</p>
-            </div>
-            <div class="flex flex-wrap justify-center gap-3 mb-8 max-w-3xl mx-auto">
-              <span class="px-3 py-1 bg-[hsl(var(--primary))]/20 text-[hsl(var(--primary))] border border-[hsl(var(--primary))]/30 rounded-full text-sm font-medium">Construção</span>
-              <span class="px-3 py-1 bg-[hsl(var(--primary))]/20 text-[hsl(var(--primary))] border border-[hsl(var(--primary))]/30 rounded-full text-sm font-medium">Gestão</span>
-              <span class="px-3 py-1 bg-[hsl(var(--primary))]/20 text-[hsl(var(--primary))] border border-[hsl(var(--primary))]/30 rounded-full text-sm font-medium">Moderação</span>
-              <span class="px-3 py-1 bg-[hsl(var(--primary))]/20 text-[hsl(var(--primary))] border border-[hsl(var(--primary))]/30 rounded-full text-sm font-medium">Desenvolvimento</span>
-            </div>
-            <div class="flex flex-wrap justify-center gap-4">
-            </div>
+
+      </div>
+
+
+
+      <!-- ======================================================
+           MARCAS
+      ======================================================= -->
+
+      <div
+        class="relative z-20 pb-8"
+        style="margin-top:-10rem"
+      >
+
+        <div
+          class="container mx-auto px-4 py-8"
+        >
+
+
+          <div
+            class="text-center mb-4"
+          >
+
+            <h2
+              class="text-xs font-bold text-[hsl(var(--muted-foreground))] tracking-widest uppercase"
+            >
+
+              Confiado por milhares de
+
+              <span
+                class="text-[hsl(var(--primary))]"
+              >
+                Marcas
+              </span>
+
+              no Discord, incluindo
+
+            </h2>
+
           </div>
-        </div>
-        <div class="relative z-20 pb-8" style="margin-top:-10rem">
-          <div class="container mx-auto px-4 py-8">
-            <div class="text-center mb-4">
-              <h2 class="text-xs font-bold text-[hsl(var(--muted-foreground))] tracking-widest uppercase">Confiado por milhares de<!-- --><span class="text-[hsl(var(--primary))]">Marcas</span><!-- -->no Discord, incluindo</h2>
-            </div>
-            <div class="relative overflow-hidden h-28 max-w-5xl mx-auto">
-              <div class="absolute left-0 top-0 bottom-0 w-24 bg-gradient-to-r from-[hsl(var(--background))] via-[hsl(var(--background))]/70 to-transparent z-10 pointer-events-none"></div>
-              <div class="absolute right-0 top-0 bottom-0 w-24 bg-gradient-to-l from-[hsl(var(--background))] via-[hsl(var(--background))]/70 to-transparent z-10 pointer-events-none"></div>
-              <div class="flex items-center h-full">
-                <div class="flex animate-slide space-x-12 whitespace-nowrap">
-                  <div class="inline-flex items-center space-x-4 px-4 py-0 rounded-xl hover:bg-[hsl(var(--card))]/40 transition-all duration-300 cursor-pointer group flex-none">
-                    <img src="https://cdn-icons-png.flaticon.com/512/5968/5968756.png" alt="Discord Admins" class="object-contain group-hover:scale-105 transition-all duration-300 rounded-lg w-24 h-24" style="transform:translateY(-3px)" draggable="false" />
-                    <span class="text-sm font-medium text-[hsl(var(--foreground))] group-hover:text-[hsl(var(--primary))] transition-colors">Discord Admins</span>
-                  </div>
-                  <div class="inline-flex items-center space-x-4 px-4 py-0 rounded-xl hover:bg-[hsl(var(--card))]/40 transition-all duration-300 cursor-pointer group flex-none">
-                    <img src="https://upload.wikimedia.org/wikipedia/commons/4/4a/MarvelGamesLogo2024.jpg" alt="Marvel Games" class="object-contain group-hover:scale-105 transition-all duration-300 rounded-lg w-24 h-24" draggable="false" />
-                    <span class="text-sm font-medium text-[hsl(var(--foreground))] group-hover:text-[hsl(var(--primary))] transition-colors">Marvel Games</span>
-                  </div>
-                  <div class="inline-flex items-center space-x-4 px-4 py-0 rounded-xl hover:bg-[hsl(var(--card))]/40 transition-all duration-300 cursor-pointer group flex-none">
-                    <img src="https://cdn-icons-png.flaticon.com/512/5968/5968756.png" alt="Discord" class="object-contain group-hover:scale-105 transition-all duration-300 rounded-lg w-10 h-10" draggable="false" />
-                    <span class="text-sm font-medium text-[hsl(var(--foreground))] group-hover:text-[hsl(var(--primary))] transition-colors">Discord</span>
-                  </div>
-                  <div class="inline-flex items-center space-x-4 px-4 py-0 rounded-xl hover:bg-[hsl(var(--card))]/40 transition-all duration-300 cursor-pointer group flex-none">
-                    <img src="https://media.discordapp.net/attachments/1203003708250656859/1521702497813794926/aKMe7JPAoq06Ao6cJcCMtQUj0vcPi6gSY5lnN2F4nz9-bBCCnVVvoXEskgvBJK8gGdE.png?ex=6a467423&is=6a4522a3&hm=d33f0777bb5d772c09735c3cc734b45cd608aabd661e5b6be8014e2d55e93216&=&format=webp&quality=lossless" alt="Keplerians Horror Games" class="object-contain group-hover:scale-105 transition-all duration-300 rounded-lg w-20 h-20" draggable="false" />
-                    <span class="text-sm font-medium text-[hsl(var(--foreground))] group-hover:text-[hsl(var(--primary))] transition-colors">Keplerians Horror Games</span>
-                  </div>
-                  <div class="inline-flex items-center space-x-4 px-4 py-0 rounded-xl hover:bg-[hsl(var(--card))]/40 transition-all duration-300 cursor-pointer group flex-none">
-                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/10/Userbox_creeper.svg/960px-Userbox_creeper.svg.png?_=20210122104938" alt="Minecraft" class="object-contain group-hover:scale-105 transition-all duration-300 rounded-lg w-16 h-16" draggable="false" />
-                    <span class="text-sm font-medium text-[hsl(var(--foreground))] group-hover:text-[hsl(var(--primary))] transition-colors">Minecraft</span>
-                  </div>
-                  <div class="inline-flex items-center space-x-4 px-4 py-0 rounded-xl hover:bg-[hsl(var(--card))]/40 transition-all duration-300 cursor-pointer group flex-none">
-                    <img src="https://1000logos.net/wp-content/uploads/2021/03/PUBG-logo.png" alt="PUBG Corp." class="object-contain group-hover:scale-105 transition-all duration-300 rounded-lg w-10 h-10" draggable="false" />
-                    <span class="text-sm font-medium text-[hsl(var(--foreground))] group-hover:text-[hsl(var(--primary))] transition-colors">PUBG Corp.</span>
-                  </div>
-                  <div class="inline-flex items-center space-x-4 px-4 py-0 rounded-xl hover:bg-[hsl(var(--card))]/40 transition-all duration-300 cursor-pointer group flex-none">
-                    <img src="https://cdn-icons-png.flaticon.com/512/5968/5968756.png" alt="Discord Admins" class="object-contain group-hover:scale-105 transition-all duration-300 rounded-lg w-24 h-24" style="transform:translateY(-3px)" draggable="false" />
-                    <span class="text-sm font-medium text-[hsl(var(--foreground))] group-hover:text-[hsl(var(--primary))] transition-colors">Discord Admins</span>
-                  </div>
-                  <div class="inline-flex items-center space-x-4 px-4 py-0 rounded-xl hover:bg-[hsl(var(--card))]/40 transition-all duration-300 cursor-pointer group flex-none">
-                    <img src="https://upload.wikimedia.org/wikipedia/commons/4/4a/MarvelGamesLogo2024.jpg" alt="Marvel Games" class="object-contain group-hover:scale-105 transition-all duration-300 rounded-lg w-24 h-24" draggable="false" />
-                    <span class="text-sm font-medium text-[hsl(var(--foreground))] group-hover:text-[hsl(var(--primary))] transition-colors">Marvel Games</span>
-                  </div>
-                  <div class="inline-flex items-center space-x-4 px-4 py-0 rounded-xl hover:bg-[hsl(var(--card))]/40 transition-all duration-300 cursor-pointer group flex-none">
-                    <img src="https://cdn-icons-png.flaticon.com/512/5968/5968756.png" alt="Discord" class="object-contain group-hover:scale-105 transition-all duration-300 rounded-lg w-10 h-10" draggable="false" />
-                    <span class="text-sm font-medium text-[hsl(var(--foreground))] group-hover:text-[hsl(var(--primary))] transition-colors">Discord</span>
-                  </div>
-                  <div class="inline-flex items-center space-x-4 px-4 py-0 rounded-xl hover:bg-[hsl(var(--card))]/40 transition-all duration-300 cursor-pointer group flex-none">
-                    <img src="https://media.discordapp.net/attachments/1203003708250656859/1521702497813794926/aKMe7JPAoq06Ao6cJcCMtQUj0vcPi6gSY5lnN2F4nz9-bBCCnVVvoXEskgvBJK8gGdE.png?ex=6a467423&is=6a4522a3&hm=d33f0777bb5d772c09735c3cc734b45cd608aabd661e5b6be8014e2d55e93216&=&format=webp&quality=lossless" alt="Keplerians Horror Games" class="object-contain group-hover:scale-105 transition-all duration-300 rounded-lg w-20 h-20" draggable="false" />
-                    <span class="text-sm font-medium text-[hsl(var(--foreground))] group-hover:text-[hsl(var(--primary))] transition-colors">Keplerians Horror Games</span>
-                  </div>
-                  <div class="inline-flex items-center space-x-4 px-4 py-0 rounded-xl hover:bg-[hsl(var(--card))]/40 transition-all duration-300 cursor-pointer group flex-none">
-                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/10/Userbox_creeper.svg/960px-Userbox_creeper.svg.png?_=20210122104938" alt="Minecraft" class="object-contain group-hover:scale-105 transition-all duration-300 rounded-lg w-16 h-16" draggable="false" />
-                    <span class="text-sm font-medium text-[hsl(var(--foreground))] group-hover:text-[hsl(var(--primary))] transition-colors">Minecraft</span>
-                  </div>
-                  <div class="inline-flex items-center space-x-4 px-4 py-0 rounded-xl hover:bg-[hsl(var(--card))]/40 transition-all duration-300 cursor-pointer group flex-none">
-                    <img src="https://1000logos.net/wp-content/uploads/2021/03/PUBG-logo.png" alt="PUBG Corp." class="object-contain group-hover:scale-105 transition-all duration-300 rounded-lg w-10 h-10" draggable="false" />
-                    <span class="text-sm font-medium text-[hsl(var(--foreground))] group-hover:text-[hsl(var(--primary))] transition-colors">PUBG Corp.</span>
-                  </div>
-                  <div class="inline-flex items-center space-x-4 px-4 py-0 rounded-xl hover:bg-[hsl(var(--card))]/40 transition-all duration-300 cursor-pointer group flex-none">
-                    <img src="https://cdn-icons-png.flaticon.com/512/5968/5968756.png" alt="Discord Admins" class="object-contain group-hover:scale-105 transition-all duration-300 rounded-lg w-24 h-24" style="transform:translateY(-3px)" draggable="false" />
-                    <span class="text-sm font-medium text-[hsl(var(--foreground))] group-hover:text-[hsl(var(--primary))] transition-colors">Discord Admins</span>
-                  </div>
-                  <div class="inline-flex items-center space-x-4 px-4 py-0 rounded-xl hover:bg-[hsl(var(--card))]/40 transition-all duration-300 cursor-pointer group flex-none">
-                    <img src="https://upload.wikimedia.org/wikipedia/commons/4/4a/MarvelGamesLogo2024.jpg" alt="Marvel Games" class="object-contain group-hover:scale-105 transition-all duration-300 rounded-lg w-24 h-24" draggable="false" />
-                    <span class="text-sm font-medium text-[hsl(var(--foreground))] group-hover:text-[hsl(var(--primary))] transition-colors">Marvel Games</span>
-                  </div>
-                  <div class="inline-flex items-center space-x-4 px-4 py-0 rounded-xl hover:bg-[hsl(var(--card))]/40 transition-all duration-300 cursor-pointer group flex-none">
-                    <img src="https://cdn-icons-png.flaticon.com/512/5968/5968756.png" alt="Discord" class="object-contain group-hover:scale-105 transition-all duration-300 rounded-lg w-10 h-10" draggable="false" />
-                    <span class="text-sm font-medium text-[hsl(var(--foreground))] group-hover:text-[hsl(var(--primary))] transition-colors">Discord</span>
-                  </div>
-                  <div class="inline-flex items-center space-x-4 px-4 py-0 rounded-xl hover:bg-[hsl(var(--card))]/40 transition-all duration-300 cursor-pointer group flex-none">
-                    <img src="https://media.discordapp.net/attachments/1203003708250656859/1521702497813794926/aKMe7JPAoq06Ao6cJcCMtQUj0vcPi6gSY5lnN2F4nz9-bBCCnVVvoXEskgvBJK8gGdE.png?ex=6a467423&is=6a4522a3&hm=d33f0777bb5d772c09735c3cc734b45cd608aabd661e5b6be8014e2d55e93216&=&format=webp&quality=lossless" alt="Keplerians Horror Games" class="object-contain group-hover:scale-105 transition-all duration-300 rounded-lg w-20 h-20" draggable="false" />
-                    <span class="text-sm font-medium text-[hsl(var(--foreground))] group-hover:text-[hsl(var(--primary))] transition-colors">Keplerians Horror Games</span>
-                  </div>
-                  <div class="inline-flex items-center space-x-4 px-4 py-0 rounded-xl hover:bg-[hsl(var(--card))]/40 transition-all duration-300 cursor-pointer group flex-none">
-                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/10/Userbox_creeper.svg/960px-Userbox_creeper.svg.png?_=20210122104938" alt="Minecraft" class="object-contain group-hover:scale-105 transition-all duration-300 rounded-lg w-16 h-16" draggable="false" />
-                    <span class="text-sm font-medium text-[hsl(var(--foreground))] group-hover:text-[hsl(var(--primary))] transition-colors">Minecraft.</span>
-                  </div>
-                  <div class="inline-flex items-center space-x-4 px-4 py-0 rounded-xl hover:bg-[hsl(var(--card))]/40 transition-all duration-300 cursor-pointer group flex-none">
-                    <img src="https://1000logos.net/wp-content/uploads/2021/03/PUBG-logo.png" alt="PUBG Corp." class="object-contain group-hover:scale-105 transition-all duration-300 rounded-lg w-10 h-10" draggable="false" />
-                    <span class="text-sm font-medium text-[hsl(var(--foreground))] group-hover:text-[hsl(var(--primary))] transition-colors">PUBG Corp.</span>
-                  </div>
-                  <div class="inline-flex items-center space-x-4 px-4 py-0 rounded-xl hover:bg-[hsl(var(--card))]/40 transition-all duration-300 cursor-pointer group flex-none">
-                    <img src="https://cdn-icons-png.flaticon.com/512/5968/5968756.png" alt="Discord Admins" class="object-contain group-hover:scale-105 transition-all duration-300 rounded-lg w-24 h-24" style="transform:translateY(-3px)" draggable="false" />
-                    <span class="text-sm font-medium text-[hsl(var(--foreground))] group-hover:text-[hsl(var(--primary))] transition-colors">Discord Admins</span>
-                  </div>
-                  <div class="inline-flex items-center space-x-4 px-4 py-0 rounded-xl hover:bg-[hsl(var(--card))]/40 transition-all duration-300 cursor-pointer group flex-none">
-                    <img src="https://upload.wikimedia.org/wikipedia/commons/4/4a/MarvelGamesLogo2024.jpg" alt="Marvel Games" class="object-contain group-hover:scale-105 transition-all duration-300 rounded-lg w-24 h-24" draggable="false" />
-                    <span class="text-sm font-medium text-[hsl(var(--foreground))] group-hover:text-[hsl(var(--primary))] transition-colors">Marvel Games</span>
-                  </div>
-                  <div class="inline-flex items-center space-x-4 px-4 py-0 rounded-xl hover:bg-[hsl(var(--card))]/40 transition-all duration-300 cursor-pointer group flex-none">
-                    <img src="https://cdn-icons-png.flaticon.com/512/5968/5968756.png" alt="Discord" class="object-contain group-hover:scale-105 transition-all duration-300 rounded-lg w-10 h-10" draggable="false" />
-                    <span class="text-sm font-medium text-[hsl(var(--foreground))] group-hover:text-[hsl(var(--primary))] transition-colors">Discord</span>
-                  </div>
-                  <div class="inline-flex items-center space-x-4 px-4 py-0 rounded-xl hover:bg-[hsl(var(--card))]/40 transition-all duration-300 cursor-pointer group flex-none">
-                    <img src="https://media.discordapp.net/attachments/1203003708250656859/1521702497813794926/aKMe7JPAoq06Ao6cJcCMtQUj0vcPi6gSY5lnN2F4nz9-bBCCnVVvoXEskgvBJK8gGdE.png?ex=6a467423&is=6a4522a3&hm=d33f0777bb5d772c09735c3cc734b45cd608aabd661e5b6be8014e2d55e93216&=&format=webp&quality=lossless" alt="Keplerians Horror Games" class="object-contain group-hover:scale-105 transition-all duration-300 rounded-lg w-20 h-20" draggable="false" />
-                    <span class="text-sm font-medium text-[hsl(var(--foreground))] group-hover:text-[hsl(var(--primary))] transition-colors">Keplerians Horror Games</span>
-                  </div>
-                  <div class="inline-flex items-center space-x-4 px-4 py-0 rounded-xl hover:bg-[hsl(var(--card))]/40 transition-all duration-300 cursor-pointer group flex-none">
-                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/10/Userbox_creeper.svg/960px-Userbox_creeper.svg.png?_=20210122104938" alt="Minecraft" class="object-contain group-hover:scale-105 transition-all duration-300 rounded-lg w-16 h-16" draggable="false" />
-                    <span class="text-sm font-medium text-[hsl(var(--foreground))] group-hover:text-[hsl(var(--primary))] transition-colors">Minecraft</span>
-                  </div>
-                  <div class="inline-flex items-center space-x-4 px-4 py-0 rounded-xl hover:bg-[hsl(var(--card))]/40 transition-all duration-300 cursor-pointer group flex-none">
-                    <img src="https://1000logos.net/wp-content/uploads/2021/03/PUBG-logo.png" alt="PUBG Corp." class="object-contain group-hover:scale-105 transition-all duration-300 rounded-lg w-10 h-10" draggable="false" />
-                    <span class="text-sm font-medium text-[hsl(var(--foreground))] group-hover:text-[hsl(var(--primary))] transition-colors">PUBG Corp.</span>
-                  </div>
+
+
+
+          <div
+            class="relative overflow-hidden h-28 max-w-5xl mx-auto"
+          >
+
+
+            <div
+              class="absolute left-0 top-0 bottom-0 w-24 bg-gradient-to-r from-[hsl(var(--background))] via-[hsl(var(--background))]/70 to-transparent z-10 pointer-events-none"
+            ></div>
+
+
+            <div
+              class="absolute right-0 top-0 bottom-0 w-24 bg-gradient-to-l from-[hsl(var(--background))] via-[hsl(var(--background))]/70 to-transparent z-10 pointer-events-none"
+            ></div>
+
+
+
+            <div
+              class="flex items-center h-full"
+            >
+
+
+              <div
+                class="flex animate-slide space-x-12 whitespace-nowrap"
+              >
+
+
+                <!-- DISCORD ADMINS -->
+
+                <div
+                  class="inline-flex items-center space-x-4 px-4 py-0 rounded-xl hover:bg-[hsl(var(--card))]/40 transition-all duration-300 cursor-pointer group flex-none"
+                >
+
+                  <img
+                    src="https://cdn-icons-png.flaticon.com/512/5968/5968756.png"
+                    alt="Discord Admins"
+                    class="object-contain group-hover:scale-105 transition-all duration-300 rounded-lg w-24 h-24"
+                    draggable="false"
+                  />
+
+                  <span
+                    class="text-sm font-medium text-[hsl(var(--foreground))] group-hover:text-[hsl(var(--primary))] transition-colors"
+                  >
+                    Discord Admins
+                  </span>
+
                 </div>
+
+
+
+                <!-- MARVEL -->
+
+                <div
+                  class="inline-flex items-center space-x-4 px-4 py-0 rounded-xl hover:bg-[hsl(var(--card))]/40 transition-all duration-300 cursor-pointer group flex-none"
+                >
+
+                  <img
+                    src="https://upload.wikimedia.org/wikipedia/commons/4/4a/MarvelGamesLogo2024.jpg"
+                    alt="Marvel Games"
+                    class="object-contain group-hover:scale-105 transition-all duration-300 rounded-lg w-24 h-24"
+                    draggable="false"
+                  />
+
+                  <span
+                    class="text-sm font-medium text-[hsl(var(--foreground))] group-hover:text-[hsl(var(--primary))] transition-colors"
+                  >
+                    Marvel Games
+                  </span>
+
+                </div>
+
+
+
+                <!-- DISCORD -->
+
+                <div
+                  class="inline-flex items-center space-x-4 px-4 py-0 rounded-xl hover:bg-[hsl(var(--card))]/40 transition-all duration-300 cursor-pointer group flex-none"
+                >
+
+                  <img
+                    src="https://cdn-icons-png.flaticon.com/512/5968/5968756.png"
+                    alt="Discord"
+                    class="object-contain group-hover:scale-105 transition-all duration-300 rounded-lg w-10 h-10"
+                    draggable="false"
+                  />
+
+                  <span
+                    class="text-sm font-medium text-[hsl(var(--foreground))] group-hover:text-[hsl(var(--primary))] transition-colors"
+                  >
+                    Discord
+                  </span>
+
+                </div>
+
+
+
+                <!-- KEPLERIANS -->
+
+                <div
+                  class="inline-flex items-center space-x-4 px-4 py-0 rounded-xl hover:bg-[hsl(var(--card))]/40 transition-all duration-300 cursor-pointer group flex-none"
+                >
+
+                  <img
+                    src="https://media.discordapp.net/attachments/1203003708250656859/1521702497813794926/aKMe7JPAoq06Ao6cJcCMtQUj0vcPi6gSY5lnN2F4nz9-bBCCnVVvoXEskgvBJK8gGdE.png"
+                    alt="Keplerians Horror Games"
+                    class="object-contain group-hover:scale-105 transition-all duration-300 rounded-lg w-20 h-20"
+                    draggable="false"
+                  />
+
+                  <span
+                    class="text-sm font-medium text-[hsl(var(--foreground))] group-hover:text-[hsl(var(--primary))] transition-colors"
+                  >
+                    Keplerians Horror Games
+                  </span>
+
+                </div>
+
+
+
+                <!-- MINECRAFT -->
+
+                <div
+                  class="inline-flex items-center space-x-4 px-4 py-0 rounded-xl hover:bg-[hsl(var(--card))]/40 transition-all duration-300 cursor-pointer group flex-none"
+                >
+
+                  <img
+                    src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/10/Userbox_creeper.svg/960px-Userbox_creeper.svg.png"
+                    alt="Minecraft"
+                    class="object-contain group-hover:scale-105 transition-all duration-300 rounded-lg w-16 h-16"
+                    draggable="false"
+                  />
+
+                  <span
+                    class="text-sm font-medium text-[hsl(var(--foreground))] group-hover:text-[hsl(var(--primary))] transition-colors"
+                  >
+                    Minecraft
+                  </span>
+
+                </div>
+
+
+
+                <!-- PUBG -->
+
+                <div
+                  class="inline-flex items-center space-x-4 px-4 py-0 rounded-xl hover:bg-[hsl(var(--card))]/40 transition-all duration-300 cursor-pointer group flex-none"
+                >
+
+                  <img
+                    src="https://1000logos.net/wp-content/uploads/2021/03/PUBG-logo.png"
+                    alt="PUBG Corp."
+                    class="object-contain group-hover:scale-105 transition-all duration-300 rounded-lg w-10 h-10"
+                    draggable="false"
+                  />
+
+                  <span
+                    class="text-sm font-medium text-[hsl(var(--foreground))] group-hover:text-[hsl(var(--primary))] transition-colors"
+                  >
+                    PUBG Corp.
+                  </span>
+
+                </div>
+
+
+
+                <!-- REPETIÇÃO PARA ANIMAÇÃO CONTÍNUA -->
+
+                <div
+                  class="inline-flex items-center space-x-4 px-4 py-0 rounded-xl hover:bg-[hsl(var(--card))]/40 transition-all duration-300 cursor-pointer group flex-none"
+                >
+
+                  <img
+                    src="https://cdn-icons-png.flaticon.com/512/5968/5968756.png"
+                    alt="Discord Admins"
+                    class="object-contain group-hover:scale-105 transition-all duration-300 rounded-lg w-24 h-24"
+                    draggable="false"
+                  />
+
+                  <span
+                    class="text-sm font-medium text-[hsl(var(--foreground))] group-hover:text-[hsl(var(--primary))] transition-colors"
+                  >
+                    Discord Admins
+                  </span>
+
+                </div>
+
+
+
+                <div
+                  class="inline-flex items-center space-x-4 px-4 py-0 rounded-xl hover:bg-[hsl(var(--card))]/40 transition-all duration-300 cursor-pointer group flex-none"
+                >
+
+                  <img
+                    src="https://upload.wikimedia.org/wikipedia/commons/4/4a/MarvelGamesLogo2024.jpg"
+                    alt="Marvel Games"
+                    class="object-contain group-hover:scale-105 transition-all duration-300 rounded-lg w-24 h-24"
+                    draggable="false"
+                  />
+
+                  <span
+                    class="text-sm font-medium text-[hsl(var(--foreground))] group-hover:text-[hsl(var(--primary))] transition-colors"
+                  >
+                    Marvel Games
+                  </span>
+
+                </div>
+
+
+
+                <div
+                  class="inline-flex items-center space-x-4 px-4 py-0 rounded-xl hover:bg-[hsl(var(--card))]/40 transition-all duration-300 cursor-pointer group flex-none"
+                >
+
+                  <img
+                    src="https://cdn-icons-png.flaticon.com/512/5968/5968756.png"
+                    alt="Discord"
+                    class="object-contain group-hover:scale-105 transition-all duration-300 rounded-lg w-10 h-10"
+                    draggable="false"
+                  />
+
+                  <span
+                    class="text-sm font-medium text-[hsl(var(--foreground))] group-hover:text-[hsl(var(--primary))] transition-colors"
+                  >
+                    Discord
+                  </span>
+
+                </div>
+
+
+
+                <div
+                  class="inline-flex items-center space-x-4 px-4 py-0 rounded-xl hover:bg-[hsl(var(--card))]/40 transition-all duration-300 cursor-pointer group flex-none"
+                >
+
+                  <img
+                    src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/10/Userbox_creeper.svg/960px-Userbox_creeper.svg.png"
+                    alt="Minecraft"
+                    class="object-contain group-hover:scale-105 transition-all duration-300 rounded-lg w-16 h-16"
+                    draggable="false"
+                  />
+
+                  <span
+                    class="text-sm font-medium text-[hsl(var(--foreground))] group-hover:text-[hsl(var(--primary))] transition-colors"
+                  >
+                    Minecraft
+                  </span>
+
+                </div>
+
+
+
+                <div
+                  class="inline-flex items-center space-x-4 px-4 py-0 rounded-xl hover:bg-[hsl(var(--card))]/40 transition-all duration-300 cursor-pointer group flex-none"
+                >
+
+                  <img
+                    src="https://1000logos.net/wp-content/uploads/2021/03/PUBG-logo.png"
+                    alt="PUBG Corp."
+                    class="object-contain group-hover:scale-105 transition-all duration-300 rounded-lg w-10 h-10"
+                    draggable="false"
+                  />
+
+                  <span
+                    class="text-sm font-medium text-[hsl(var(--foreground))] group-hover:text-[hsl(var(--primary))] transition-colors"
+                  >
+                    PUBG Corp.
+                  </span>
+
+                </div>
+
+
               </div>
+
             </div>
+
           </div>
+
         </div>
+
+      </div>
+
+    </section>
+
+  </div>
+
+
+
+  <!-- ======================================================
+       MODAL ÁREA DO CLIENTE
+  ======================================================= -->
+
+  <div
+    class="client-overlay"
+    data-client-overlay
+    aria-hidden="true"
+  >
+
+    <div
+      class="client-login-shell"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="client-login-title"
+    >
+
+
+
+      <!-- FECHAR -->
+
+      <button
+        type="button"
+        class="client-close"
+        data-client-close
+        aria-label="Fechar"
+      >
+        ×
+      </button>
+
+
+
+      <!-- LADO ESQUERDO -->
+
+      <section
+        class="client-login-brand"
+      >
+
+
+        <div
+          class="client-brand-name"
+        >
+
+          <img
+            src="assets/copo.png"
+            alt="ShiroDev"
+          />
+
+          <span>
+
+            Shiro
+
+            <span
+              class="client-brand-accent"
+            >
+              Dev
+            </span>
+
+          </span>
+
+        </div>
+
+
+
+        <div
+          class="client-typewriter-wrap"
+        >
+
+          <p
+            class="client-typewriter"
+          >
+
+            <span
+              data-typewriter
+            ></span>
+
+            <span
+              class="client-caret"
+            >
+              |
+            </span>
+
+          </p>
+
+        </div>
+
       </section>
+
+
+
+      <!-- ======================================================
+           LOGIN
+      ======================================================= -->
+
+      <section
+        class="client-login-form-panel"
+      >
+
+
+        <form
+          class="client-login-form"
+          data-client-form
+          autocomplete="on"
+        >
+
+
+          <h2
+            id="client-login-title"
+          >
+            Bem vindo
+          </h2>
+
+
+
+          <!-- EMAIL -->
+
+          <label
+            class="client-field"
+          >
+
+
+            <span
+              class="client-field-label"
+            >
+
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="16"
+                height="16"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+              >
+
+                <rect
+                  width="20"
+                  height="16"
+                  x="2"
+                  y="4"
+                  rx="2"
+                ></rect>
+
+                <path
+                  d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"
+                ></path>
+
+              </svg>
+
+
+              Email
+
+            </span>
+
+
+            <input
+              type="email"
+              name="email"
+              placeholder="Informe seu email ..."
+              autocomplete="username"
+              required
+            />
+
+          </label>
+
+
+
+          <!-- SENHA -->
+
+          <label
+            class="client-field"
+          >
+
+
+            <span
+              class="client-field-label"
+            >
+
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="16"
+                height="16"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+              >
+
+                <rect
+                  width="18"
+                  height="11"
+                  x="3"
+                  y="11"
+                  rx="2"
+                ></rect>
+
+                <path
+                  d="M7 11V7a5 5 0 0 1 10 0v4"
+                ></path>
+
+              </svg>
+
+
+              Senha
+
+            </span>
+
+
+
+            <span
+              class="client-password-wrap"
+            >
+
+
+              <input
+                type="password"
+                name="password"
+                placeholder="Informe sua senha ..."
+                autocomplete="current-password"
+                required
+                data-password-input
+              />
+
+
+
+              <button
+                type="button"
+                class="client-password-toggle"
+                data-password-toggle
+                aria-label="Mostrar senha"
+              >
+
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="20"
+                  height="20"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                >
+
+                  <path
+                    d="M2.062 12.348a1 1 0 0 1 0-.696 10.75 10.75 0 0 1 19.876 0 1 1 0 0 1 0 .696 10.75 10.75 0 0 1-19.876 0"
+                  ></path>
+
+                  <circle
+                    cx="12"
+                    cy="12"
+                    r="3"
+                  ></circle>
+
+                </svg>
+
+              </button>
+
+            </span>
+
+          </label>
+
+
+
+          <!-- ESQUECEU -->
+
+          <button
+            type="button"
+            class="client-forgot"
+          >
+
+            Esqueceu sua senha?
+
+          </button>
+
+
+
+          <!-- ENTRAR -->
+
+          <button
+            type="submit"
+            class="client-submit"
+          >
+
+            entrar
+
+          </button>
+
+
+
+          <p
+            class="client-login-note"
+            data-login-note
+          ></p>
+
+
+        </form>
+
+      </section>
+
     </div>
-    <script src="script.js" defer="defer"></script>
-  </body>
+
+  </div>
+
+
+
+  <!-- SCRIPT ORIGINAL -->
+
+  <script
+    src="script.js"
+    defer
+  ></script>
+
+  <!-- SUPABASE -->
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+
+
+  <!-- ======================================================
+       SCRIPT ÁREA DO CLIENTE
+  ======================================================= -->
+
+  <script>
+
+    document.addEventListener(
+      "DOMContentLoaded",
+      () => {
+
+        const SUPABASE_URL =
+          "https://rvtsrnnuhkmqxutlbeyr.supabase.co";
+
+        const SUPABASE_KEY =
+          "sb_publishable_zDv6yIvfB-4HtNlqwSsXGw_CjAx9nOm";
+
+        const supabaseClient =
+          supabase.createClient(
+            SUPABASE_URL,
+            SUPABASE_KEY
+          );
+
+
+        const overlay =
+          document.querySelector(
+            "[data-client-overlay]"
+          );
+
+
+        const openButton =
+          document.querySelector(
+            "[data-client-open]"
+          );
+
+
+        const closeButton =
+          document.querySelector(
+            "[data-client-close]"
+          );
+
+
+        const password =
+          document.querySelector(
+            "[data-password-input]"
+          );
+
+
+        const passwordToggle =
+          document.querySelector(
+            "[data-password-toggle]"
+          );
+
+
+        const form =
+          document.querySelector(
+            "[data-client-form]"
+          );
+
+
+        const typewriter =
+          document.querySelector(
+            "[data-typewriter]"
+          );
+
+
+        const loginNote =
+          document.querySelector(
+            "[data-login-note]"
+          );
+
+
+
+        const texto =
+
+          "Vamos trabalhar juntos? Me mande um direct e tenha seu dashboard.";
+
+
+
+        let typingTimeout;
+
+
+
+        /* =============================================
+           EFEITO DIGITANDO
+        ============================================== */
+
+        function iniciarDigitacao() {
+
+
+          clearTimeout(
+            typingTimeout
+          );
+
+
+          typewriter.textContent =
+            "";
+
+
+          let letra = 0;
+
+
+
+          function digitar() {
+
+
+            typewriter.textContent =
+
+              texto.slice(
+                0,
+                letra
+              );
+
+
+            if (
+              letra <=
+              texto.length
+            ) {
+
+
+              letra++;
+
+
+              typingTimeout =
+                setTimeout(
+                  digitar,
+                  48
+                );
+
+            }
+
+          }
+
+
+          digitar();
+
+        }
+
+
+
+        /* =============================================
+           ABRIR
+        ============================================== */
+
+        function abrirAreaCliente() {
+
+
+          overlay.classList.add(
+            "is-open"
+          );
+
+
+          overlay.setAttribute(
+            "aria-hidden",
+            "false"
+          );
+
+
+          document.body.classList.add(
+            "client-modal-open"
+          );
+
+
+          iniciarDigitacao();
+
+
+
+          setTimeout(
+            () => {
+
+              const email =
+                overlay.querySelector(
+                  'input[type="email"]'
+                );
+
+
+              email?.focus();
+
+            },
+
+            300
+          );
+
+        }
+
+
+
+        /* =============================================
+           FECHAR
+        ============================================== */
+
+        function fecharAreaCliente() {
+
+
+          overlay.classList.remove(
+            "is-open"
+          );
+
+
+          overlay.setAttribute(
+            "aria-hidden",
+            "true"
+          );
+
+
+          document.body.classList.remove(
+            "client-modal-open"
+          );
+
+        }
+
+
+
+        openButton.addEventListener(
+          "click",
+          abrirAreaCliente
+        );
+
+
+
+        closeButton.addEventListener(
+          "click",
+          fecharAreaCliente
+        );
+
+
+
+        /* FECHAR CLICANDO FORA */
+
+        overlay.addEventListener(
+          "click",
+          event => {
+
+
+            if (
+              event.target ===
+              overlay
+            ) {
+
+              fecharAreaCliente();
+
+            }
+
+          }
+        );
+
+
+
+        /* FECHAR COM ESC */
+
+        document.addEventListener(
+          "keydown",
+          event => {
+
+
+            if (
+              event.key ===
+              "Escape"
+            ) {
+
+              fecharAreaCliente();
+
+            }
+
+          }
+        );
+
+
+
+        /* =============================================
+           MOSTRAR SENHA
+        ============================================== */
+
+        passwordToggle.addEventListener(
+          "click",
+          () => {
+
+
+            const escondida =
+
+              password.type ===
+              "password";
+
+
+            password.type =
+
+              escondida
+                ? "text"
+                : "password";
+
+
+            passwordToggle.setAttribute(
+
+              "aria-label",
+
+              escondida
+                ? "Ocultar senha"
+                : "Mostrar senha"
+
+            );
+
+          }
+        );
+
+
+
+        /* =============================================
+           LOGIN
+        ============================================== */
+
+        form.addEventListener(
+          "submit",
+          async event => {
+
+            event.preventDefault();
+
+            const emailInput =
+              form.querySelector(
+                'input[name="email"]'
+              );
+
+            const passwordInput =
+              form.querySelector(
+                'input[name="password"]'
+              );
+
+            const email =
+              emailInput.value.trim();
+
+            const password =
+              passwordInput.value;
+
+
+            loginNote.textContent =
+              "Entrando...";
+
+
+            const {
+              data,
+              error
+            } =
+              await supabaseClient.auth.signInWithPassword({
+                email,
+                password
+              });
+
+
+            if (error) {
+
+              console.error(
+                "Erro no login:",
+                error
+              );
+
+              loginNote.textContent =
+                "Email ou senha inválidos.";
+
+              return;
+            }
+
+
+            const user =
+              data.user;
+
+
+            /* VERIFICA SE É ADMIN */
+
+            const {
+              data: admin,
+              error: adminError
+            } =
+              await supabaseClient
+                .from("admins")
+                .select("user_id")
+                .eq(
+                  "user_id",
+                  user.id
+                )
+                .maybeSingle();
+
+
+            if (adminError) {
+
+              console.error(
+                "Erro ao verificar admin:",
+                adminError
+              );
+
+            }
+
+
+            loginNote.textContent =
+              "Login realizado com sucesso!";
+
+
+            if (admin) {
+
+              setTimeout(
+                () => {
+
+                  window.location.href =
+                    "admin.html";
+
+                },
+                700
+              );
+
+            } else {
+
+              setTimeout(
+                () => {
+
+                  window.location.href =
+                    "dashboard.html";
+
+                },
+                700
+              );
+
+            }
+
+          }
+        );
+
+
+
+      }
+    );
+
+  </script>
+
+
+</body>
 </html>

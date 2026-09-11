@@ -1,0 +1,4455 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Admin | ShiroDev</title>
+
+  <link
+    rel="icon"
+    href="assets/copo.png"
+    type="image/png"
+  >
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+  <style>
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      min-height: 100vh;
+
+      font-family:
+        Inter,
+        Arial,
+        sans-serif;
+
+      background:
+        radial-gradient(
+          circle at top,
+          rgba(88,101,242,0.12),
+          transparent 35%
+        ),
+        #080b14;
+
+      color: white;
+    }
+
+    .loading {
+      position: fixed;
+      inset: 0;
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      background: #080b14;
+
+      color: #9ca6bc;
+
+      z-index: 9999;
+    }
+
+    .app {
+      display: none;
+      min-height: 100vh;
+    }
+
+    .app.visible {
+      display: block;
+    }
+
+
+    /* =========================================================
+       LAYOUT ADMIN COM SIDEBAR
+    ========================================================= */
+
+    .admin-layout {
+      min-height: 100vh;
+
+      display: grid;
+      grid-template-columns: 250px 1fr;
+
+      background: #080b14;
+    }
+
+    .admin-sidebar {
+      min-height: 100vh;
+
+      position: sticky;
+      top: 0;
+
+      padding: 22px 16px;
+
+      display: flex;
+      flex-direction: column;
+
+      border-right: 1px solid rgba(255,255,255,0.07);
+
+      background: #0c1019;
+    }
+
+    .admin-logo {
+      padding: 4px 8px 26px;
+
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .admin-logo img {
+      width: 42px;
+      height: 42px;
+
+      object-fit: contain;
+    }
+
+    .admin-logo > div {
+      display: grid;
+    }
+
+    .admin-logo strong {
+      color: white;
+
+      font-size: 19px;
+    }
+
+    .admin-logo strong span {
+      color: #5865f2;
+    }
+
+    .admin-logo small {
+      margin-top: 2px;
+
+      color: #737e96;
+      font-size: 11px;
+
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .admin-menu {
+      display: grid;
+      gap: 6px;
+    }
+
+    .admin-menu-item {
+      width: 100%;
+
+      padding: 12px 13px;
+
+      display: flex;
+      align-items: center;
+      gap: 11px;
+
+      border: 0;
+      border-radius: 9px;
+
+      background: transparent;
+
+      color: #8f99ae;
+
+      font-size: 14px;
+
+      text-align: left;
+
+      cursor: pointer;
+
+      transition: 0.2s;
+    }
+
+    .admin-menu-item:hover {
+      background: rgba(255,255,255,0.04);
+      color: white;
+    }
+
+    .admin-menu-item.active {
+      background: rgba(88,101,242,0.14);
+      color: #c6cbff;
+    }
+
+    .admin-menu-item span {
+      width: 20px;
+
+      color: inherit;
+      text-align: center;
+    }
+
+    .admin-sidebar-bottom {
+      margin-top: auto;
+
+      padding-top: 20px;
+
+      border-top: 1px solid rgba(255,255,255,0.06);
+    }
+
+    .admin-sidebar-email {
+      margin-bottom: 10px;
+
+      overflow: hidden;
+
+      color: #7f899f;
+
+      font-size: 12px;
+
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .admin-sidebar-logout {
+      width: 100%;
+
+      padding: 10px 12px;
+
+      border: 1px solid rgba(255,255,255,0.07);
+      border-radius: 8px;
+
+      background: rgba(255,255,255,0.035);
+
+      color: #a7b0c3;
+
+      cursor: pointer;
+    }
+
+    .admin-sidebar-logout:hover {
+      background: rgba(239,68,68,0.08);
+      border-color: rgba(239,68,68,0.20);
+
+      color: #ff7676;
+    }
+
+    .admin-main {
+      min-width: 0;
+
+      padding: 38px 42px 60px;
+    }
+
+    .admin-section {
+      display: none;
+    }
+
+    .admin-section.active {
+      display: block;
+    }
+
+    .admin-page-header {
+      margin-bottom: 28px;
+    }
+
+    .admin-page-header h1 {
+      margin-bottom: 6px;
+
+      font-size: 30px;
+    }
+
+    .admin-page-header p {
+      color: #858fa5;
+    }
+
+    .admin-stats {
+      margin-bottom: 28px;
+
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 14px;
+    }
+
+    .admin-stat-card {
+      min-height: 110px;
+
+      padding: 19px;
+
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+
+      border: 1px solid rgba(255,255,255,0.07);
+      border-radius: 13px;
+
+      background: rgba(255,255,255,0.025);
+    }
+
+    .admin-stat-card span {
+      color: #848fa6;
+      font-size: 13px;
+    }
+
+    .admin-stat-card strong {
+      color: white;
+
+      font-size: 29px;
+    }
+
+    .admin-overview-box {
+      border: 1px solid rgba(255,255,255,0.07);
+      border-radius: 14px;
+
+      background: rgba(255,255,255,0.02);
+
+      overflow: hidden;
+    }
+
+    .admin-overview-header {
+      padding: 20px;
+
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+    }
+
+    .admin-overview-header h2 {
+      margin-bottom: 5px;
+
+      font-size: 17px;
+    }
+
+    .admin-overview-header p {
+      color: #7f899f;
+      font-size: 13px;
+    }
+
+    .admin-overview-list {
+      min-height: 120px;
+    }
+
+
+    /* =========================================================
+       COMPONENTES INTERNOS
+    ========================================================= */
+
+    .title {
+      margin-bottom: 8px;
+      font-size: 34px;
+    }
+
+    .subtitle {
+      margin-bottom: 30px;
+
+      color: #929cb3;
+    }
+
+    .table-box {
+      overflow-x: auto;
+
+      border:
+        1px solid rgba(255,255,255,0.08);
+
+      border-radius: 15px;
+
+      background:
+        rgba(255,255,255,0.025);
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    th,
+    td {
+      padding: 16px;
+
+      border-bottom:
+        1px solid rgba(255,255,255,0.06);
+
+      text-align: left;
+    }
+
+    th {
+      color: #8e98ae;
+
+      font-size: 12px;
+
+      text-transform: uppercase;
+      letter-spacing: 0.6px;
+    }
+
+    td {
+      color: #d7dbea;
+      font-size: 14px;
+    }
+
+    tr:last-child td {
+      border-bottom: 0;
+    }
+
+    .status {
+      padding: 6px 10px;
+
+      display: inline-block;
+
+      border-radius: 30px;
+
+      background:
+        rgba(255,193,7,0.12);
+
+      color: #f1c44f;
+
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .status-concluido {
+      background: rgba(34,197,94,0.12);
+      color: #4ade80;
+    }
+
+    .status-em_andamento,
+    .status-andamento {
+      background: rgba(88,101,242,0.14);
+      color: #8e96ff;
+    }
+
+    .details-button {
+      padding: 8px 12px;
+
+      border: 0;
+      border-radius: 8px;
+
+      background: #5865f2;
+
+      color: white;
+
+      font-weight: 700;
+
+      cursor: pointer;
+    }
+
+    .empty {
+      padding: 35px;
+
+      color: #818aa0;
+
+      text-align: center;
+    }
+
+
+    /* =========================================================
+       MODAIS
+    ========================================================= */
+
+    .pedido-modal {
+      position: fixed;
+      inset: 0;
+      z-index: 99999;
+
+      display: none;
+      align-items: center;
+      justify-content: center;
+
+      padding: 30px;
+
+      background: rgba(0,0,0,0.82);
+      backdrop-filter: blur(8px);
+    }
+
+    .pedido-modal.visible {
+      display: flex;
+    }
+
+    .pedido-modal-box {
+      width: min(850px, 95%);
+      max-height: 90vh;
+
+      overflow-y: auto;
+
+      border: 1px solid rgba(255,255,255,0.10);
+      border-radius: 16px;
+
+      background: #10141f;
+
+      scrollbar-width: thin;
+      scrollbar-color: rgba(88,101,242,0.55) transparent;
+    }
+
+    .pedido-modal-box::-webkit-scrollbar {
+      width: 7px;
+    }
+
+    .pedido-modal-box::-webkit-scrollbar-track {
+      background: transparent;
+    }
+
+    .pedido-modal-box::-webkit-scrollbar-thumb {
+      background: rgba(88,101,242,0.45);
+      border-radius: 20px;
+    }
+
+    .pedido-modal-box::-webkit-scrollbar-thumb:hover {
+      background: rgba(88,101,242,0.75);
+    }
+
+    .pedido-modal-header {
+      padding: 22px;
+
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+
+      border-bottom: 1px solid rgba(255,255,255,0.07);
+    }
+
+    .pedido-modal-header h2 {
+      margin-bottom: 5px;
+    }
+
+    .pedido-modal-header p {
+      color: #9099ad;
+      font-size: 14px;
+    }
+
+    .pedido-modal-close {
+      width: 38px;
+      height: 38px;
+
+      border: 0;
+      border-radius: 9px;
+
+      background: rgba(255,255,255,0.06);
+
+      color: white;
+      font-size: 21px;
+
+      cursor: pointer;
+    }
+
+    .pedido-modal-content {
+      padding: 22px;
+
+      display: grid;
+      gap: 22px;
+    }
+
+    .pedido-detail {
+      display: grid;
+      gap: 8px;
+    }
+
+    .pedido-detail > span {
+      color: #818ba0;
+
+      font-size: 12px;
+      font-weight: 700;
+
+      text-transform: uppercase;
+    }
+
+    .pedido-detail strong,
+    .pedido-detail p {
+      color: #d9deeb;
+
+      font-size: 14px;
+      line-height: 1.6;
+    }
+
+    .pedido-detail a {
+      color: #7d87ff;
+    }
+
+    .anexo-item {
+      margin-bottom: 8px;
+
+      padding: 10px 12px;
+
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+
+      border-radius: 9px;
+
+      background: rgba(255,255,255,0.045);
+    }
+
+    .anexo-item button {
+      padding: 7px 10px;
+
+      border: 0;
+      border-radius: 7px;
+
+      background: rgba(88,101,242,0.18);
+
+      color: white;
+
+      cursor: pointer;
+    }
+
+    .pedido-modal-footer {
+      padding: 18px 22px;
+
+      display: flex;
+      justify-content: flex-end;
+      gap: 10px;
+
+      border-top: 1px solid rgba(255,255,255,0.07);
+    }
+
+    .start-button {
+      padding: 11px 16px;
+
+      border: 0;
+      border-radius: 9px;
+
+      background: #5865f2;
+
+      color: white;
+
+      font-weight: 700;
+
+      cursor: pointer;
+    }
+
+    #entregaTitulo,
+    #entregaDescricao,
+    #entregaLink {
+      width: 100%;
+
+      padding: 12px 14px;
+
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 9px;
+
+      outline: none;
+
+      background: rgba(255,255,255,0.04);
+
+      color: white;
+
+      font-family: inherit;
+    }
+
+    #entregaDescricao {
+      resize: vertical;
+    }
+
+    #entregaArquivos {
+      color: #aab3c7;
+    }
+
+    .entrega-arquivo-item {
+      margin-top: 8px;
+
+      padding: 10px 12px;
+
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+
+      border-radius: 9px;
+
+      background: rgba(255,255,255,0.045);
+    }
+
+
+    /* =========================================================
+       BLOCO DE ENTREGA NO MODAL DE PEDIDO
+    ========================================================= */
+
+    .pedido-entrega-admin {
+      margin-top: 6px;
+    }
+
+    .pedido-entrega-divisor {
+      height: 1px;
+      margin: 25px 0;
+
+      background: rgba(255,255,255,0.08);
+    }
+
+    .pedido-entrega-titulo {
+      margin-bottom: 24px;
+
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+    }
+
+    .pedido-entrega-titulo > div > span {
+      display: block;
+      margin-bottom: 7px;
+
+      color: #7f899f;
+
+      font-size: 11px;
+      font-weight: 700;
+
+      letter-spacing: 0.5px;
+    }
+
+    .pedido-entrega-titulo h3 {
+      margin: 0;
+
+      color: #f1f3f8;
+      font-size: 18px;
+    }
+
+    #adminEntregaLink a {
+      color: #818bff;
+      text-decoration: none;
+    }
+
+    #adminEntregaLink a:hover {
+      text-decoration: underline;
+    }
+
+    .admin-entrega-anexo {
+      margin-top: 8px;
+
+      padding: 10px 12px;
+
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+
+      border-radius: 9px;
+
+      background: rgba(255,255,255,0.045);
+    }
+
+    .admin-entrega-anexo button {
+      padding: 7px 11px;
+
+      border: 1px solid rgba(88,101,242,0.25);
+      border-radius: 7px;
+
+      background: rgba(88,101,242,0.15);
+
+      color: #d7daff;
+
+      cursor: pointer;
+    }
+
+    .admin-entrega-anexo button:hover {
+      background: rgba(88,101,242,0.25);
+    }
+
+
+    /* =========================================================
+       CLIENTES
+    ========================================================= */
+
+    #adminClientesLista {
+      display: grid;
+      gap: 12px;
+
+      margin-top: 24px;
+    }
+
+    .admin-cliente-card {
+      width: 100%;
+
+      padding: 18px 20px;
+
+      display: grid;
+
+      grid-template-columns:
+        minmax(220px, 1fr)
+        auto
+        30px;
+
+      align-items: center;
+      gap: 25px;
+
+      border: 1px solid rgba(255,255,255,0.07);
+      border-radius: 12px;
+
+      background: rgba(255,255,255,0.025);
+
+      color: white;
+
+      text-align: left;
+
+      cursor: pointer;
+
+      transition: 0.2s;
+    }
+
+    .admin-cliente-card:hover {
+      border-color: rgba(88,101,242,0.28);
+
+      background: rgba(88,101,242,0.06);
+
+      transform: translateY(-1px);
+    }
+
+    .admin-cliente-main {
+      display: flex;
+      align-items: center;
+      gap: 13px;
+    }
+
+    .admin-cliente-avatar {
+      width: 43px;
+      height: 43px;
+
+      flex-shrink: 0;
+
+      display: grid;
+      place-items: center;
+
+      border-radius: 50%;
+
+      background: rgba(88,101,242,0.14);
+
+      color: #9ba4ff;
+
+      font-size: 17px;
+      font-weight: 700;
+    }
+
+    .admin-cliente-main > div:last-child {
+      min-width: 0;
+
+      display: grid;
+      gap: 4px;
+    }
+
+    .admin-cliente-main strong {
+      overflow: hidden;
+
+      font-size: 14px;
+
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .admin-cliente-main span {
+      overflow: hidden;
+
+      color: #7f899f;
+
+      font-size: 12px;
+
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .admin-cliente-stats {
+      display: flex;
+      align-items: center;
+      gap: 30px;
+    }
+
+    .admin-cliente-stats > div {
+      min-width: 72px;
+
+      display: grid;
+      gap: 3px;
+
+      text-align: center;
+    }
+
+    .admin-cliente-stats span {
+      color: #707a90;
+      font-size: 10px;
+
+      text-transform: uppercase;
+    }
+
+    .admin-cliente-stats strong {
+      font-size: 15px;
+    }
+
+    .admin-cliente-arrow {
+      color: #646f86;
+
+      font-size: 25px;
+
+      text-align: right;
+    }
+
+    .clientes-loading,
+    .clientes-empty {
+      padding: 28px;
+
+      border: 1px solid rgba(255,255,255,0.06);
+      border-radius: 12px;
+
+      color: #7f899f;
+
+      text-align: center;
+    }
+
+
+    /* =========================================================
+       PERFIL DO CLIENTE
+    ========================================================= */
+
+    .cliente-voltar {
+      margin-bottom: 24px;
+
+      padding: 9px 13px;
+
+      border: 1px solid rgba(255,255,255,0.07);
+      border-radius: 8px;
+
+      background: rgba(255,255,255,0.03);
+
+      color: #9aa4ba;
+
+      cursor: pointer;
+    }
+
+    .cliente-voltar:hover {
+      background: rgba(88,101,242,0.08);
+      border-color: rgba(88,101,242,0.20);
+
+      color: white;
+    }
+
+    .cliente-perfil-header {
+      margin-bottom: 24px;
+
+      padding: 20px;
+
+      border: 1px solid rgba(255,255,255,0.07);
+      border-radius: 14px;
+
+      background: rgba(255,255,255,0.025);
+    }
+
+    .cliente-perfil-identidade {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+    }
+
+    .cliente-perfil-avatar {
+      width: 52px;
+      height: 52px;
+
+      display: grid;
+      place-items: center;
+
+      border-radius: 50%;
+
+      background: rgba(88,101,242,0.16);
+
+      color: #a8afff;
+
+      font-size: 20px;
+      font-weight: 700;
+    }
+
+    .cliente-perfil-identidade h2 {
+      margin: 0 0 4px;
+
+      font-size: 21px;
+    }
+
+    .cliente-perfil-identidade p {
+      margin: 0;
+
+      color: #7f899f;
+
+      font-size: 13px;
+    }
+
+    .cliente-perfil-stats {
+      margin-bottom: 25px;
+
+      display: grid;
+
+      grid-template-columns:
+        repeat(4, minmax(0, 1fr));
+
+      gap: 14px;
+    }
+
+    .cliente-historico {
+      border: 1px solid rgba(255,255,255,0.07);
+      border-radius: 14px;
+
+      overflow: hidden;
+
+      background: rgba(255,255,255,0.02);
+    }
+
+    .cliente-historico-header {
+      padding: 19px;
+
+      border-bottom:
+        1px solid rgba(255,255,255,0.06);
+    }
+
+    .cliente-historico-header h3 {
+      margin: 0 0 5px;
+
+      font-size: 16px;
+    }
+
+    .cliente-historico-header p {
+      margin: 0;
+
+      color: #7f899f;
+
+      font-size: 12px;
+    }
+
+    .cliente-historico-item {
+      padding: 15px 18px;
+
+      display: grid;
+
+      grid-template-columns:
+        minmax(200px, 1fr)
+        150px
+        140px
+        auto;
+
+      align-items: center;
+      gap: 15px;
+
+      border-bottom:
+        1px solid rgba(255,255,255,0.05);
+    }
+
+    .cliente-historico-item:last-child {
+      border-bottom: 0;
+    }
+
+    .cliente-historico-info {
+      min-width: 0;
+
+      display: grid;
+      gap: 4px;
+    }
+
+    .cliente-historico-info strong {
+      overflow: hidden;
+
+      font-size: 13px;
+
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .cliente-historico-info span {
+      color: #747e94;
+
+      font-size: 11px;
+    }
+
+    .cliente-historico-projeto {
+      color: #9da6b8;
+
+      font-size: 12px;
+    }
+
+    .cliente-historico-acao {
+      padding: 7px 10px;
+
+      border: 1px solid rgba(88,101,242,0.20);
+      border-radius: 7px;
+
+      background: rgba(88,101,242,0.10);
+
+      color: #c5caff;
+
+      cursor: pointer;
+    }
+
+    .cliente-historico-acao:hover {
+      background: rgba(88,101,242,0.18);
+    }
+
+
+    /* =========================================================
+       TOASTS
+    ========================================================= */
+
+    .toast-container {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      z-index: 999999;
+
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .toast {
+      min-width: 280px;
+      max-width: 380px;
+
+      padding: 14px 16px;
+
+      display: flex;
+      align-items: center;
+      gap: 10px;
+
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 10px;
+
+      background: #151a26;
+
+      color: white;
+
+      box-shadow: 0 12px 35px rgba(0,0,0,0.35);
+
+      animation: toastEntrada 0.25s ease;
+    }
+
+    .toast.success {
+      border-color: rgba(34,197,94,0.35);
+    }
+
+    .toast.error {
+      border-color: rgba(239,68,68,0.35);
+    }
+
+    .toast.warning {
+      border-color: rgba(234,179,8,0.35);
+    }
+
+    .toast-icon {
+      font-size: 17px;
+    }
+
+    .toast-text {
+      flex: 1;
+
+      font-size: 13px;
+      line-height: 1.4;
+    }
+
+    @keyframes toastEntrada {
+      from {
+        opacity: 0;
+        transform: translateX(20px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateX(0);
+      }
+    }
+
+
+    /* =========================================================
+       RESPONSIVO
+    ========================================================= */
+
+    @media (max-width: 900px) {
+
+      .admin-layout {
+        grid-template-columns: 1fr;
+      }
+
+      .admin-sidebar {
+        min-height: auto;
+
+        position: relative;
+      }
+
+      .admin-stats {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .admin-main {
+        padding: 25px 18px 40px;
+      }
+
+      .admin-cliente-card {
+        grid-template-columns: 1fr;
+      }
+
+      .admin-cliente-stats {
+        justify-content: space-between;
+      }
+
+      .admin-cliente-arrow {
+        display: none;
+      }
+
+      .cliente-perfil-stats {
+        grid-template-columns:
+          repeat(2, 1fr);
+      }
+
+      .cliente-historico-item {
+        grid-template-columns: 1fr;
+      }
+
+    }
+
+  </style>
+</head>
+
+<body>
+
+  <div id="toastContainer" class="toast-container"></div>
+
+  <div
+    class="loading"
+    id="loading"
+  >
+    Verificando acesso administrativo...
+  </div>
+
+
+  <div
+    class="app"
+    id="app"
+  >
+
+    <div class="admin-layout">
+
+      <aside class="admin-sidebar">
+
+        <div class="admin-logo">
+          <img
+            src="assets/copo.png"
+            alt="ShiroDev"
+          >
+
+          <div>
+            <strong>
+              Shiro<span>Dev</span>
+            </strong>
+
+            <small>
+              Admin
+            </small>
+          </div>
+        </div>
+
+
+        <nav class="admin-menu">
+
+          <button
+            class="admin-menu-item active"
+            data-admin-section="visao-geral"
+          >
+            <span>▣</span>
+            Visão geral
+          </button>
+
+
+          <button
+            class="admin-menu-item"
+            data-admin-section="pendencias"
+          >
+            <span>○</span>
+            Pendências
+          </button>
+
+
+          <button
+            class="admin-menu-item"
+            data-admin-section="andamento"
+          >
+            <span>◷</span>
+            Em andamento
+          </button>
+
+
+          <button
+            class="admin-menu-item"
+            data-admin-section="concluidos"
+          >
+            <span>✓</span>
+            Concluídos
+          </button>
+
+
+          <button
+            class="admin-menu-item"
+            data-admin-section="clientes"
+          >
+            <span>▤</span>
+            Clientes
+          </button>
+
+        </nav>
+
+
+        <div class="admin-sidebar-bottom">
+
+          <div
+            class="admin-sidebar-email"
+            id="adminEmail"
+          ></div>
+
+          <button
+            type="button"
+            class="admin-sidebar-logout"
+            id="logoutButton"
+          >
+            Sair
+          </button>
+
+        </div>
+
+      </aside>
+
+
+      <main class="admin-main">
+
+        <!-- VISÃO GERAL -->
+        <section
+          class="admin-section active"
+          id="admin-section-visao-geral"
+        >
+
+          <div class="admin-page-header">
+
+            <div>
+              <h1>Visão geral</h1>
+              <p>
+                Acompanhe seus pedidos e clientes.
+              </p>
+            </div>
+
+          </div>
+
+
+          <div class="admin-stats">
+
+            <div class="admin-stat-card">
+
+              <span>
+                Pendentes
+              </span>
+
+              <strong
+                id="adminTotalPendentes"
+              >
+                0
+              </strong>
+
+            </div>
+
+
+            <div class="admin-stat-card">
+
+              <span>
+                Em andamento
+              </span>
+
+              <strong
+                id="adminTotalAndamento"
+              >
+                0
+              </strong>
+
+            </div>
+
+
+            <div class="admin-stat-card">
+
+              <span>
+                Concluídos
+              </span>
+
+              <strong
+                id="adminTotalConcluidos"
+              >
+                0
+              </strong>
+
+            </div>
+
+
+            <div class="admin-stat-card">
+
+              <span>
+                Clientes
+              </span>
+
+              <strong
+                id="adminTotalClientes"
+              >
+                0
+              </strong>
+
+            </div>
+
+          </div>
+
+
+          <div class="admin-overview-box">
+
+            <div class="admin-overview-header">
+
+              <div>
+                <h2>
+                  Últimos pedidos
+                </h2>
+
+                <p>
+                  Pedidos mais recentes recebidos.
+                </p>
+              </div>
+
+            </div>
+
+
+            <div
+              id="adminUltimosPedidos"
+              class="admin-overview-list"
+            ></div>
+
+          </div>
+
+        </section>
+
+
+        <!-- PENDÊNCIAS -->
+        <section
+          class="admin-section"
+          id="admin-section-pendencias"
+        >
+
+          <h1 class="title">
+            Pendências
+          </h1>
+
+          <p class="subtitle">
+            Pedidos enviados pelos clientes aguardando atendimento.
+          </p>
+
+          <div class="table-box">
+
+            <table>
+
+              <thead>
+
+                <tr>
+
+                  <th>
+                    Cliente
+                  </th>
+
+                  <th>
+                    Pedido
+                  </th>
+
+                  <th>
+                    Projeto
+                  </th>
+
+                  <th>
+                    Data
+                  </th>
+
+                  <th>
+                    Status
+                  </th>
+
+                  <th>
+                    Ação
+                  </th>
+
+                </tr>
+
+              </thead>
+
+              <tbody
+                id="pedidosBody"
+              ></tbody>
+
+            </table>
+
+
+            <div
+              class="empty"
+              id="empty"
+              style="display:none;"
+            >
+              Nenhuma pendência no momento.
+            </div>
+
+          </div>
+
+        </section>
+
+
+        <!-- EM ANDAMENTO -->
+        <section
+          class="admin-section"
+          id="admin-section-andamento"
+        >
+
+          <h1 class="title">
+            Em andamento
+          </h1>
+
+          <p class="subtitle">
+            Pedidos que você já começou a atender.
+          </p>
+
+          <div class="table-box">
+
+            <table>
+
+              <thead>
+                <tr>
+                  <th>Cliente</th>
+                  <th>Pedido</th>
+                  <th>Projeto</th>
+                  <th>Data</th>
+                  <th>Status</th>
+                  <th>Ação</th>
+                </tr>
+              </thead>
+
+              <tbody id="andamentoBody"></tbody>
+
+            </table>
+
+            <div
+              class="empty"
+              id="andamentoEmpty"
+              style="display:none;"
+            >
+              Nenhum pedido em andamento.
+            </div>
+
+          </div>
+
+        </section>
+
+
+        <!-- CONCLUÍDOS -->
+        <section
+          class="admin-section"
+          id="admin-section-concluidos"
+        >
+
+          <h1 class="title">
+            Concluídos
+          </h1>
+
+          <p class="subtitle">
+            Pedidos que já foram finalizados e entregues.
+          </p>
+
+          <div class="table-box">
+
+            <table>
+
+              <thead>
+                <tr>
+                  <th>Cliente</th>
+                  <th>Pedido</th>
+                  <th>Projeto</th>
+                  <th>Concluído em</th>
+                  <th>Status</th>
+                  <th>Ação</th>
+                </tr>
+              </thead>
+
+              <tbody id="concluidosBody"></tbody>
+
+            </table>
+
+            <div
+              class="empty"
+              id="concluidosEmpty"
+              style="display:none;"
+            >
+              Nenhum pedido concluído.
+            </div>
+
+          </div>
+
+        </section>
+
+
+        <!-- CLIENTES -->
+        <section
+          class="admin-section"
+          id="admin-section-clientes"
+        >
+
+          <h1 class="title">
+            Clientes
+          </h1>
+
+          <p class="subtitle">
+            Clientes cadastrados no sistema.
+          </p>
+
+
+          <div
+            id="adminClientesLista"
+          ></div>
+
+
+          <!-- =====================================================
+               PERFIL DO CLIENTE
+          ====================================================== -->
+
+          <div
+            id="adminClientePerfil"
+            style="display:none;"
+          >
+
+            <button
+              type="button"
+              id="voltarClientes"
+              class="cliente-voltar"
+            >
+              ← Voltar para clientes
+            </button>
+
+
+            <div class="cliente-perfil-header">
+
+              <div class="cliente-perfil-identidade">
+
+                <div
+                  class="cliente-perfil-avatar"
+                  id="clientePerfilAvatar"
+                >
+                  C
+                </div>
+
+                <div>
+                  <h2 id="clientePerfilNome">
+                    Cliente
+                  </h2>
+
+                  <p id="clientePerfilProjeto">
+                    Projeto
+                  </p>
+                </div>
+
+              </div>
+
+            </div>
+
+
+            <div class="cliente-perfil-stats">
+
+              <div class="admin-stat-card">
+
+                <span>
+                  Pedidos totais
+                </span>
+
+                <strong
+                  id="clientePerfilTotalPedidos"
+                >
+                  0
+                </strong>
+
+              </div>
+
+
+              <div class="admin-stat-card">
+
+                <span>
+                  Pendentes
+                </span>
+
+                <strong
+                  id="clientePerfilPendentes"
+                >
+                  0
+                </strong>
+
+              </div>
+
+
+              <div class="admin-stat-card">
+
+                <span>
+                  Em andamento
+                </span>
+
+                <strong
+                  id="clientePerfilAndamento"
+                >
+                  0
+                </strong>
+
+              </div>
+
+
+              <div class="admin-stat-card">
+
+                <span>
+                  Concluídos
+                </span>
+
+                <strong
+                  id="clientePerfilConcluidos"
+                >
+                  0
+                </strong>
+
+              </div>
+
+            </div>
+
+
+            <div class="cliente-historico">
+
+              <div class="cliente-historico-header">
+
+                <div>
+                  <h3>
+                    Histórico de pedidos
+                  </h3>
+
+                  <p>
+                    Todos os pedidos enviados por este cliente.
+                  </p>
+                </div>
+
+              </div>
+
+
+              <div
+                id="clienteHistoricoLista"
+              ></div>
+
+            </div>
+
+          </div>
+
+        </section>
+
+      </main>
+
+    </div>
+
+  </div>
+
+
+  <!-- =========================================================
+       MODAL PEDIDO DETALHADO
+  ========================================================= -->
+
+  <div
+    class="pedido-modal"
+    id="pedidoModal"
+  >
+
+    <div class="pedido-modal-box">
+
+      <div class="pedido-modal-header">
+
+        <div>
+
+          <h2 id="modalTitulo">
+            Pedido
+          </h2>
+
+          <p id="modalCliente"></p>
+
+        </div>
+
+        <button
+          type="button"
+          class="pedido-modal-close"
+          id="pedidoModalClose"
+        >
+          ×
+        </button>
+
+      </div>
+
+      <div class="pedido-modal-content">
+
+        <div class="pedido-detail">
+
+          <span>
+            Projeto
+          </span>
+
+          <strong id="modalProjeto"></strong>
+
+        </div>
+
+        <div class="pedido-detail">
+
+          <span>
+            Enviado em
+          </span>
+
+          <strong id="modalData"></strong>
+
+        </div>
+
+        <div class="pedido-detail">
+
+          <span>
+            Descrição
+          </span>
+
+          <p id="modalDescricao"></p>
+
+        </div>
+
+        <div class="pedido-detail">
+
+          <span>
+            Link
+          </span>
+
+          <div id="modalLink"></div>
+
+        </div>
+
+        <div class="pedido-detail">
+
+          <span>
+            Anexos
+          </span>
+
+          <div id="modalAnexos"></div>
+
+        </div>
+
+        <div class="pedido-detail">
+
+          <span>
+            Status
+          </span>
+
+          <strong id="modalStatus"></strong>
+
+        </div>
+
+
+        <div
+          class="pedido-entrega-admin"
+          id="pedidoEntregaAdmin"
+          style="display:none;"
+        >
+
+          <div class="pedido-entrega-divisor"></div>
+
+          <div class="pedido-entrega-titulo">
+            <div>
+              <span>ENTREGA REALIZADA</span>
+              <h3 id="adminEntregaTitulo"></h3>
+            </div>
+
+            <span
+              class="status status-concluido"
+            >
+              Entregue
+            </span>
+          </div>
+
+
+          <div class="pedido-detail">
+            <span>DESCRIÇÃO DA ENTREGA</span>
+            <p id="adminEntregaDescricao"></p>
+          </div>
+
+
+          <div class="pedido-detail">
+            <span>LINK DA ENTREGA</span>
+            <div id="adminEntregaLink"></div>
+          </div>
+
+
+          <div class="pedido-detail">
+            <span>ANEXOS DA ENTREGA</span>
+            <div id="adminEntregaAnexos"></div>
+          </div>
+
+
+          <div class="pedido-detail">
+            <span>ENTREGUE EM</span>
+            <p id="adminEntregaData"></p>
+          </div>
+
+        </div>
+
+      </div>
+
+      <div class="pedido-modal-footer">
+
+        <button
+          type="button"
+          class="start-button"
+          id="iniciarAtendimentoButton"
+        >
+          Iniciar atendimento
+        </button>
+
+        <button
+          type="button"
+          class="start-button"
+          id="concluirPedidoButton"
+          style="display:none;"
+        >
+          Concluir e enviar entrega
+        </button>
+
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <!-- =========================================================
+       MODAL ENTREGA
+  ========================================================= -->
+
+  <div class="pedido-modal" id="entregaModal">
+    <div class="pedido-modal-box">
+
+      <div class="pedido-modal-header">
+        <div>
+          <h2>Enviar entrega</h2>
+          <p id="entregaPedidoNome"></p>
+        </div>
+
+        <button
+          type="button"
+          class="pedido-modal-close"
+          id="entregaModalClose"
+        >
+          ×
+        </button>
+      </div>
+
+      <div class="pedido-modal-content">
+
+        <div class="pedido-detail">
+          <span>Título da entrega</span>
+
+          <input
+            type="text"
+            id="entregaTitulo"
+            placeholder="Ex: Sistema de XP concluído"
+          >
+        </div>
+
+        <div class="pedido-detail">
+          <span>Descrição</span>
+
+          <textarea
+            id="entregaDescricao"
+            rows="6"
+            placeholder="Explique o que foi feito..."
+          ></textarea>
+        </div>
+
+        <div class="pedido-detail">
+          <span>Link</span>
+
+          <input
+            type="url"
+            id="entregaLink"
+            placeholder="https://..."
+          >
+        </div>
+
+        <div class="pedido-detail">
+          <span>Anexos</span>
+
+          <input
+            type="file"
+            id="entregaArquivos"
+            multiple
+            accept="image/png,image/jpeg,image/webp,image/gif,video/mp4,video/webm,video/quicktime"
+          >
+
+          <div id="entregaArquivosLista"></div>
+        </div>
+
+      </div>
+
+      <div class="pedido-modal-footer">
+
+        <button
+          type="button"
+          class="start-button"
+          id="enviarEntregaButton"
+        >
+          Enviar entrega
+        </button>
+
+      </div>
+
+    </div>
+  </div>
+
+
+  <script>
+
+    const SUPABASE_URL =
+      "https://rvtsrnnuhkmqxutlbeyr.supabase.co";
+
+    const SUPABASE_KEY =
+      "sb_publishable_zDv6yIvfB-4HtNlqwSsXGw_CjAx9nOm";
+
+
+    const supabaseClient =
+      supabase.createClient(
+        SUPABASE_URL,
+        SUPABASE_KEY
+      );
+
+
+    const loading =
+      document.getElementById(
+        "loading"
+      );
+
+    const app =
+      document.getElementById(
+        "app"
+      );
+
+    const adminEmail =
+      document.getElementById(
+        "adminEmail"
+      );
+
+    const pedidosBody =
+      document.getElementById(
+        "pedidosBody"
+      );
+
+    const empty =
+      document.getElementById(
+        "empty"
+      );
+
+
+    let pedidoAtual = null;
+
+    let arquivosEntregaSelecionados = [];
+
+    let realtimeAdminPedidos = null;
+
+
+    async function verificarAdmin() {
+
+      const {
+        data,
+        error
+      } =
+        await supabaseClient
+          .auth
+          .getSession();
+
+
+      if (
+        error ||
+        !data.session
+      ) {
+
+        window.location.href =
+          "index.html";
+
+        return;
+
+      }
+
+
+      const user =
+        data.session.user;
+
+
+      const {
+        data: admin,
+        error: adminError
+      } =
+        await supabaseClient
+          .from("admins")
+          .select("user_id")
+          .eq(
+            "user_id",
+            user.id
+          )
+          .maybeSingle();
+
+
+      if (
+        adminError ||
+        !admin
+      ) {
+
+        mostrarToast(
+          "Você não tem permissão para acessar o painel administrativo.",
+          "error"
+        );
+
+        setTimeout(() => {
+          window.location.href =
+            "dashboard.html";
+        }, 1500);
+
+        return;
+
+      }
+
+
+      adminEmail.textContent =
+        user.email;
+
+
+      loading.style.display =
+        "none";
+
+
+      app.classList.add(
+        "visible"
+      );
+
+
+      await carregarPendencias();
+      await carregarEmAndamento();
+      await carregarConcluidos();
+      await carregarClientesAdmin();
+      await carregarVisaoGeral();
+
+      iniciarRealtimeAdmin();
+
+    }
+
+
+    /* =========================================================
+       TOASTS
+    ========================================================= */
+
+    function mostrarToast(
+      mensagem,
+      tipo = "success"
+    ) {
+
+      const container =
+        document.getElementById("toastContainer");
+
+      const toast =
+        document.createElement("div");
+
+      toast.className =
+        `toast ${tipo}`;
+
+
+      let icone = "✓";
+
+      if (tipo === "error")
+        icone = "✕";
+
+      if (tipo === "warning")
+        icone = "⚠";
+
+
+      toast.innerHTML = `
+        <span class="toast-icon">
+          ${icone}
+        </span>
+
+        <span class="toast-text">
+          ${escapeHtml(mensagem)}
+        </span>
+      `;
+
+
+      container.appendChild(toast);
+
+
+      setTimeout(() => {
+
+        toast.style.opacity = "0";
+
+        toast.style.transform =
+          "translateX(20px)";
+
+        toast.style.transition =
+          "0.2s";
+
+        setTimeout(() => {
+          toast.remove();
+        }, 200);
+
+      }, 3500);
+
+    }
+
+
+    /* =========================================================
+       NAVEGAÇÃO ENTRE SEÇÕES
+    ========================================================= */
+
+    document
+      .querySelectorAll(".admin-menu-item")
+      .forEach(button => {
+
+        button.addEventListener(
+          "click",
+          () => {
+
+            const section =
+              button.dataset.adminSection;
+
+
+            document
+              .querySelectorAll(".admin-menu-item")
+              .forEach(item => {
+                item.classList.remove("active");
+              });
+
+
+            document
+              .querySelectorAll(".admin-section")
+              .forEach(item => {
+                item.classList.remove("active");
+              });
+
+
+            button.classList.add("active");
+
+
+            document
+              .getElementById(
+                `admin-section-${section}`
+              )
+              .classList.add("active");
+
+          }
+        );
+
+      });
+
+
+    /* =========================================================
+       VISÃO GERAL
+    ========================================================= */
+
+    async function carregarVisaoGeral() {
+
+      const {
+        data: pedidos,
+        error
+      } = await supabaseClient
+        .from("pedidos")
+        .select("*")
+        .order("created_at", {
+          ascending: false
+        });
+
+
+      if (error) {
+
+        console.error(error);
+
+        return;
+      }
+
+
+      const lista =
+        pedidos || [];
+
+
+      document
+        .getElementById("adminTotalPendentes")
+        .textContent =
+          lista.filter(
+            p => p.status === "pendente"
+          ).length;
+
+
+      document
+        .getElementById("adminTotalAndamento")
+        .textContent =
+          lista.filter(
+            p => p.status === "em_andamento"
+          ).length;
+
+
+      document
+        .getElementById("adminTotalConcluidos")
+        .textContent =
+          lista.filter(
+            p => p.status === "concluido"
+          ).length;
+
+
+      const {
+        count: totalClientes
+      } = await supabaseClient
+        .from("clientes")
+        .select("*", {
+          count: "exact",
+          head: true
+        });
+
+
+      document
+        .getElementById("adminTotalClientes")
+        .textContent =
+          totalClientes || 0;
+
+
+      const ultimos =
+        lista.slice(0, 5);
+
+
+      const container =
+        document.getElementById("adminUltimosPedidos");
+
+
+      container.innerHTML = "";
+
+
+      if (ultimos.length === 0) {
+
+        container.innerHTML = `
+          <div class="empty">
+            Nenhum pedido recebido ainda.
+          </div>
+        `;
+
+        return;
+      }
+
+
+      for (const pedido of ultimos) {
+
+        const {
+          data: cliente
+        } = await supabaseClient
+          .from("clientes")
+          .select("nome")
+          .eq("user_id", pedido.user_id)
+          .single();
+
+
+        const item =
+          document.createElement("div");
+
+        item.className = "anexo-item";
+
+
+        item.innerHTML = `
+
+          <div>
+
+            <strong>
+              ${escapeHtml(pedido.titulo)}
+            </strong>
+
+            <div
+              style="
+                margin-top:4px;
+                color:#7f899f;
+                font-size:12px;
+              "
+            >
+              ${escapeHtml(cliente?.nome || "Cliente")}
+              ·
+              ${new Date(pedido.created_at).toLocaleString("pt-BR")}
+            </div>
+
+          </div>
+
+          <span
+            class="status status-${pedido.status}"
+          >
+            ${formatarStatus(pedido.status)}
+          </span>
+
+        `;
+
+
+        container.appendChild(item);
+
+      }
+
+    }
+
+
+    /* =========================================================
+       CLIENTES
+    ========================================================= */
+
+    async function carregarClientesAdmin() {
+
+      const container =
+        document.getElementById("adminClientesLista");
+
+      container.innerHTML = `
+        <div class="clientes-loading">
+          Carregando clientes...
+        </div>
+      `;
+
+
+      const {
+        data: clientes,
+        error
+      } = await supabaseClient
+        .from("clientes")
+        .select("*")
+        .order("created_at", {
+          ascending: false
+        });
+
+
+      if (error) {
+
+        console.error(
+          "Erro ao carregar clientes:",
+          error
+        );
+
+        container.innerHTML = `
+          <div class="clientes-empty">
+            Erro ao carregar clientes.
+          </div>
+        `;
+
+        return;
+      }
+
+
+      if (!clientes || clientes.length === 0) {
+
+        container.innerHTML = `
+          <div class="clientes-empty">
+            Nenhum cliente cadastrado.
+          </div>
+        `;
+
+        return;
+      }
+
+
+      container.innerHTML = "";
+
+
+      for (const cliente of clientes) {
+
+        const {
+          data: pedidos
+        } = await supabaseClient
+          .from("pedidos")
+          .select("id, status")
+          .eq("user_id", cliente.user_id);
+
+
+        const totalPedidos =
+          pedidos?.length || 0;
+
+
+        const emAndamento =
+          pedidos?.filter(
+            pedido =>
+              pedido.status === "em_andamento"
+          ).length || 0;
+
+
+        const concluidos =
+          pedidos?.filter(
+            pedido =>
+              pedido.status === "concluido"
+          ).length || 0;
+
+
+        const card =
+          document.createElement("button");
+
+        card.type = "button";
+
+        card.className =
+          "admin-cliente-card";
+
+        card.dataset.userId =
+          cliente.user_id;
+
+
+        card.innerHTML = `
+
+          <div class="admin-cliente-main">
+
+            <div class="admin-cliente-avatar">
+              ${escapeHtml(
+                (cliente.nome || "C")
+                  .charAt(0)
+                  .toUpperCase()
+              )}
+            </div>
+
+
+            <div>
+
+              <strong>
+                ${escapeHtml(
+                  cliente.nome || "Cliente"
+                )}
+              </strong>
+
+              <span>
+                ${escapeHtml(
+                  cliente.projeto ||
+                  "Sem projeto definido"
+                )}
+              </span>
+
+            </div>
+
+          </div>
+
+
+          <div class="admin-cliente-stats">
+
+            <div>
+              <span>Pedidos</span>
+              <strong>
+                ${totalPedidos}
+              </strong>
+            </div>
+
+            <div>
+              <span>Em andamento</span>
+              <strong>
+                ${emAndamento}
+              </strong>
+            </div>
+
+            <div>
+              <span>Concluídos</span>
+              <strong>
+                ${concluidos}
+              </strong>
+            </div>
+
+          </div>
+
+
+          <div class="admin-cliente-arrow">
+            ›
+          </div>
+
+        `;
+
+
+        container.appendChild(card);
+
+      }
+
+    }
+
+
+    /* =========================================================
+       PERFIL DO CLIENTE
+    ========================================================= */
+
+    async function abrirPerfilCliente(userId) {
+
+      const lista =
+        document.getElementById(
+          "adminClientesLista"
+        );
+
+      const perfil =
+        document.getElementById(
+          "adminClientePerfil"
+        );
+
+
+      const {
+        data: cliente,
+        error: erroCliente
+      } = await supabaseClient
+        .from("clientes")
+        .select("*")
+        .eq("user_id", userId)
+        .single();
+
+
+      if (erroCliente || !cliente) {
+
+        console.error(
+          "Erro ao carregar cliente:",
+          erroCliente
+        );
+
+        mostrarToast(
+          "Não foi possível carregar o cliente.",
+          "error"
+        );
+
+        return;
+      }
+
+
+      const {
+        data: pedidos,
+        error: erroPedidos
+      } = await supabaseClient
+        .from("pedidos")
+        .select("*")
+        .eq("user_id", userId)
+        .order("created_at", {
+          ascending: false
+        });
+
+
+      if (erroPedidos) {
+
+        console.error(
+          "Erro ao carregar pedidos:",
+          erroPedidos
+        );
+
+        return;
+      }
+
+
+      const listaPedidos =
+        pedidos || [];
+
+
+      const pendentes =
+        listaPedidos.filter(
+          pedido =>
+            pedido.status === "pendente"
+        ).length;
+
+
+      const andamento =
+        listaPedidos.filter(
+          pedido =>
+            pedido.status === "em_andamento"
+        ).length;
+
+
+      const concluidos =
+        listaPedidos.filter(
+          pedido =>
+            pedido.status === "concluido"
+        ).length;
+
+
+      document
+        .getElementById("clientePerfilNome")
+        .textContent =
+          cliente.nome || "Cliente";
+
+
+      document
+        .getElementById("clientePerfilProjeto")
+        .textContent =
+          cliente.projeto ||
+          "Sem projeto definido";
+
+
+      document
+        .getElementById("clientePerfilAvatar")
+        .textContent =
+          (cliente.nome || "C")
+            .charAt(0)
+            .toUpperCase();
+
+
+      document
+        .getElementById(
+          "clientePerfilTotalPedidos"
+        )
+        .textContent =
+          listaPedidos.length;
+
+
+      document
+        .getElementById(
+          "clientePerfilPendentes"
+        )
+        .textContent =
+          pendentes;
+
+
+      document
+        .getElementById(
+          "clientePerfilAndamento"
+        )
+        .textContent =
+          andamento;
+
+
+      document
+        .getElementById(
+          "clientePerfilConcluidos"
+        )
+        .textContent =
+          concluidos;
+
+
+      const historico =
+        document.getElementById(
+          "clienteHistoricoLista"
+        );
+
+
+      historico.innerHTML = "";
+
+
+      if (listaPedidos.length === 0) {
+
+        historico.innerHTML = `
+          <div
+            style="
+              padding:25px;
+              color:#7f899f;
+              text-align:center;
+            "
+          >
+            Este cliente ainda não possui pedidos.
+          </div>
+        `;
+
+      } else {
+
+        for (const pedido of listaPedidos) {
+
+          const item =
+            document.createElement("div");
+
+          item.className =
+            "cliente-historico-item";
+
+
+          let statusTexto =
+            "Pendente";
+
+          let statusClasse =
+            "status-pendente";
+
+
+          if (
+            pedido.status ===
+            "em_andamento"
+          ) {
+
+            statusTexto =
+              "Em andamento";
+
+            statusClasse =
+              "status-andamento";
+
+          }
+
+
+          if (
+            pedido.status ===
+            "concluido"
+          ) {
+
+            statusTexto =
+              "Concluído";
+
+            statusClasse =
+              "status-concluido";
+
+          }
+
+
+          const data =
+            new Date(
+              pedido.created_at
+            ).toLocaleString(
+              "pt-BR"
+            );
+
+
+          item.innerHTML = `
+
+            <div
+              class="cliente-historico-info"
+            >
+
+              <strong>
+                ${escapeHtml(
+                  pedido.titulo
+                )}
+              </strong>
+
+              <span>
+                ${data}
+              </span>
+
+            </div>
+
+
+            <div
+              class="cliente-historico-projeto"
+            >
+              ${escapeHtml(
+                pedido.projeto
+              )}
+            </div>
+
+
+            <div>
+              <span
+                class="status ${statusClasse}"
+              >
+                ${statusTexto}
+              </span>
+            </div>
+
+
+            <div>
+
+              <button
+                type="button"
+                class="cliente-historico-acao"
+                data-pedido-id="${pedido.id}"
+              >
+                Ver pedido
+              </button>
+
+            </div>
+
+          `;
+
+
+          historico.appendChild(item);
+
+        }
+
+      }
+
+
+      lista.style.display =
+        "none";
+
+      perfil.style.display =
+        "block";
+
+    }
+
+
+    document
+      .getElementById("adminClientesLista")
+      .addEventListener(
+        "click",
+        event => {
+
+          const card =
+            event.target.closest(
+              ".admin-cliente-card"
+            );
+
+          if (!card)
+            return;
+
+
+          abrirPerfilCliente(
+            card.dataset.userId
+          );
+
+        }
+      );
+
+
+    document
+      .getElementById("voltarClientes")
+      .addEventListener(
+        "click",
+        () => {
+
+          document
+            .getElementById(
+              "adminClientePerfil"
+            )
+            .style.display =
+              "none";
+
+
+          document
+            .getElementById(
+              "adminClientesLista"
+            )
+            .style.display =
+              "grid";
+
+        }
+      );
+
+
+    document
+      .getElementById("clienteHistoricoLista")
+      .addEventListener(
+        "click",
+        event => {
+
+          const botao =
+            event.target.closest(
+              ".cliente-historico-acao"
+            );
+
+          if (!botao)
+            return;
+
+
+          abrirPedidoDetalhado(
+            Number(
+              botao.dataset.pedidoId
+            )
+          );
+
+        }
+      );
+
+
+    /* =========================================================
+       REALTIME ADMIN
+    ========================================================= */
+
+    function iniciarRealtimeAdmin() {
+
+      if (realtimeAdminPedidos) {
+        supabaseClient.removeChannel(
+          realtimeAdminPedidos
+        );
+      }
+
+      realtimeAdminPedidos =
+        supabaseClient
+          .channel("admin-pedidos")
+          .on(
+            "postgres_changes",
+            {
+              event: "*",
+              schema: "public",
+              table: "pedidos"
+            },
+            async payload => {
+
+              console.log(
+                "Pedido atualizado no admin:",
+                payload
+              );
+
+              await carregarPendencias();
+              await carregarEmAndamento();
+              await carregarConcluidos();
+              await carregarVisaoGeral();
+
+            }
+          )
+          .subscribe();
+
+    }
+
+
+    /* =========================================================
+       PENDÊNCIAS
+    ========================================================= */
+
+    async function carregarPendencias() {
+
+      pedidosBody.innerHTML =
+        "";
+
+
+      const {
+        data: pedidos,
+        error
+      } =
+        await supabaseClient
+          .from("pedidos")
+          .select("*")
+          .eq(
+            "status",
+            "pendente"
+          )
+          .order(
+            "created_at",
+            {
+              ascending:
+                false
+            }
+          );
+
+
+      if (error) {
+
+        console.error(
+          error
+        );
+
+        mostrarToast(
+          "Erro ao carregar pedidos.",
+          "error"
+        );
+
+        return;
+
+      }
+
+
+      if (
+        !pedidos ||
+        pedidos.length === 0
+      ) {
+
+        empty.style.display =
+          "block";
+
+        return;
+
+      }
+
+
+      empty.style.display =
+        "none";
+
+
+      for (
+        const pedido
+        of pedidos
+      ) {
+
+        const {
+          data: cliente
+        } =
+          await supabaseClient
+            .from("clientes")
+            .select("nome")
+            .eq(
+              "user_id",
+              pedido.user_id
+            )
+            .single();
+
+
+        const tr =
+          document.createElement(
+            "tr"
+          );
+
+
+        const dataPedido =
+          new Date(
+            pedido.created_at
+          )
+          .toLocaleString(
+            "pt-BR"
+          );
+
+
+        tr.innerHTML =
+          `
+
+            <td>
+              ${escapeHtml(
+                cliente?.nome ||
+                "Cliente"
+              )}
+            </td>
+
+            <td>
+              ${escapeHtml(
+                pedido.titulo
+              )}
+            </td>
+
+            <td>
+              ${escapeHtml(
+                pedido.projeto
+              )}
+            </td>
+
+            <td>
+              ${dataPedido}
+            </td>
+
+            <td>
+              <span class="status">
+                Pendente
+              </span>
+            </td>
+
+            <td>
+              <button
+                class="details-button"
+                data-id="${pedido.id}"
+              >
+                Pedido detalhado
+              </button>
+            </td>
+
+          `;
+
+
+        pedidosBody.appendChild(
+          tr
+        );
+
+      }
+
+    }
+
+
+    /* =========================================================
+       EM ANDAMENTO
+    ========================================================= */
+
+    async function carregarEmAndamento() {
+
+      const andamentoBody =
+        document.getElementById("andamentoBody");
+
+      const andamentoEmpty =
+        document.getElementById("andamentoEmpty");
+
+      andamentoBody.innerHTML = "";
+
+
+      const {
+        data: pedidos,
+        error
+      } = await supabaseClient
+        .from("pedidos")
+        .select("*")
+        .eq("status", "em_andamento")
+        .order("created_at", {
+          ascending: false
+        });
+
+
+      if (error) {
+
+        console.error(error);
+
+        mostrarToast(
+          "Erro ao carregar pedidos em andamento.",
+          "error"
+        );
+
+        return;
+      }
+
+
+      if (!pedidos || pedidos.length === 0) {
+
+        andamentoEmpty.style.display =
+          "block";
+
+        return;
+      }
+
+
+      andamentoEmpty.style.display =
+        "none";
+
+
+      for (const pedido of pedidos) {
+
+        const {
+          data: cliente
+        } = await supabaseClient
+          .from("clientes")
+          .select("nome")
+          .eq("user_id", pedido.user_id)
+          .single();
+
+
+        const tr =
+          document.createElement("tr");
+
+
+        const dataPedido =
+          new Date(
+            pedido.created_at
+          ).toLocaleString("pt-BR");
+
+
+        tr.innerHTML = `
+
+          <td>
+            ${escapeHtml(
+              cliente?.nome || "Cliente"
+            )}
+          </td>
+
+          <td>
+            ${escapeHtml(
+              pedido.titulo
+            )}
+          </td>
+
+          <td>
+            ${escapeHtml(
+              pedido.projeto
+            )}
+          </td>
+
+          <td>
+            ${dataPedido}
+          </td>
+
+          <td>
+            <span class="status">
+              Em andamento
+            </span>
+          </td>
+
+          <td>
+            <button
+              class="details-button"
+              data-id="${pedido.id}"
+            >
+              Pedido detalhado
+            </button>
+          </td>
+
+        `;
+
+
+        andamentoBody.appendChild(tr);
+
+      }
+
+    }
+
+
+    /* =========================================================
+       CONCLUÍDOS
+    ========================================================= */
+
+    async function carregarConcluidos() {
+
+      const concluidosBody =
+        document.getElementById("concluidosBody");
+
+      const concluidosEmpty =
+        document.getElementById("concluidosEmpty");
+
+
+      concluidosBody.innerHTML = "";
+
+
+      const {
+        data: pedidos,
+        error
+      } = await supabaseClient
+        .from("pedidos")
+        .select("*")
+        .eq("status", "concluido")
+        .order("concluido_at", {
+          ascending: false
+        });
+
+
+      if (error) {
+
+        console.error(error);
+
+        mostrarToast(
+          "Erro ao carregar pedidos concluídos.",
+          "error"
+        );
+
+        return;
+      }
+
+
+      if (!pedidos || pedidos.length === 0) {
+
+        concluidosEmpty.style.display =
+          "block";
+
+        return;
+      }
+
+
+      concluidosEmpty.style.display =
+        "none";
+
+
+      for (const pedido of pedidos) {
+
+        const {
+          data: cliente
+        } = await supabaseClient
+          .from("clientes")
+          .select("nome")
+          .eq("user_id", pedido.user_id)
+          .single();
+
+
+        const tr =
+          document.createElement("tr");
+
+
+        const dataConclusao =
+          pedido.concluido_at
+            ? new Date(
+                pedido.concluido_at
+              ).toLocaleString("pt-BR")
+            : "-";
+
+
+        tr.innerHTML = `
+
+          <td>
+            ${escapeHtml(
+              cliente?.nome || "Cliente"
+            )}
+          </td>
+
+          <td>
+            ${escapeHtml(
+              pedido.titulo
+            )}
+          </td>
+
+          <td>
+            ${escapeHtml(
+              pedido.projeto
+            )}
+          </td>
+
+          <td>
+            ${dataConclusao}
+          </td>
+
+          <td>
+            <span class="status status-concluido">
+              Concluído
+            </span>
+          </td>
+
+          <td>
+            <button
+              class="details-button"
+              data-id="${pedido.id}"
+            >
+              Pedido detalhado
+            </button>
+          </td>
+
+        `;
+
+
+        concluidosBody.appendChild(tr);
+
+      }
+
+    }
+
+
+    function escapeHtml(
+      texto
+    ) {
+
+      const div =
+        document.createElement(
+          "div"
+        );
+
+      div.textContent =
+        texto ?? "";
+
+      return div.innerHTML;
+
+    }
+
+
+    /* =========================================================
+       MODAL PEDIDO DETALHADO
+    ========================================================= */
+
+    async function abrirPedidoDetalhado(id) {
+
+      const {
+        data: pedido,
+        error
+      } = await supabaseClient
+        .from("pedidos")
+        .select("*")
+        .eq("id", id)
+        .single();
+
+      if (error || !pedido) {
+        mostrarToast(
+          "Não foi possível carregar o pedido.",
+          "error"
+        );
+        return;
+      }
+
+      pedidoAtual = pedido;
+
+
+      const {
+        data: cliente
+      } = await supabaseClient
+        .from("clientes")
+        .select("nome")
+        .eq("user_id", pedido.user_id)
+        .single();
+
+
+      document.getElementById("modalTitulo").textContent =
+        pedido.titulo;
+
+      document.getElementById("modalCliente").textContent =
+        cliente?.nome || "Cliente";
+
+      document.getElementById("modalProjeto").textContent =
+        pedido.projeto;
+
+      document.getElementById("modalData").textContent =
+        new Date(pedido.created_at).toLocaleString("pt-BR");
+
+      document.getElementById("modalDescricao").textContent =
+        pedido.descricao;
+
+      document.getElementById("modalStatus").textContent =
+        formatarStatus(pedido.status);
+
+
+      if (pedido.status === "concluido") {
+
+        await carregarEntregaDoPedido(
+          pedido.id
+        );
+
+      } else {
+
+        document
+          .getElementById("pedidoEntregaAdmin")
+          .style.display =
+            "none";
+
+      }
+
+
+      const modalLink =
+        document.getElementById("modalLink");
+
+      if (pedido.link) {
+        modalLink.innerHTML = `
+          <a
+            href="${escapeHtml(pedido.link)}"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Abrir link enviado
+          </a>
+        `;
+      } else {
+        modalLink.textContent =
+          "Nenhum link enviado.";
+      }
+
+
+      await carregarAnexosDoPedido(pedido.id);
+
+
+      const iniciarButton =
+        document.getElementById("iniciarAtendimentoButton");
+
+      const concluirButton =
+        document.getElementById("concluirPedidoButton");
+
+
+      if (pedido.status === "pendente") {
+
+        iniciarButton.style.display =
+          "inline-block";
+
+        concluirButton.style.display =
+          "none";
+
+      }
+      else if (pedido.status === "em_andamento") {
+
+        iniciarButton.style.display =
+          "none";
+
+        concluirButton.style.display =
+          "inline-block";
+
+      }
+      else {
+
+        iniciarButton.style.display =
+          "none";
+
+        concluirButton.style.display =
+          "none";
+
+      }
+
+
+      document
+        .getElementById("pedidoModal")
+        .classList.add("visible");
+    }
+
+
+    async function carregarAnexosDoPedido(pedidoId) {
+
+      const container =
+        document.getElementById("modalAnexos");
+
+      container.innerHTML =
+        "Carregando anexos...";
+
+
+      const {
+        data: anexos,
+        error
+      } = await supabaseClient
+        .from("pedido_anexos")
+        .select("*")
+        .eq("pedido_id", pedidoId)
+        .order("created_at", {
+          ascending: true
+        });
+
+
+      if (error) {
+
+        container.textContent =
+          "Não foi possível carregar os anexos.";
+
+        return;
+      }
+
+
+      if (!anexos || anexos.length === 0) {
+
+        container.textContent =
+          "Nenhum anexo enviado.";
+
+        return;
+      }
+
+
+      container.innerHTML = "";
+
+
+      for (const anexo of anexos) {
+
+        const {
+          data: signedData,
+          error: signedError
+        } = await supabaseClient
+          .storage
+          .from("pedido-anexos")
+          .createSignedUrl(
+            anexo.arquivo_path,
+            3600
+          );
+
+
+        const item =
+          document.createElement("div");
+
+        item.className =
+          "anexo-item";
+
+
+        const nome =
+          document.createElement("span");
+
+        nome.textContent =
+          anexo.nome_arquivo;
+
+
+        const botao =
+          document.createElement("button");
+
+        botao.type =
+          "button";
+
+        botao.textContent =
+          "Visualizar";
+
+
+        if (
+          signedError ||
+          !signedData?.signedUrl
+        ) {
+
+          botao.disabled =
+            true;
+
+          botao.textContent =
+            "Indisponível";
+
+        } else {
+
+          botao.addEventListener(
+            "click",
+            () => {
+              window.open(
+                signedData.signedUrl,
+                "_blank",
+                "noopener,noreferrer"
+              );
+            }
+          );
+
+        }
+
+
+        item.appendChild(nome);
+        item.appendChild(botao);
+
+        container.appendChild(item);
+      }
+    }
+
+
+    async function carregarEntregaDoPedido(pedidoId) {
+
+      const areaEntrega =
+        document.getElementById("pedidoEntregaAdmin");
+
+      areaEntrega.style.display = "none";
+
+
+      const {
+        data: entrega,
+        error
+      } = await supabaseClient
+        .from("entregas")
+        .select("*")
+        .eq("pedido_id", pedidoId)
+        .maybeSingle();
+
+
+      if (error) {
+
+        console.error(
+          "Erro ao carregar entrega:",
+          error
+        );
+
+        return;
+      }
+
+
+      if (!entrega) {
+        return;
+      }
+
+
+      document
+        .getElementById("adminEntregaTitulo")
+        .textContent =
+          entrega.titulo;
+
+
+      document
+        .getElementById("adminEntregaDescricao")
+        .textContent =
+          entrega.descricao;
+
+
+      document
+        .getElementById("adminEntregaData")
+        .textContent =
+          new Date(
+            entrega.created_at
+          ).toLocaleString("pt-BR");
+
+
+      const linkContainer =
+        document.getElementById(
+          "adminEntregaLink"
+        );
+
+
+      if (entrega.link) {
+
+        linkContainer.innerHTML = "";
+
+        const link =
+          document.createElement("a");
+
+        link.href =
+          entrega.link;
+
+        link.target =
+          "_blank";
+
+        link.rel =
+          "noopener noreferrer";
+
+        link.textContent =
+          "Abrir link enviado";
+
+        linkContainer.appendChild(link);
+
+      } else {
+
+        linkContainer.textContent =
+          "Nenhum link enviado.";
+
+      }
+
+
+      await carregarAnexosEntregaAdmin(
+        entrega.id
+      );
+
+
+      areaEntrega.style.display =
+        "block";
+
+    }
+
+
+    async function carregarAnexosEntregaAdmin(entregaId) {
+
+      const container =
+        document.getElementById(
+          "adminEntregaAnexos"
+        );
+
+
+      container.textContent =
+        "Carregando anexos...";
+
+
+      const {
+        data: anexos,
+        error
+      } = await supabaseClient
+        .from("entrega_anexos")
+        .select("*")
+        .eq("entrega_id", entregaId)
+        .order("created_at", {
+          ascending: true
+        });
+
+
+      if (error) {
+
+        console.error(error);
+
+        container.textContent =
+          "Não foi possível carregar os anexos.";
+
+        return;
+      }
+
+
+      if (!anexos || anexos.length === 0) {
+
+        container.textContent =
+          "Nenhum anexo enviado.";
+
+        return;
+      }
+
+
+      container.innerHTML = "";
+
+
+      for (const anexo of anexos) {
+
+        const {
+          data: signedData,
+          error: signedError
+        } = await supabaseClient
+          .storage
+          .from("entrega-anexos")
+          .createSignedUrl(
+            anexo.arquivo_path,
+            3600
+          );
+
+
+        const item =
+          document.createElement("div");
+
+        item.className =
+          "admin-entrega-anexo";
+
+
+        const nome =
+          document.createElement("span");
+
+        nome.textContent =
+          anexo.nome_arquivo;
+
+
+        const botao =
+          document.createElement("button");
+
+        botao.type =
+          "button";
+
+
+        if (
+          signedError ||
+          !signedData?.signedUrl
+        ) {
+
+          botao.textContent =
+            "Indisponível";
+
+          botao.disabled =
+            true;
+
+        } else {
+
+          botao.textContent =
+            "Visualizar";
+
+          botao.addEventListener(
+            "click",
+            () => {
+
+              window.open(
+                signedData.signedUrl,
+                "_blank",
+                "noopener,noreferrer"
+              );
+
+            }
+          );
+
+        }
+
+
+        item.appendChild(nome);
+        item.appendChild(botao);
+
+        container.appendChild(item);
+
+      }
+
+    }
+
+
+    function formatarStatus(status) {
+
+      if (status === "pendente")
+        return "Pendente";
+
+      if (status === "em_andamento")
+        return "Em andamento";
+
+      if (status === "concluido")
+        return "Concluído";
+
+      return status;
+    }
+
+
+    async function iniciarAtendimento() {
+
+      if (!pedidoAtual)
+        return;
+
+
+      const confirmar =
+        confirm(
+          "Deseja iniciar o atendimento deste pedido?"
+        );
+
+
+      if (!confirmar)
+        return;
+
+
+      const {
+        error
+      } = await supabaseClient
+        .from("pedidos")
+        .update({
+          status: "em_andamento",
+          updated_at: new Date().toISOString()
+        })
+        .eq("id", pedidoAtual.id);
+
+
+      if (error) {
+
+        console.error(error);
+
+        mostrarToast(
+          "Não foi possível iniciar o atendimento.",
+          "error"
+        );
+
+        return;
+      }
+
+
+      mostrarToast(
+        "Pedido movido para Em andamento.",
+        "success"
+      );
+
+
+      document
+        .getElementById("pedidoModal")
+        .classList.remove("visible");
+
+
+      pedidoAtual = null;
+
+
+      await carregarPendencias();
+      await carregarEmAndamento();
+      await carregarConcluidos();
+      await carregarVisaoGeral();
+    }
+
+
+    document
+      .getElementById("pedidosBody")
+      .addEventListener(
+        "click",
+        event => {
+
+          const botao =
+            event.target.closest(
+              ".details-button"
+            );
+
+          if (!botao)
+            return;
+
+
+          abrirPedidoDetalhado(
+            Number(
+              botao.dataset.id
+            )
+          );
+        }
+      );
+
+
+    document
+      .getElementById("andamentoBody")
+      .addEventListener(
+        "click",
+        event => {
+
+          const botao =
+            event.target.closest(
+              ".details-button"
+            );
+
+          if (!botao)
+            return;
+
+          abrirPedidoDetalhado(
+            Number(
+              botao.dataset.id
+            )
+          );
+
+        }
+      );
+
+
+    document
+      .getElementById("concluidosBody")
+      .addEventListener(
+        "click",
+        event => {
+
+          const botao =
+            event.target.closest(
+              ".details-button"
+            );
+
+          if (!botao)
+            return;
+
+
+          abrirPedidoDetalhado(
+            Number(
+              botao.dataset.id
+            )
+          );
+
+        }
+      );
+
+
+    document
+      .getElementById("pedidoModalClose")
+      .addEventListener(
+        "click",
+        () => {
+
+          document
+            .getElementById("pedidoModal")
+            .classList.remove("visible");
+
+        }
+      );
+
+
+    document
+      .getElementById("iniciarAtendimentoButton")
+      .addEventListener(
+        "click",
+        iniciarAtendimento
+      );
+
+
+    /* =========================================================
+       MODAL ENTREGA
+    ========================================================= */
+
+    document
+      .getElementById("concluirPedidoButton")
+      .addEventListener(
+        "click",
+        () => {
+
+          if (!pedidoAtual)
+            return;
+
+
+          document
+            .getElementById("pedidoModal")
+            .classList.remove("visible");
+
+
+          document
+            .getElementById("entregaPedidoNome")
+            .textContent =
+              pedidoAtual.titulo;
+
+
+          document
+            .getElementById("entregaModal")
+            .classList.add("visible");
+
+        }
+      );
+
+
+    document
+      .getElementById("entregaModalClose")
+      .addEventListener(
+        "click",
+        () => {
+
+          document
+            .getElementById("entregaModal")
+            .classList.remove("visible");
+
+        }
+      );
+
+
+    document
+      .getElementById("entregaArquivos")
+      .addEventListener(
+        "change",
+        event => {
+
+          const novosArquivos =
+            Array.from(
+              event.target.files
+            );
+
+
+          novosArquivos.forEach(
+            arquivo => {
+
+              const jaExiste =
+                arquivosEntregaSelecionados.some(
+                  existente =>
+                    existente.name === arquivo.name &&
+                    existente.size === arquivo.size &&
+                    existente.lastModified === arquivo.lastModified
+                );
+
+
+              if (!jaExiste) {
+
+                arquivosEntregaSelecionados.push(
+                  arquivo
+                );
+
+              }
+
+            }
+          );
+
+
+          event.target.value =
+            "";
+
+
+          renderizarArquivosEntrega();
+
+        }
+      );
+
+
+    function renderizarArquivosEntrega() {
+
+      const lista =
+        document.getElementById(
+          "entregaArquivosLista"
+        );
+
+
+      lista.innerHTML =
+        "";
+
+
+      arquivosEntregaSelecionados.forEach(
+        (arquivo, index) => {
+
+          const item =
+            document.createElement(
+              "div"
+            );
+
+
+          item.className =
+            "entrega-arquivo-item";
+
+
+          const nome =
+            document.createElement(
+              "span"
+            );
+
+
+          nome.textContent =
+            arquivo.name;
+
+
+          const remover =
+            document.createElement(
+              "button"
+            );
+
+
+          remover.type =
+            "button";
+
+
+          remover.textContent =
+            "🗑";
+
+
+          remover.addEventListener(
+            "click",
+            () => {
+
+              arquivosEntregaSelecionados.splice(
+                index,
+                1
+              );
+
+
+              renderizarArquivosEntrega();
+
+            }
+          );
+
+
+          item.appendChild(nome);
+          item.appendChild(remover);
+
+          lista.appendChild(item);
+
+        }
+      );
+
+    }
+
+
+    async function enviarEntrega() {
+
+      if (!pedidoAtual) {
+        mostrarToast(
+          "Nenhum pedido selecionado.",
+          "error"
+        );
+        return;
+      }
+
+      const titulo =
+        document
+          .getElementById("entregaTitulo")
+          .value
+          .trim();
+
+      const descricao =
+        document
+          .getElementById("entregaDescricao")
+          .value
+          .trim();
+
+      const link =
+        document
+          .getElementById("entregaLink")
+          .value
+          .trim();
+
+
+      if (!titulo) {
+        mostrarToast(
+          "Digite o título da entrega.",
+          "warning"
+        );
+        return;
+      }
+
+
+      if (!descricao) {
+        mostrarToast(
+          "Digite a descrição da entrega.",
+          "warning"
+        );
+        return;
+      }
+
+
+      const botao =
+        document.getElementById(
+          "enviarEntregaButton"
+        );
+
+
+      botao.disabled = true;
+      botao.textContent = "Enviando...";
+
+
+      try {
+
+        const {
+          data: entrega,
+          error: entregaError
+        } =
+          await supabaseClient
+            .from("entregas")
+            .insert({
+              pedido_id: pedidoAtual.id,
+              user_id: pedidoAtual.user_id,
+              titulo: titulo,
+              descricao: descricao,
+              link: link || null
+            })
+            .select()
+            .single();
+
+
+        if (entregaError) {
+          throw entregaError;
+        }
+
+
+        for (
+          const arquivo
+          of arquivosEntregaSelecionados
+        ) {
+
+          const nomeSeguro =
+            arquivo.name
+              .normalize("NFD")
+              .replace(
+                /[\u0300-\u036f]/g,
+                ""
+              )
+              .replace(
+                /[^a-zA-Z0-9._-]/g,
+                "_"
+              );
+
+
+          const caminho =
+            `${pedidoAtual.user_id}/${entrega.id}/${Date.now()}-${nomeSeguro}`;
+
+
+          const {
+            error: uploadError
+          } =
+            await supabaseClient
+              .storage
+              .from("entrega-anexos")
+              .upload(
+                caminho,
+                arquivo,
+                {
+                  cacheControl: "3600",
+                  upsert: false
+                }
+              );
+
+
+          if (uploadError) {
+            throw uploadError;
+          }
+
+
+          const {
+            error: anexoError
+          } =
+            await supabaseClient
+              .from("entrega_anexos")
+              .insert({
+                entrega_id: entrega.id,
+                user_id: pedidoAtual.user_id,
+                nome_arquivo: arquivo.name,
+                tipo_arquivo:
+                  arquivo.type || "arquivo",
+                arquivo_path: caminho
+              });
+
+
+          if (anexoError) {
+            throw anexoError;
+          }
+
+        }
+
+
+        const {
+          error: pedidoError
+        } =
+          await supabaseClient
+            .from("pedidos")
+            .update({
+              status: "concluido",
+              concluido_at:
+                new Date().toISOString(),
+              updated_at:
+                new Date().toISOString()
+            })
+            .eq(
+              "id",
+              pedidoAtual.id
+            );
+
+
+        if (pedidoError) {
+          throw pedidoError;
+        }
+
+
+        mostrarToast(
+          "Entrega enviada com sucesso!",
+          "success"
+        );
+
+
+        document
+          .getElementById("entregaTitulo")
+          .value = "";
+
+        document
+          .getElementById("entregaDescricao")
+          .value = "";
+
+        document
+          .getElementById("entregaLink")
+          .value = "";
+
+
+        arquivosEntregaSelecionados = [];
+
+        renderizarArquivosEntrega();
+
+
+        document
+          .getElementById("entregaModal")
+          .classList.remove("visible");
+
+
+        pedidoAtual = null;
+
+
+        await carregarPendencias();
+        await carregarEmAndamento();
+        await carregarConcluidos();
+        await carregarVisaoGeral();
+
+      }
+      catch (error) {
+
+        console.error(
+          "Erro ao enviar entrega:",
+          error
+        );
+
+        mostrarToast(
+          "Erro ao enviar entrega: " +
+          (
+            error.message ||
+            "erro desconhecido"
+          ),
+          "error"
+        );
+
+      }
+      finally {
+
+        botao.disabled = false;
+        botao.textContent =
+          "Enviar entrega";
+
+      }
+
+    }
+
+
+    document
+      .getElementById("enviarEntregaButton")
+      .addEventListener(
+        "click",
+        enviarEntrega
+      );
+
+
+    /* =========================================================
+       LOGOUT
+    ========================================================= */
+
+    document
+      .getElementById(
+        "logoutButton"
+      )
+      .addEventListener(
+        "click",
+        async () => {
+
+          if (realtimeAdminPedidos) {
+            supabaseClient.removeChannel(
+              realtimeAdminPedidos
+            );
+          }
+
+          await supabaseClient
+            .auth
+            .signOut();
+
+          window.location.href =
+            "index.html";
+
+        }
+      );
+
+
+    verificarAdmin();
+
+  </script>
+
+</body>
+</html>

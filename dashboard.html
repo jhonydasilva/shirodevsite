@@ -1,0 +1,6515 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Dashboard | ShiroDev</title>
+
+  <link
+    rel="icon"
+    href="assets/copo.png"
+    type="image/png"
+  >
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
+  <style>
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      min-height: 100vh;
+
+      font-family:
+        Inter,
+        Arial,
+        sans-serif;
+
+      background:
+        radial-gradient(
+          circle at top,
+          rgba(88, 101, 242, 0.12),
+          transparent 35%
+        ),
+        #080b14;
+
+      color: #ffffff;
+    }
+
+    button,
+    input,
+    textarea,
+    select {
+      font: inherit;
+    }
+
+    button {
+      cursor: pointer;
+    }
+
+
+    /* =========================================================
+       TELA DE CARREGAMENTO
+    ========================================================= */
+
+    .dashboard-loading {
+      position: fixed;
+      inset: 0;
+      z-index: 999999;
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      background:
+        radial-gradient(
+          circle at center,
+          rgba(88, 101, 242, 0.08),
+          transparent 35%
+        ),
+        #050810;
+
+      opacity: 1;
+
+      transition:
+        opacity 0.45s ease,
+        visibility 0.45s ease;
+    }
+
+    .dashboard-loading.saindo {
+      opacity: 0;
+      visibility: hidden;
+    }
+
+    .dashboard-loading-content {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+
+      gap: 20px;
+    }
+
+    .dashboard-loading-logo {
+      width: 120px;
+      height: 120px;
+
+      object-fit: contain;
+
+      filter:
+        drop-shadow(
+          0 15px 30px
+          rgba(0,0,0,0.45)
+        );
+
+      animation:
+        copoFlutuando
+        2.2s
+        ease-in-out
+        infinite;
+    }
+
+    .dashboard-loading-text {
+      color: #ffffff;
+
+      font-size: 24px;
+      font-weight: 800;
+
+      letter-spacing: 0.5px;
+    }
+
+    .dashboard-loading-text span {
+      color: #5865f2;
+    }
+
+    @keyframes copoFlutuando {
+
+      0%,
+      100% {
+        transform:
+          translateY(0)
+          rotate(-2deg);
+      }
+
+      50% {
+        transform:
+          translateY(-18px)
+          rotate(2deg);
+      }
+
+    }
+
+
+    /* =========================================================
+       LAYOUT DO APP
+    ========================================================= */
+
+    .dashboard-app {
+      display: none;
+      min-height: 100vh;
+    }
+
+    .dashboard-app.visible {
+      display: flex;
+    }
+
+
+    /* SIDEBAR */
+
+    .sidebar {
+      width: 250px;
+      min-height: 100vh;
+
+      position: fixed;
+      left: 0;
+      top: 0;
+
+      padding: 24px 16px;
+
+      background:
+        rgba(8, 11, 20, 0.96);
+
+      border-right:
+        1px solid rgba(255,255,255,0.07);
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+
+      padding: 0 10px 28px;
+    }
+
+    .brand img {
+      width: 42px;
+      height: 42px;
+      object-fit: contain;
+    }
+
+    .brand strong {
+      font-size: 21px;
+    }
+
+    .brand strong span {
+      color: #5865f2;
+    }
+
+    .menu {
+      display: flex;
+      flex-direction: column;
+      gap: 7px;
+    }
+
+    .menu-button {
+      width: 100%;
+
+      padding: 13px 14px;
+
+      display: flex;
+      align-items: center;
+      gap: 12px;
+
+      border: 0;
+      border-radius: 10px;
+
+      background: transparent;
+
+      color: #9da7bd;
+
+      text-align: left;
+
+      transition: 0.2s;
+    }
+
+    .menu-button:hover {
+      background:
+        rgba(255,255,255,0.05);
+
+      color: white;
+    }
+
+    .menu-button.active {
+      background:
+        rgba(88, 101, 242, 0.15);
+
+      color: #8e96ff;
+    }
+
+    .menu-icon {
+      width: 22px;
+      text-align: center;
+      font-size: 18px;
+    }
+
+
+    /* CONTEÚDO */
+
+    .main-area {
+      width: calc(100% - 250px);
+      margin-left: 250px;
+    }
+
+    .topbar {
+      height: 72px;
+
+      padding: 0 30px;
+
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+
+      position: sticky;
+      top: 0;
+      z-index: 30;
+
+      background:
+        rgba(8,11,20,0.83);
+
+      border-bottom:
+        1px solid rgba(255,255,255,0.07);
+
+      backdrop-filter: blur(14px);
+    }
+
+    .topbar-right {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+    }
+
+    .user-email {
+      color: #9ca6bc;
+      font-size: 14px;
+    }
+
+    .logout-button {
+      padding: 10px 15px;
+
+      border:
+        1px solid rgba(255,255,255,0.09);
+
+      border-radius: 9px;
+
+      background:
+        rgba(255,255,255,0.05);
+
+      color: white;
+    }
+
+    .content {
+      width: min(1100px, 92%);
+      margin: 0 auto;
+
+      padding:
+        45px 0
+        70px;
+    }
+
+    .page {
+      display: none;
+    }
+
+    .page.active {
+      display: block;
+    }
+
+    .page-title {
+      margin-bottom: 8px;
+      font-size: 34px;
+    }
+
+    .page-subtitle {
+      margin-bottom: 30px;
+      color: #929cb4;
+      line-height: 1.6;
+    }
+
+
+    /* INÍCIO */
+
+    .welcome {
+      margin-bottom: 35px;
+    }
+
+    .welcome h1 {
+      margin-bottom: 8px;
+
+      font-size:
+        clamp(
+          29px,
+          4vw,
+          43px
+        );
+    }
+
+    .welcome p {
+      color: #949db4;
+    }
+
+    .cards {
+      display: grid;
+
+      grid-template-columns:
+        repeat(
+          3,
+          minmax(0, 1fr)
+        );
+
+      gap: 18px;
+    }
+
+    .card {
+      min-height: 160px;
+
+      padding: 22px;
+
+      border-radius: 16px;
+
+      border:
+        1px solid rgba(255,255,255,0.075);
+
+      background:
+        linear-gradient(
+          145deg,
+          rgba(255,255,255,0.055),
+          rgba(255,255,255,0.025)
+        );
+    }
+
+    .card-label {
+      margin-bottom: 14px;
+
+      color: #8f99b0;
+
+      font-size: 13px;
+    }
+
+    .card h2 {
+      margin-bottom: 7px;
+    }
+
+    .card p {
+      color: #939db5;
+
+      font-size: 14px;
+      line-height: 1.6;
+    }
+
+
+    /* FORMULÁRIO */
+
+    .form-box {
+      max-width: 820px;
+
+      padding: 28px;
+
+      border:
+        1px solid rgba(255,255,255,0.08);
+
+      border-radius: 18px;
+
+      background:
+        rgba(255,255,255,0.03);
+    }
+
+    .steps {
+      display: flex;
+      align-items: center;
+
+      margin-bottom: 34px;
+    }
+
+    .step {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+
+      color: #717b91;
+
+      font-size: 14px;
+      white-space: nowrap;
+    }
+
+    .step-circle {
+      width: 30px;
+      height: 30px;
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      border-radius: 50%;
+
+      background:
+        rgba(255,255,255,0.07);
+    }
+
+    .step.active {
+      color: white;
+    }
+
+    .step.active .step-circle {
+      background: #5865f2;
+    }
+
+    .step.completed .step-circle {
+      background: #2fa36b;
+    }
+
+    .step-line {
+      height: 1px;
+      flex: 1;
+
+      margin: 0 14px;
+
+      background:
+        rgba(255,255,255,0.1);
+    }
+
+    .form-step {
+      display: none;
+    }
+
+    .form-step.active {
+      display: block;
+    }
+
+    .form-title {
+      margin-bottom: 6px;
+      font-size: 24px;
+    }
+
+    .form-description {
+      margin-bottom: 26px;
+
+      color: #919bb1;
+
+      line-height: 1.6;
+    }
+
+    .field {
+      margin-bottom: 20px;
+    }
+
+    .field label {
+      display: block;
+
+      margin-bottom: 8px;
+
+      font-size: 14px;
+      font-weight: 700;
+    }
+
+    .field input,
+    .field textarea,
+    .field select {
+      width: 100%;
+
+      padding: 13px 14px;
+
+      border:
+        1px solid rgba(255,255,255,0.10);
+
+      border-radius: 10px;
+
+      outline: none;
+
+      background: #0c101c;
+
+      color: white;
+
+      transition: 0.2s;
+    }
+
+    .field textarea {
+      min-height: 160px;
+      resize: vertical;
+    }
+
+    .field input:focus,
+    .field textarea:focus,
+    .field select:focus {
+      border-color: #5865f2;
+
+      box-shadow:
+        0 0 0 3px
+        rgba(88,101,242,0.10);
+    }
+
+    .optional {
+      margin-left: 5px;
+
+      color: #79839a;
+
+      font-weight: 400;
+    }
+
+    .upload-area {
+      padding: 38px 20px;
+
+      border:
+        1px dashed rgba(255,255,255,0.20);
+
+      border-radius: 13px;
+
+      text-align: center;
+
+      background:
+        rgba(255,255,255,0.025);
+
+      transition: 0.2s;
+    }
+
+    .upload-area:hover {
+      border-color: #5865f2;
+    }
+
+    .upload-area input {
+      display: none;
+    }
+
+    .upload-area label {
+      cursor: pointer;
+    }
+
+    .upload-icon {
+      margin-bottom: 10px;
+
+      font-size: 35px;
+    }
+
+    .upload-title {
+      margin-bottom: 5px;
+
+      font-weight: 700;
+    }
+
+    .upload-info {
+      color: #8993aa;
+      font-size: 13px;
+    }
+
+    .selected-files {
+      margin-top: 15px;
+
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .selected-file {
+      padding: 10px 12px;
+
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+
+      border-radius: 9px;
+
+      background:
+        rgba(255,255,255,0.045);
+
+      color: #b5bdd0;
+
+      font-size: 13px;
+    }
+
+    .selected-file-info {
+      min-width: 0;
+
+      display: flex;
+      align-items: center;
+      gap: 10px;
+
+      flex: 1;
+    }
+
+    .selected-file-name {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .selected-file-actions {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+    }
+
+    .file-action-button {
+      width: 32px;
+      height: 32px;
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      border:
+        1px solid rgba(255,255,255,0.08);
+
+      border-radius: 8px;
+
+      background:
+        rgba(255,255,255,0.04);
+
+      color: #aab3c7;
+
+      transition: 0.2s;
+    }
+
+    .file-action-button:hover {
+      background:
+        rgba(88,101,242,0.15);
+
+      border-color:
+        rgba(88,101,242,0.35);
+
+      color: white;
+    }
+
+    .file-delete-button:hover {
+      background:
+        rgba(239,68,68,0.12);
+
+      border-color:
+        rgba(239,68,68,0.30);
+
+      color: #ff7070;
+    }
+
+
+    /* VISUALIZAÇÃO DO ANEXO */
+
+    .file-preview-modal {
+      position: fixed;
+      inset: 0;
+      z-index: 99999;
+
+      display: none;
+      align-items: center;
+      justify-content: center;
+
+      padding: 30px;
+
+      background:
+        rgba(0,0,0,0.82);
+
+      backdrop-filter:
+        blur(8px);
+    }
+
+    .file-preview-modal.visible {
+      display: flex;
+    }
+
+    .file-preview-box {
+      width: min(1000px, 95%);
+      max-height: 90vh;
+
+      position: relative;
+
+      padding: 20px;
+
+      border:
+        1px solid rgba(255,255,255,0.10);
+
+      border-radius: 16px;
+
+      background: #10141f;
+    }
+
+    .file-preview-content {
+      width: 100%;
+      max-height: 75vh;
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .file-preview-content img,
+    .file-preview-content video {
+      max-width: 100%;
+      max-height: 75vh;
+
+      border-radius: 10px;
+
+      object-fit: contain;
+    }
+
+    .file-preview-header {
+      margin-bottom: 15px;
+
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 15px;
+    }
+
+    .file-preview-name {
+      overflow: hidden;
+
+      color: #c5ccda;
+
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .file-preview-close {
+      width: 36px;
+      height: 36px;
+
+      flex-shrink: 0;
+
+      border: 0;
+      border-radius: 9px;
+
+      background:
+        rgba(255,255,255,0.07);
+
+      color: white;
+
+      font-size: 20px;
+    }
+
+    .form-actions {
+      margin-top: 28px;
+
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .button {
+      padding: 12px 20px;
+
+      border: 0;
+      border-radius: 10px;
+
+      font-weight: 700;
+    }
+
+    .button-primary {
+      background: #5865f2;
+      color: white;
+    }
+
+    .button-primary:hover {
+      background: #6974f5;
+    }
+
+    .button-secondary {
+      background:
+        rgba(255,255,255,0.07);
+
+      color: white;
+    }
+
+    .button:disabled {
+      opacity: 0.55;
+      cursor: not-allowed;
+    }
+
+
+    /* REVISÃO */
+
+    .review {
+      display: flex;
+      flex-direction: column;
+      gap: 13px;
+    }
+
+    .review-item {
+      padding: 16px;
+
+      border-radius: 11px;
+
+      background:
+        rgba(255,255,255,0.035);
+    }
+
+    .review-label {
+      margin-bottom: 7px;
+
+      color: #7f899f;
+
+      font-size: 12px;
+
+      text-transform: uppercase;
+      letter-spacing: 0.6px;
+    }
+
+    .review-value {
+      line-height: 1.6;
+      word-break: break-word;
+    }
+
+    .edit-menu {
+      position: relative;
+    }
+
+    .edit-options {
+      position: absolute;
+
+      left: 0;
+      bottom: 50px;
+
+      width: 200px;
+
+      padding: 7px;
+
+      display: none;
+
+      border:
+        1px solid rgba(255,255,255,0.08);
+
+      border-radius: 10px;
+
+      background: #111624;
+
+      box-shadow:
+        0 15px 40px rgba(0,0,0,0.4);
+    }
+
+    .edit-options.visible {
+      display: block;
+    }
+
+    .edit-options button {
+      width: 100%;
+
+      padding: 10px;
+
+      border: 0;
+      border-radius: 7px;
+
+      background: transparent;
+      color: white;
+
+      text-align: left;
+    }
+
+    .edit-options button:hover {
+      background:
+        rgba(255,255,255,0.06);
+    }
+
+
+    /* PEDIDOS */
+
+    .filtros-area {
+      margin-bottom: 18px;
+
+      display: flex;
+      align-items: center;
+
+      gap: 10px;
+    }
+
+    .filtro-busca {
+      flex: 1;
+
+      min-width: 0;
+
+      display: flex;
+      align-items: center;
+
+      gap: 9px;
+
+      padding: 0 13px;
+
+      border:
+        1px solid
+        rgba(255,255,255,0.08);
+
+      border-radius: 10px;
+
+      background:
+        rgba(255,255,255,0.03);
+    }
+
+    .filtro-busca span {
+      color: #737e95;
+
+      font-size: 18px;
+    }
+
+    .filtro-busca input {
+      width: 100%;
+
+      padding: 12px 0;
+
+      border: 0;
+
+      outline: 0;
+
+      background: transparent;
+
+      color: white;
+    }
+
+    .filtro-busca input::placeholder {
+      color: #687287;
+    }
+
+    .filtros-area select {
+      padding:
+        12px
+        38px
+        12px
+        13px;
+
+      border:
+        1px solid
+        rgba(255,255,255,0.08);
+
+      border-radius: 10px;
+
+      outline: none;
+
+      background: #0d111b;
+
+      color: #b8c0d1;
+
+      cursor: pointer;
+    }
+
+    .filtro-busca:focus-within,
+    .filtros-area select:focus {
+      border-color:
+        rgba(88,101,242,0.55);
+
+      box-shadow:
+        0 0 0 3px
+        rgba(88,101,242,0.08);
+    }
+
+    .orders-list {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .order-item {
+      padding: 18px;
+
+      display: grid;
+
+      grid-template-columns:
+        1fr auto;
+
+      gap: 15px;
+
+      border:
+        1px solid rgba(255,255,255,0.07);
+
+      border-radius: 13px;
+
+      background:
+        rgba(255,255,255,0.03);
+
+      cursor: pointer;
+
+      transition: 0.2s;
+    }
+
+    .order-item:hover {
+      border-color: rgba(88,101,242,0.28);
+      background: rgba(88,101,242,0.06);
+    }
+
+    .order-title {
+      margin-bottom: 6px;
+      font-weight: 700;
+    }
+
+    .order-meta {
+      color: #818ba1;
+      font-size: 13px;
+    }
+
+    .status {
+      align-self: center;
+
+      padding: 7px 10px;
+
+      border-radius: 30px;
+
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .status-pendente {
+      background:
+        rgba(255,193,7,0.13);
+
+      color: #f2c451;
+    }
+
+    .status-em_andamento,
+    .status-andamento {
+      background:
+        rgba(88,101,242,0.14);
+
+      color: #8e96ff;
+    }
+
+    .status-concluido {
+      background:
+        rgba(46,180,110,0.14);
+
+      color: #5ed895;
+    }
+
+    .empty {
+      padding: 35px;
+
+      border:
+        1px dashed rgba(255,255,255,0.1);
+
+      border-radius: 13px;
+
+      color: #818ba2;
+
+      text-align: center;
+    }
+
+    .empty-state {
+      padding: 35px;
+
+      border:
+        1px dashed rgba(255,255,255,0.1);
+
+      border-radius: 13px;
+
+      color: #818ba2;
+
+      text-align: center;
+    }
+
+    .success-message,
+    .error-message {
+      margin-top: 18px;
+
+      padding: 13px;
+
+      display: none;
+
+      border-radius: 10px;
+    }
+
+    .success-message {
+      background:
+        rgba(46,180,110,0.12);
+
+      color: #65db9c;
+    }
+
+    .error-message {
+      background:
+        rgba(230,70,70,0.12);
+
+      color: #ff8b8b;
+    }
+
+
+    /* ENTREGAS */
+
+    .entrega-card {
+      padding: 16px 18px;
+
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 12px;
+
+      background: rgba(255,255,255,0.025);
+    }
+
+    .entrega-card + .entrega-card {
+      margin-top: 10px;
+    }
+
+    .entrega-card-info {
+      display: grid;
+      gap: 5px;
+    }
+
+    .entrega-card-info strong {
+      color: white;
+      font-size: 15px;
+    }
+
+    .entrega-card-info span {
+      color: #8f98ad;
+      font-size: 13px;
+    }
+
+    .entrega-ver-button {
+      padding: 9px 13px;
+
+      border: 0;
+      border-radius: 8px;
+
+      background: #5865f2;
+      color: white;
+
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+
+    /* MODAL ENTREGA DETALHADA */
+
+    .entrega-modal {
+      position: fixed;
+      inset: 0;
+      z-index: 99999;
+
+      display: none;
+      align-items: center;
+      justify-content: center;
+
+      padding: 30px;
+
+      background: rgba(0,0,0,0.82);
+      backdrop-filter: blur(8px);
+    }
+
+    .entrega-modal.visible {
+      display: flex;
+    }
+
+    .entrega-modal-box {
+      width: min(850px, 95%);
+      max-height: 90vh;
+
+      overflow-y: auto;
+
+      border: 1px solid rgba(255,255,255,0.10);
+      border-radius: 16px;
+
+      background: #10141f;
+
+      scrollbar-width: thin;
+      scrollbar-color: rgba(88,101,242,0.55) transparent;
+    }
+
+    .entrega-modal-box::-webkit-scrollbar {
+      width: 7px;
+    }
+
+    .entrega-modal-box::-webkit-scrollbar-track {
+      background: transparent;
+    }
+
+    .entrega-modal-box::-webkit-scrollbar-thumb {
+      background: rgba(88,101,242,0.45);
+      border-radius: 20px;
+    }
+
+    .entrega-modal-header {
+      padding: 22px;
+
+      display: flex;
+      justify-content: space-between;
+      gap: 15px;
+
+      border-bottom: 1px solid rgba(255,255,255,0.07);
+    }
+
+    .entrega-modal-header h2 {
+      margin-bottom: 6px;
+    }
+
+    .entrega-modal-header p {
+      color: #9099ad;
+      font-size: 13px;
+    }
+
+    .entrega-modal-close {
+      width: 38px;
+      height: 38px;
+
+      border: 0;
+      border-radius: 9px;
+
+      background: rgba(255,255,255,0.06);
+
+      color: white;
+      font-size: 21px;
+
+      cursor: pointer;
+    }
+
+    .entrega-modal-content {
+      padding: 22px;
+
+      display: grid;
+      gap: 24px;
+    }
+
+    .entrega-detalhe-item {
+      display: grid;
+      gap: 8px;
+    }
+
+    .entrega-detalhe-item > span {
+      color: #818ba0;
+
+      font-size: 12px;
+      font-weight: 700;
+
+      text-transform: uppercase;
+    }
+
+    .entrega-detalhe-item p,
+    .entrega-detalhe-item strong {
+      color: #d9deeb;
+      line-height: 1.6;
+    }
+
+    .entrega-detalhe-item a {
+      color: #7d87ff;
+    }
+
+    .entrega-anexo-item {
+      margin-bottom: 8px;
+
+      padding: 11px 12px;
+
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+
+      border-radius: 9px;
+
+      background: rgba(255,255,255,0.045);
+    }
+
+    .entrega-anexo-botoes {
+      display: flex;
+      gap: 7px;
+    }
+
+    .entrega-anexo-botoes button {
+      padding: 8px 11px;
+
+      border: 0;
+      border-radius: 7px;
+
+      background: rgba(88,101,242,0.18);
+
+      color: white;
+      cursor: pointer;
+    }
+
+
+    /* HEADER ACTIONS + BOTÃO EXPORTAR */
+
+    .entrega-header-actions {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .exportar-relatorio-button {
+      padding: 10px 14px;
+
+      border: 1px solid rgba(88,101,242,0.35);
+      border-radius: 9px;
+
+      background: rgba(88,101,242,0.12);
+
+      color: #bfc5ff;
+
+      font-size: 13px;
+      font-weight: 700;
+
+      cursor: pointer;
+
+      transition: 0.2s;
+    }
+
+    .exportar-relatorio-button:hover {
+      background: rgba(88,101,242,0.22);
+      border-color: rgba(88,101,242,0.55);
+
+      color: white;
+    }
+
+
+    /* =========================================================
+       MODAL PEDIDO DO CLIENTE
+    ========================================================= */
+
+    .pedido-cliente-modal {
+      position: fixed;
+      inset: 0;
+
+      z-index: 99999;
+
+      display: none;
+      align-items: center;
+      justify-content: center;
+
+      padding: 20px;
+
+      background: rgba(3,6,12,0.75);
+      backdrop-filter: blur(6px);
+    }
+
+    .pedido-cliente-modal.active {
+      display: flex;
+    }
+
+    .pedido-cliente-modal-box {
+      width: min(720px, 100%);
+      max-height: 88vh;
+
+      position: relative;
+
+      overflow-y: auto;
+
+      padding: 28px;
+
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 16px;
+
+      background: #0d111b;
+
+      box-shadow: 0 25px 70px rgba(0,0,0,0.45);
+
+      scrollbar-width: thin;
+      scrollbar-color: rgba(88,101,242,0.55) transparent;
+    }
+
+    .pedido-cliente-modal-box::-webkit-scrollbar {
+      width: 7px;
+    }
+
+    .pedido-cliente-modal-box::-webkit-scrollbar-track {
+      background: transparent;
+    }
+
+    .pedido-cliente-modal-box::-webkit-scrollbar-thumb {
+      background: rgba(88,101,242,0.45);
+      border-radius: 20px;
+    }
+
+    .pedido-cliente-modal-box::-webkit-scrollbar-thumb:hover {
+      background: rgba(88,101,242,0.75);
+    }
+
+    .pedido-cliente-fechar {
+      position: absolute;
+      top: 16px;
+      right: 17px;
+
+      width: 34px;
+      height: 34px;
+
+      display: grid;
+      place-items: center;
+
+      border: 1px solid rgba(255,255,255,0.07);
+      border-radius: 8px;
+
+      background: rgba(255,255,255,0.035);
+
+      color: #8f99ad;
+
+      font-size: 22px;
+
+      cursor: pointer;
+    }
+
+    .pedido-cliente-fechar:hover {
+      background: rgba(255,255,255,0.07);
+      color: white;
+    }
+
+    .pedido-cliente-topo {
+      padding-right: 45px;
+      margin-bottom: 27px;
+    }
+
+    .pedido-cliente-topo > span {
+      display: block;
+
+      margin-bottom: 7px;
+
+      color: #6f7a91;
+
+      font-size: 10px;
+      font-weight: 700;
+
+      letter-spacing: 1px;
+    }
+
+    .pedido-cliente-topo h2 {
+      margin: 0 0 12px;
+
+      color: #f4f5f8;
+
+      font-size: 22px;
+    }
+
+    .pedido-cliente-detail {
+      margin-top: 20px;
+    }
+
+    .pedido-cliente-detail > span {
+      display: block;
+
+      margin-bottom: 7px;
+
+      color: #727d94;
+
+      font-size: 10px;
+      font-weight: 700;
+
+      letter-spacing: 0.5px;
+    }
+
+    .pedido-cliente-detail p {
+      margin: 0;
+
+      color: #c9cfda;
+
+      font-size: 13px;
+      line-height: 1.6;
+
+      white-space: pre-wrap;
+    }
+
+    #pedidoClienteLink,
+    #pedidoClienteEntregaLink {
+      color: #9da5ff;
+
+      font-size: 13px;
+    }
+
+    #pedidoClienteLink a,
+    #pedidoClienteEntregaLink a {
+      color: #9da5ff;
+
+      text-decoration: none;
+    }
+
+    #pedidoClienteLink a:hover,
+    #pedidoClienteEntregaLink a:hover {
+      text-decoration: underline;
+    }
+
+    .pedido-cliente-divisor {
+      height: 1px;
+
+      margin: 28px 0;
+
+      background: rgba(255,255,255,0.07);
+    }
+
+    .pedido-cliente-entrega-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+
+      gap: 20px;
+
+      margin-bottom: 22px;
+    }
+
+    .pedido-cliente-entrega-header > div > span {
+      display: block;
+
+      margin-bottom: 6px;
+
+      color: #6f7a91;
+
+      font-size: 10px;
+      font-weight: 700;
+
+      letter-spacing: 1px;
+    }
+
+    .pedido-cliente-entrega-header h3 {
+      margin: 0;
+
+      color: #f2f4f8;
+
+      font-size: 17px;
+    }
+
+    .pedido-entregue-badge {
+      padding: 7px 10px;
+
+      border-radius: 999px;
+
+      background: rgba(34,197,94,0.12);
+
+      color: #4ade80;
+
+      font-size: 11px;
+      font-weight: 700;
+    }
+
+    .pedido-cliente-anexo {
+      margin-top: 8px;
+
+      padding: 10px 12px;
+
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+
+      gap: 12px;
+
+      border-radius: 9px;
+
+      background: rgba(255,255,255,0.04);
+    }
+
+    .pedido-cliente-anexo span {
+      min-width: 0;
+
+      overflow: hidden;
+
+      color: #b7bfcd;
+
+      font-size: 12px;
+
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .pedido-cliente-anexo button {
+      flex-shrink: 0;
+
+      padding: 7px 10px;
+
+      border: 1px solid rgba(88,101,242,0.25);
+      border-radius: 7px;
+
+      background: rgba(88,101,242,0.12);
+
+      color: #c8cdff;
+
+      cursor: pointer;
+    }
+
+    .pedido-cliente-anexo button:hover {
+      background: rgba(88,101,242,0.22);
+    }
+
+
+    /* =========================================================
+       TOASTS
+    ========================================================= */
+
+    .toast-container {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      z-index: 999999;
+
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .toast {
+      min-width: 280px;
+      max-width: 380px;
+
+      padding: 14px 16px;
+
+      display: flex;
+      align-items: center;
+      gap: 10px;
+
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 10px;
+
+      background: #151a26;
+      color: white;
+
+      box-shadow: 0 12px 35px rgba(0,0,0,0.35);
+
+      animation: toastEntrada 0.25s ease;
+    }
+
+    .toast.success {
+      border-color: rgba(34,197,94,0.35);
+    }
+
+    .toast.error {
+      border-color: rgba(239,68,68,0.35);
+    }
+
+    .toast.info {
+      border-color: rgba(88,101,242,0.40);
+    }
+
+    .toast-icon {
+      font-size: 17px;
+    }
+
+    .toast-text {
+      flex: 1;
+
+      font-size: 13px;
+      line-height: 1.4;
+    }
+
+    @keyframes toastEntrada {
+      from {
+        opacity: 0;
+        transform: translateX(20px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateX(0);
+      }
+    }
+
+
+    /* RESPONSIVO */
+
+    @media (max-width: 850px) {
+
+      .sidebar {
+        width: 78px;
+      }
+
+      .brand strong,
+      .menu-label {
+        display: none;
+      }
+
+      .brand {
+        justify-content: center;
+        padding-left: 0;
+        padding-right: 0;
+      }
+
+      .menu-button {
+        justify-content: center;
+      }
+
+      .main-area {
+        width:
+          calc(100% - 78px);
+
+        margin-left: 78px;
+      }
+
+      .cards {
+        grid-template-columns: 1fr;
+      }
+
+      .user-email {
+        display: none;
+      }
+
+    }
+
+    @media (max-width: 700px) {
+
+      .pedido-cliente-modal {
+        padding: 10px;
+      }
+
+      .pedido-cliente-modal-box {
+        padding: 22px 18px;
+      }
+
+      .pedido-cliente-entrega-header {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+
+    }
+
+    @media (max-width: 600px) {
+
+      .content {
+        width: 92%;
+      }
+
+      .form-box {
+        padding: 20px;
+      }
+
+      .step span:not(.step-circle) {
+        display: none;
+      }
+
+      .filtros-area {
+        flex-direction: column;
+        align-items: stretch;
+      }
+
+    }
+
+  </style>
+</head>
+
+<body>
+
+  <div id="toastContainer" class="toast-container"></div>
+
+  <div
+    class="dashboard-loading"
+    id="dashboardLoading"
+  >
+    <div class="dashboard-loading-content">
+
+      <img
+        src="assets/copo.png"
+        alt="ShiroDev"
+        class="dashboard-loading-logo"
+      >
+
+      <div class="dashboard-loading-text">
+        Shiro<span>Dev</span>
+      </div>
+
+    </div>
+  </div>
+
+
+  <div
+    class="dashboard-app"
+    id="dashboardApp"
+  >
+
+    <aside class="sidebar">
+
+      <div class="brand">
+
+        <img
+          src="assets/copo.png"
+          alt="ShiroDev"
+        >
+
+        <strong>
+          Shiro<span>Dev</span>
+        </strong>
+
+      </div>
+
+
+      <nav class="menu">
+
+        <button
+          class="menu-button active"
+          data-page="inicio"
+        >
+          <span class="menu-icon">⌂</span>
+          <span class="menu-label">
+            Início
+          </span>
+        </button>
+
+
+        <button
+          class="menu-button"
+          data-page="novo-pedido"
+        >
+          <span class="menu-icon">＋</span>
+          <span class="menu-label">
+            Novo Pedido
+          </span>
+        </button>
+
+
+        <button
+          class="menu-button"
+          data-page="pedidos"
+        >
+          <span class="menu-icon">☰</span>
+          <span class="menu-label">
+            Meus Pedidos
+          </span>
+        </button>
+
+
+        <button
+          class="menu-button"
+          data-page="entregas"
+        >
+          <span class="menu-icon">✓</span>
+          <span class="menu-label">
+            Entregas
+          </span>
+        </button>
+
+      </nav>
+
+    </aside>
+
+
+    <div class="main-area">
+
+      <header class="topbar">
+
+        <strong id="topbarTitle">
+          Início
+        </strong>
+
+
+        <div class="topbar-right">
+
+          <span
+            class="user-email"
+            id="userEmail"
+          ></span>
+
+          <button
+            class="logout-button"
+            id="logoutButton"
+          >
+            Sair
+          </button>
+
+        </div>
+
+      </header>
+
+
+      <main class="content">
+
+
+        <!-- INÍCIO -->
+
+        <section
+          class="page active"
+          id="page-inicio"
+        >
+
+          <div class="welcome">
+
+            <h1 id="welcomeTitle">
+              Bem-vindo.
+            </h1>
+
+            <p>
+              Acompanhe seus projetos e pedidos pela ShiroDev.
+            </p>
+
+          </div>
+
+
+          <div class="cards">
+
+            <article class="card">
+
+              <div class="card-label">
+                Projeto
+              </div>
+
+              <h2 id="clienteProjeto">
+                -
+              </h2>
+
+              <p id="clienteDescricao">
+                -
+              </p>
+
+            </article>
+
+
+            <article class="card">
+
+              <div class="card-label">
+                Pedidos pendentes
+              </div>
+
+              <h2 id="contadorPendentes">
+                0
+              </h2>
+
+              <p>
+                Pedidos aguardando atendimento.
+              </p>
+
+            </article>
+
+
+            <article class="card">
+
+              <div class="card-label">
+                Pedidos concluídos
+              </div>
+
+              <h2 id="contadorConcluidos">
+                0
+              </h2>
+
+              <p>
+                Trabalhos que já foram finalizados.
+              </p>
+
+            </article>
+
+          </div>
+
+        </section>
+
+
+        <!-- NOVO PEDIDO -->
+
+        <section
+          class="page"
+          id="page-novo-pedido"
+        >
+
+          <h1 class="page-title">
+            Novo Pedido
+          </h1>
+
+          <p class="page-subtitle">
+            Explique o que você precisa e envie referências para a ShiroDev.
+          </p>
+
+
+          <div class="form-box">
+
+
+            <div class="steps">
+
+              <div
+                class="step active"
+                id="indicator1"
+              >
+                <span class="step-circle">
+                  1
+                </span>
+
+                <span>
+                  Informações
+                </span>
+              </div>
+
+
+              <div class="step-line"></div>
+
+
+              <div
+                class="step"
+                id="indicator2"
+              >
+                <span class="step-circle">
+                  2
+                </span>
+
+                <span>
+                  Anexos
+                </span>
+              </div>
+
+
+              <div class="step-line"></div>
+
+
+              <div
+                class="step"
+                id="indicator3"
+              >
+                <span class="step-circle">
+                  3
+                </span>
+
+                <span>
+                  Revisão
+                </span>
+              </div>
+
+            </div>
+
+
+            <!-- PARTE 1 -->
+
+            <div
+              class="form-step active"
+              id="formStep1"
+            >
+
+              <h2 class="form-title">
+                O que você precisa?
+              </h2>
+
+              <p class="form-description">
+                Informe o projeto e explique claramente o que deseja que seja feito.
+              </p>
+
+
+              <div class="field">
+
+                <label for="pedidoProjeto">
+                  Projeto
+                </label>
+
+                <input
+                  type="text"
+                  id="pedidoProjeto"
+                  placeholder="Ex: Bot Discord Detonando Geral"
+                >
+
+              </div>
+
+
+              <div class="field">
+
+                <label for="pedidoTitulo">
+                  Título
+                </label>
+
+                <input
+                  type="text"
+                  id="pedidoTitulo"
+                  maxlength="120"
+                  placeholder="Ex: Criar sistema de XP"
+                >
+
+              </div>
+
+
+              <div class="field">
+
+                <label for="pedidoDescricao">
+                  Descrição
+                </label>
+
+                <textarea
+                  id="pedidoDescricao"
+                  placeholder="Explique detalhadamente o que você deseja..."
+                ></textarea>
+
+              </div>
+
+
+              <div class="form-actions">
+
+                <div></div>
+
+                <button
+                  class="button button-primary"
+                  id="irParte2"
+                >
+                  Continuar
+                </button>
+
+              </div>
+
+            </div>
+
+
+            <!-- PARTE 2 -->
+
+            <div
+              class="form-step"
+              id="formStep2"
+            >
+
+              <h2 class="form-title">
+                Referências
+              </h2>
+
+              <p class="form-description">
+                Envie imagens ou vídeos que ajudem a explicar o pedido.
+              </p>
+
+
+              <div class="field">
+
+                <label>
+                  Imagens ou vídeos
+                  <span class="optional">
+                    opcional
+                  </span>
+                </label>
+
+
+                <div class="upload-area">
+
+                  <input
+                    type="file"
+                    id="pedidoArquivos"
+                    accept="image/png,image/jpeg,image/webp,image/gif,video/mp4,video/webm,video/quicktime"
+                    multiple
+                  >
+
+                  <label for="pedidoArquivos">
+
+                    <div class="upload-icon">
+                      ↑
+                    </div>
+
+                    <div class="upload-title">
+                      Clique para selecionar
+                    </div>
+
+                    <div class="upload-info">
+                      PNG, JPG, WEBP, GIF, MP4, WEBM ou MOV
+                      <br>
+                      máximo de 50 MB por arquivo
+                    </div>
+
+                  </label>
+
+                </div>
+
+
+                <div
+                  class="selected-files"
+                  id="selectedFiles"
+                ></div>
+
+              </div>
+
+
+              <div class="field">
+
+                <label for="pedidoLink">
+                  Link
+                  <span class="optional">
+                    opcional
+                  </span>
+                </label>
+
+                <input
+                  type="url"
+                  id="pedidoLink"
+                  placeholder="https://..."
+                >
+
+              </div>
+
+
+              <div class="form-actions">
+
+                <button
+                  class="button button-secondary"
+                  id="voltarParte1"
+                >
+                  Voltar
+                </button>
+
+                <button
+                  class="button button-primary"
+                  id="irParte3"
+                >
+                  Revisar
+                </button>
+
+              </div>
+
+            </div>
+
+
+            <!-- PARTE 3 -->
+
+            <div
+              class="form-step"
+              id="formStep3"
+            >
+
+              <h2 class="form-title">
+                Revise seu pedido
+              </h2>
+
+              <p class="form-description">
+                Confira as informações antes de enviar.
+              </p>
+
+
+              <div class="review">
+
+                <div class="review-item">
+
+                  <div class="review-label">
+                    Projeto
+                  </div>
+
+                  <div
+                    class="review-value"
+                    id="reviewProjeto"
+                  ></div>
+
+                </div>
+
+
+                <div class="review-item">
+
+                  <div class="review-label">
+                    Título
+                  </div>
+
+                  <div
+                    class="review-value"
+                    id="reviewTitulo"
+                  ></div>
+
+                </div>
+
+
+                <div class="review-item">
+
+                  <div class="review-label">
+                    Descrição
+                  </div>
+
+                  <div
+                    class="review-value"
+                    id="reviewDescricao"
+                  ></div>
+
+                </div>
+
+
+                <div class="review-item">
+
+                  <div class="review-label">
+                    Anexos
+                  </div>
+
+                  <div
+                    class="review-value"
+                    id="reviewArquivos"
+                  ></div>
+
+                </div>
+
+
+                <div class="review-item">
+
+                  <div class="review-label">
+                    Link
+                  </div>
+
+                  <div
+                    class="review-value"
+                    id="reviewLink"
+                  ></div>
+
+                </div>
+
+              </div>
+
+
+              <div
+                class="success-message"
+                id="pedidoSuccess"
+              >
+                Pedido enviado com sucesso!
+              </div>
+
+
+              <div
+                class="error-message"
+                id="pedidoError"
+              ></div>
+
+
+              <div class="form-actions">
+
+                <div class="edit-menu">
+
+                  <button
+                    class="button button-secondary"
+                    id="editarPedido"
+                  >
+                    Editar ▾
+                  </button>
+
+
+                  <div
+                    class="edit-options"
+                    id="editOptions"
+                  >
+
+                    <button
+                      data-edit-step="1"
+                    >
+                      Parte 1 - Informações
+                    </button>
+
+                    <button
+                      data-edit-step="2"
+                    >
+                      Parte 2 - Anexos
+                    </button>
+
+                  </div>
+
+                </div>
+
+
+                <button
+                  class="button button-primary"
+                  id="enviarPedido"
+                >
+                  Enviar Pedido
+                </button>
+
+              </div>
+
+            </div>
+
+
+          </div>
+
+        </section>
+
+
+        <!-- MEUS PEDIDOS -->
+
+        <section
+          class="page"
+          id="page-pedidos"
+        >
+
+          <h1 class="page-title">
+            Meus Pedidos
+          </h1>
+
+          <p class="page-subtitle">
+            Acompanhe o andamento dos pedidos enviados.
+          </p>
+
+
+          <div class="filtros-area">
+
+            <div class="filtro-busca">
+
+              <span>⌕</span>
+
+              <input
+                type="text"
+                id="filtroPedidosBusca"
+                placeholder="Buscar pedido ou projeto..."
+              >
+
+            </div>
+
+
+            <select id="filtroPedidosStatus">
+
+              <option value="todos">
+                Todos os status
+              </option>
+
+              <option value="pendente">
+                Pendente
+              </option>
+
+              <option value="em_andamento">
+                Em andamento
+              </option>
+
+              <option value="concluido">
+                Concluído
+              </option>
+
+            </select>
+
+          </div>
+
+
+          <div
+            class="orders-list"
+            id="ordersList"
+          ></div>
+
+        </section>
+
+
+        <!-- ENTREGAS -->
+
+        <section
+          class="page"
+          id="page-entregas"
+        >
+
+          <h1 class="page-title">
+            Entregas
+          </h1>
+
+          <p class="page-subtitle">
+            Quando a ShiroDev concluir um pedido, o resultado ficará disponível aqui.
+          </p>
+
+
+          <div class="filtros-area">
+
+            <div class="filtro-busca">
+
+              <span>⌕</span>
+
+              <input
+                type="text"
+                id="filtroEntregasBusca"
+                placeholder="Buscar entrega..."
+              >
+
+            </div>
+
+          </div>
+
+
+          <div id="entregasLista">
+
+            <div class="empty-state">
+              Nenhuma entrega disponível no momento.
+            </div>
+
+          </div>
+
+        </section>
+
+
+      </main>
+
+    </div>
+
+  </div>
+
+
+  <div
+    class="file-preview-modal"
+    id="filePreviewModal"
+  >
+
+    <div class="file-preview-box">
+
+      <div class="file-preview-header">
+
+        <div
+          class="file-preview-name"
+          id="filePreviewName"
+        ></div>
+
+        <button
+          class="file-preview-close"
+          id="filePreviewClose"
+          type="button"
+        >
+          ×
+        </button>
+
+      </div>
+
+      <div
+        class="file-preview-content"
+        id="filePreviewContent"
+      ></div>
+
+    </div>
+
+  </div>
+
+
+  <!-- =========================================================
+       MODAL ENTREGA DETALHADA
+  ========================================================= -->
+
+  <div class="entrega-modal" id="entregaDetalheModal">
+    <div class="entrega-modal-box">
+
+      <div class="entrega-modal-header">
+
+        <div>
+          <h2 id="entregaDetalheTitulo">Entrega</h2>
+          <p id="entregaDetalhePedido"></p>
+        </div>
+
+        <div class="entrega-header-actions">
+
+          <button
+            type="button"
+            class="exportar-relatorio-button"
+            id="exportarRelatorioButton"
+          >
+            Exportar relatório PDF
+          </button>
+
+          <button
+            type="button"
+            class="entrega-modal-close"
+            id="entregaDetalheClose"
+          >
+            ×
+          </button>
+
+        </div>
+
+      </div>
+
+      <div class="entrega-modal-content">
+
+        <div class="entrega-detalhe-item">
+          <span>Descrição</span>
+          <p id="entregaDetalheDescricao"></p>
+        </div>
+
+        <div class="entrega-detalhe-item">
+          <span>Link</span>
+          <div id="entregaDetalheLink"></div>
+        </div>
+
+        <div class="entrega-detalhe-item">
+          <span>Anexos</span>
+          <div id="entregaDetalheAnexos"></div>
+        </div>
+
+        <div class="entrega-detalhe-item">
+          <span>Entregue em</span>
+          <strong id="entregaDetalheData"></strong>
+        </div>
+
+      </div>
+
+    </div>
+  </div>
+
+
+  <!-- =========================================================
+       MODAL PEDIDO DO CLIENTE
+  ========================================================= -->
+
+  <div
+    class="pedido-cliente-modal"
+    id="pedidoClienteModal"
+  >
+
+    <div class="pedido-cliente-modal-box">
+
+      <button
+        type="button"
+        class="pedido-cliente-fechar"
+        id="fecharPedidoCliente"
+      >
+        ×
+      </button>
+
+      <div class="pedido-cliente-topo">
+
+        <span>
+          PEDIDO
+        </span>
+
+        <h2 id="pedidoClienteTitulo">
+          Pedido
+        </h2>
+
+        <div id="pedidoClienteStatus"></div>
+
+      </div>
+
+
+      <div class="pedido-cliente-detail">
+
+        <span>PROJETO</span>
+
+        <p id="pedidoClienteProjeto"></p>
+
+      </div>
+
+
+      <div class="pedido-cliente-detail">
+
+        <span>DESCRIÇÃO</span>
+
+        <p id="pedidoClienteDescricao"></p>
+
+      </div>
+
+
+      <div class="pedido-cliente-detail">
+
+        <span>LINK ENVIADO</span>
+
+        <div id="pedidoClienteLink"></div>
+
+      </div>
+
+
+      <div class="pedido-cliente-detail">
+
+        <span>ANEXOS</span>
+
+        <div id="pedidoClienteAnexos"></div>
+
+      </div>
+
+
+      <div class="pedido-cliente-detail">
+
+        <span>ENVIADO EM</span>
+
+        <p id="pedidoClienteData"></p>
+
+      </div>
+
+
+      <div
+        id="pedidoClienteEntrega"
+        style="display:none;"
+      >
+
+        <div class="pedido-cliente-divisor"></div>
+
+        <div class="pedido-cliente-entrega-header">
+
+          <div>
+            <span>ENTREGA</span>
+            <h3>Pedido concluído</h3>
+          </div>
+
+          <span class="pedido-entregue-badge">
+            ✓ Entregue
+          </span>
+
+        </div>
+
+
+        <div class="pedido-cliente-detail">
+
+          <span>TÍTULO DA ENTREGA</span>
+
+          <p id="pedidoClienteEntregaTitulo"></p>
+
+        </div>
+
+
+        <div class="pedido-cliente-detail">
+
+          <span>DESCRIÇÃO DA ENTREGA</span>
+
+          <p id="pedidoClienteEntregaDescricao"></p>
+
+        </div>
+
+
+        <div class="pedido-cliente-detail">
+
+          <span>LINK DA ENTREGA</span>
+
+          <div id="pedidoClienteEntregaLink"></div>
+
+        </div>
+
+
+        <div class="pedido-cliente-detail">
+
+          <span>ANEXOS DA ENTREGA</span>
+
+          <div id="pedidoClienteEntregaAnexos"></div>
+
+        </div>
+
+
+        <div class="pedido-cliente-detail">
+
+          <span>ENTREGUE EM</span>
+
+          <p id="pedidoClienteEntregaData"></p>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <script>
+
+    const SUPABASE_URL =
+      "https://rvtsrnnuhkmqxutlbeyr.supabase.co";
+
+    const SUPABASE_KEY =
+      "sb_publishable_zDv6yIvfB-4HtNlqwSsXGw_CjAx9nOm";
+
+
+    const supabaseClient =
+      supabase.createClient(
+        SUPABASE_URL,
+        SUPABASE_KEY
+      );
+
+
+    let usuarioAtual = null;
+    let clienteAtual = null;
+    let arquivosSelecionados = [];
+    let etapaAtual = 1;
+    let entregaAtual = null;
+    let anexosEntregaAtual = [];
+    let realtimePedidosChannel = null;
+    let realtimeEntregasChannel = null;
+
+    let pedidosCarregados = [];
+    let entregasCarregadas = [];
+
+
+    const loading =
+      document.getElementById(
+        "dashboardLoading"
+      );
+
+    const app =
+      document.getElementById(
+        "dashboardApp"
+      );
+
+    const userEmail =
+      document.getElementById(
+        "userEmail"
+      );
+
+    const logoutButton =
+      document.getElementById(
+        "logoutButton"
+      );
+
+
+    /* NAVEGAÇÃO */
+
+    document
+      .querySelectorAll(
+        ".menu-button"
+      )
+      .forEach(
+        button => {
+
+          button.addEventListener(
+            "click",
+            () => {
+
+              const page =
+                button.dataset.page;
+
+              abrirPagina(page);
+
+            }
+          );
+
+        }
+      );
+
+
+    function abrirPagina(page) {
+
+      document
+        .querySelectorAll(
+          ".menu-button"
+        )
+        .forEach(
+          item =>
+            item.classList.remove(
+              "active"
+            )
+        );
+
+
+      document
+        .querySelector(
+          `[data-page="${page}"]`
+        )
+        .classList.add(
+          "active"
+        );
+
+
+      document
+        .querySelectorAll(
+          ".page"
+        )
+        .forEach(
+          item =>
+            item.classList.remove(
+              "active"
+            )
+        );
+
+
+      document
+        .getElementById(
+          `page-${page}`
+        )
+        .classList.add(
+          "active"
+        );
+
+
+      const nomes = {
+        "inicio": "Início",
+        "novo-pedido": "Novo Pedido",
+        "pedidos": "Meus Pedidos",
+        "entregas": "Entregas"
+      };
+
+
+      document
+        .getElementById(
+          "topbarTitle"
+        )
+        .textContent =
+          nomes[page];
+
+
+      if (
+        page === "pedidos"
+      ) {
+
+        carregarPedidos();
+
+      }
+
+
+      if (page === "entregas") {
+
+        carregarEntregas();
+
+      }
+
+    }
+
+
+    /* LOGIN */
+
+    async function verificarLogin() {
+
+      const {
+        data,
+        error
+      } =
+        await supabaseClient
+          .auth
+          .getSession();
+
+
+      if (
+        error ||
+        !data.session
+      ) {
+
+        window.location.href =
+          "index.html";
+
+        return;
+
+      }
+
+
+      usuarioAtual =
+        data.session.user;
+
+
+      userEmail.textContent =
+        usuarioAtual.email;
+
+
+      const {
+        data: cliente,
+        error: clienteError
+      } =
+        await supabaseClient
+          .from("clientes")
+          .select("*")
+          .eq(
+            "user_id",
+            usuarioAtual.id
+          )
+          .single();
+
+
+      if (clienteError) {
+
+        console.error(
+          clienteError
+        );
+
+        loading.textContent =
+          "Não foi possível carregar os dados do cliente.";
+
+        return;
+
+      }
+
+
+      clienteAtual =
+        cliente;
+
+
+      document
+        .getElementById(
+          "welcomeTitle"
+        )
+        .textContent =
+          `Bem-vindo, ${cliente.nome}.`;
+
+
+      document
+        .getElementById(
+          "clienteProjeto"
+        )
+        .textContent =
+          cliente.projeto;
+
+
+      document
+        .getElementById(
+          "clienteDescricao"
+        )
+        .textContent =
+          cliente.descricao;
+
+
+      app.classList.add(
+        "visible"
+      );
+
+
+      setTimeout(() => {
+
+        loading.classList.add(
+          "saindo"
+        );
+
+
+        setTimeout(() => {
+
+          loading.style.display =
+            "none";
+
+        }, 450);
+
+      }, 900);
+
+
+      await carregarContadores();
+      await carregarEntregas();
+
+      iniciarRealtimeCliente();
+
+    }
+
+
+    /* =========================================================
+       TOASTS
+    ========================================================= */
+
+    function mostrarToast(
+      mensagem,
+      tipo = "success"
+    ) {
+
+      const container =
+        document.getElementById("toastContainer");
+
+      const toast =
+        document.createElement("div");
+
+      toast.className =
+        `toast ${tipo}`;
+
+
+      let icone = "✓";
+
+      if (tipo === "error")
+        icone = "✕";
+
+      if (tipo === "info")
+        icone = "◆";
+
+
+      toast.innerHTML = `
+        <span class="toast-icon">
+          ${icone}
+        </span>
+
+        <span class="toast-text">
+          ${escapeHtml(mensagem)}
+        </span>
+      `;
+
+
+      container.appendChild(toast);
+
+
+      setTimeout(() => {
+
+        toast.style.opacity = "0";
+
+        toast.style.transform =
+          "translateX(20px)";
+
+        toast.style.transition =
+          "0.2s";
+
+        setTimeout(() => {
+          toast.remove();
+        }, 200);
+
+      }, 3500);
+
+    }
+
+
+    /* REALTIME */
+
+    function iniciarRealtimeCliente() {
+
+      if (!usuarioAtual)
+        return;
+
+
+      if (realtimePedidosChannel) {
+        supabaseClient.removeChannel(
+          realtimePedidosChannel
+        );
+      }
+
+      if (realtimeEntregasChannel) {
+        supabaseClient.removeChannel(
+          realtimeEntregasChannel
+        );
+      }
+
+
+      realtimePedidosChannel =
+        supabaseClient
+          .channel(
+            `pedidos-${usuarioAtual.id}`
+          )
+          .on(
+            "postgres_changes",
+            {
+              event: "*",
+              schema: "public",
+              table: "pedidos",
+              filter: `user_id=eq.${usuarioAtual.id}`
+            },
+            async payload => {
+
+              console.log(
+                "Pedido atualizado em tempo real:",
+                payload
+              );
+
+              await carregarPedidos();
+              await carregarContadores();
+
+              if (payload.eventType === "UPDATE") {
+
+                const novoStatus =
+                  payload.new.status;
+
+                if (novoStatus === "em_andamento") {
+
+                  mostrarToast(
+                    "Seu pedido entrou em atendimento.",
+                    "info"
+                  );
+
+                }
+
+                if (novoStatus === "concluido") {
+
+                  mostrarToast(
+                    "Seu pedido foi concluído!",
+                    "success"
+                  );
+
+                }
+
+              }
+
+            }
+          )
+          .subscribe();
+
+
+      realtimeEntregasChannel =
+        supabaseClient
+          .channel(
+            `entregas-${usuarioAtual.id}`
+          )
+          .on(
+            "postgres_changes",
+            {
+              event: "INSERT",
+              schema: "public",
+              table: "entregas",
+              filter: `user_id=eq.${usuarioAtual.id}`
+            },
+            async payload => {
+
+              console.log(
+                "Nova entrega recebida:",
+                payload
+              );
+
+              await carregarEntregas();
+
+              mostrarToast(
+                "Uma nova entrega está disponível.",
+                "success"
+              );
+
+            }
+          )
+          .subscribe();
+
+    }
+
+
+    /* ETAPAS DO FORMULÁRIO */
+
+    function mostrarEtapa(numero) {
+
+      etapaAtual =
+        numero;
+
+
+      document
+        .querySelectorAll(
+          ".form-step"
+        )
+        .forEach(
+          item =>
+            item.classList.remove(
+              "active"
+            )
+        );
+
+
+      document
+        .getElementById(
+          `formStep${numero}`
+        )
+        .classList.add(
+          "active"
+        );
+
+
+      for (
+        let i = 1;
+        i <= 3;
+        i++
+      ) {
+
+        const indicador =
+          document.getElementById(
+            `indicator${i}`
+          );
+
+
+        indicador.classList.remove(
+          "active",
+          "completed"
+        );
+
+
+        if (
+          i === numero
+        ) {
+
+          indicador.classList.add(
+            "active"
+          );
+
+        }
+
+
+        if (
+          i < numero
+        ) {
+
+          indicador.classList.add(
+            "completed"
+          );
+
+        }
+
+      }
+
+    }
+
+
+    document
+      .getElementById(
+        "irParte2"
+      )
+      .addEventListener(
+        "click",
+        () => {
+
+          const projeto =
+            document
+              .getElementById(
+                "pedidoProjeto"
+              )
+              .value
+              .trim();
+
+          const titulo =
+            document
+              .getElementById(
+                "pedidoTitulo"
+              )
+              .value
+              .trim();
+
+          const descricao =
+            document
+              .getElementById(
+                "pedidoDescricao"
+              )
+              .value
+              .trim();
+
+
+          if (
+            !projeto ||
+            !titulo ||
+            !descricao
+          ) {
+
+            mostrarToast(
+              "Preencha Projeto, Título e Descrição.",
+              "error"
+            );
+
+            return;
+
+          }
+
+
+          mostrarEtapa(2);
+
+        }
+      );
+
+
+    document
+      .getElementById(
+        "voltarParte1"
+      )
+      .addEventListener(
+        "click",
+        () => {
+
+          mostrarEtapa(1);
+
+        }
+      );
+
+
+    document
+      .getElementById(
+        "irParte3"
+      )
+      .addEventListener(
+        "click",
+        () => {
+
+          atualizarRevisao();
+
+          mostrarEtapa(3);
+
+        }
+      );
+
+
+    /* ARQUIVOS */
+
+    document
+      .getElementById(
+        "pedidoArquivos"
+      )
+      .addEventListener(
+        "change",
+        event => {
+
+          const novosArquivos =
+            Array.from(
+              event.target.files
+            );
+
+          novosArquivos.forEach(
+            arquivo => {
+
+              const jaExiste =
+                arquivosSelecionados.some(
+                  existente =>
+                    existente.name === arquivo.name &&
+                    existente.size === arquivo.size &&
+                    existente.lastModified === arquivo.lastModified
+                );
+
+              if (!jaExiste) {
+                arquivosSelecionados.push(
+                  arquivo
+                );
+              }
+
+            }
+          );
+
+          event.target.value =
+            "";
+
+          renderizarArquivos();
+
+        }
+      );
+
+
+    function renderizarArquivos() {
+
+      const lista =
+        document.getElementById(
+          "selectedFiles"
+        );
+
+      lista.innerHTML =
+        "";
+
+
+      arquivosSelecionados.forEach(
+        (arquivo, index) => {
+
+          const item =
+            document.createElement(
+              "div"
+            );
+
+          item.className =
+            "selected-file";
+
+
+          const info =
+            document.createElement(
+              "div"
+            );
+
+          info.className =
+            "selected-file-info";
+
+
+          const nome =
+            document.createElement(
+              "span"
+            );
+
+          nome.className =
+            "selected-file-name";
+
+          nome.textContent =
+            arquivo.name;
+
+
+          const tamanho =
+            document.createElement(
+              "span"
+            );
+
+          tamanho.textContent =
+            formatarTamanho(
+              arquivo.size
+            );
+
+
+          info.appendChild(
+            nome
+          );
+
+
+          const actions =
+            document.createElement(
+              "div"
+            );
+
+          actions.className =
+            "selected-file-actions";
+
+
+          const visualizar =
+            document.createElement(
+              "button"
+            );
+
+          visualizar.type =
+            "button";
+
+          visualizar.className =
+            "file-action-button";
+
+          visualizar.title =
+            "Visualizar anexo";
+
+          visualizar.innerHTML =
+            "👁";
+
+          visualizar.addEventListener(
+            "click",
+            () => {
+
+              visualizarArquivo(
+                arquivo
+              );
+
+            }
+          );
+
+
+          const excluir =
+            document.createElement(
+              "button"
+            );
+
+          excluir.type =
+            "button";
+
+          excluir.className =
+            "file-action-button file-delete-button";
+
+          excluir.title =
+            "Remover anexo";
+
+          excluir.innerHTML =
+            "🗑";
+
+          excluir.addEventListener(
+            "click",
+            () => {
+
+              arquivosSelecionados.splice(
+                index,
+                1
+              );
+
+              renderizarArquivos();
+
+            }
+          );
+
+
+          actions.appendChild(
+            visualizar
+          );
+
+          actions.appendChild(
+            excluir
+          );
+
+
+          item.appendChild(
+            info
+          );
+
+          item.appendChild(
+            tamanho
+          );
+
+          item.appendChild(
+            actions
+          );
+
+
+          lista.appendChild(
+            item
+          );
+
+        }
+      );
+
+    }
+
+
+    function visualizarArquivo(
+      arquivo
+    ) {
+
+      const modal =
+        document.getElementById(
+          "filePreviewModal"
+        );
+
+      const content =
+        document.getElementById(
+          "filePreviewContent"
+        );
+
+      const name =
+        document.getElementById(
+          "filePreviewName"
+        );
+
+
+      content.innerHTML =
+        "";
+
+      name.textContent =
+        arquivo.name;
+
+
+      const url =
+        URL.createObjectURL(
+          arquivo
+        );
+
+
+      if (
+        arquivo.type.startsWith(
+          "image/"
+        )
+      ) {
+
+        const imagem =
+          document.createElement(
+            "img"
+          );
+
+        imagem.src =
+          url;
+
+        imagem.onload =
+          () => {
+
+            URL.revokeObjectURL(
+              url
+            );
+
+          };
+
+        content.appendChild(
+          imagem
+        );
+
+      }
+
+      else if (
+        arquivo.type.startsWith(
+          "video/"
+        )
+      ) {
+
+        const video =
+          document.createElement(
+            "video"
+          );
+
+        video.src =
+          url;
+
+        video.controls =
+          true;
+
+        video.autoplay =
+          false;
+
+        video.onloadeddata =
+          () => {
+
+            URL.revokeObjectURL(
+              url
+            );
+
+          };
+
+        content.appendChild(
+          video
+        );
+
+      }
+
+
+      modal.classList.add(
+        "visible"
+      );
+
+    }
+
+
+    function fecharPreview() {
+
+      const modal =
+        document.getElementById(
+          "filePreviewModal"
+        );
+
+      const content =
+        document.getElementById(
+          "filePreviewContent"
+        );
+
+
+      const video =
+        content.querySelector(
+          "video"
+        );
+
+      if (video) {
+        video.pause();
+      }
+
+
+      content.innerHTML =
+        "";
+
+      modal.classList.remove(
+        "visible"
+      );
+
+    }
+
+
+    document
+      .getElementById(
+        "filePreviewClose"
+      )
+      .addEventListener(
+        "click",
+        fecharPreview
+      );
+
+
+    document
+      .getElementById(
+        "filePreviewModal"
+      )
+      .addEventListener(
+        "click",
+        event => {
+
+          if (
+            event.target.id ===
+            "filePreviewModal"
+          ) {
+
+            fecharPreview();
+
+          }
+
+        }
+      );
+
+
+    function formatarTamanho(bytes) {
+
+      if (
+        bytes < 1024 * 1024
+      ) {
+
+        return (
+          bytes / 1024
+        ).toFixed(1) +
+        " KB";
+
+      }
+
+
+      return (
+        bytes /
+        1024 /
+        1024
+      ).toFixed(1) +
+      " MB";
+
+    }
+
+
+    /* REVISÃO */
+
+    function atualizarRevisao() {
+
+      const projeto =
+        document
+          .getElementById(
+            "pedidoProjeto"
+          )
+          .value
+          .trim();
+
+      const titulo =
+        document
+          .getElementById(
+            "pedidoTitulo"
+          )
+          .value
+          .trim();
+
+      const descricao =
+        document
+          .getElementById(
+            "pedidoDescricao"
+          )
+          .value
+          .trim();
+
+      const link =
+        document
+          .getElementById(
+            "pedidoLink"
+          )
+          .value
+          .trim();
+
+
+      document
+        .getElementById(
+          "reviewProjeto"
+        )
+        .textContent =
+          projeto;
+
+
+      document
+        .getElementById(
+          "reviewTitulo"
+        )
+        .textContent =
+          titulo;
+
+
+      document
+        .getElementById(
+          "reviewDescricao"
+        )
+        .textContent =
+          descricao;
+
+
+      document
+        .getElementById(
+          "reviewLink"
+        )
+        .textContent =
+          link || "Nenhum link informado";
+
+
+      document
+        .getElementById(
+          "reviewArquivos"
+        )
+        .textContent =
+          arquivosSelecionados.length
+            ? arquivosSelecionados
+                .map(
+                  arquivo =>
+                    arquivo.name
+                )
+                .join(", ")
+            : "Nenhum arquivo anexado";
+
+    }
+
+
+    /* EDITAR */
+
+    const editOptions =
+      document.getElementById(
+        "editOptions"
+      );
+
+
+    document
+      .getElementById(
+        "editarPedido"
+      )
+      .addEventListener(
+        "click",
+        () => {
+
+          editOptions
+            .classList
+            .toggle(
+              "visible"
+            );
+
+        }
+      );
+
+
+    document
+      .querySelectorAll(
+        "[data-edit-step]"
+      )
+      .forEach(
+        button => {
+
+          button.addEventListener(
+            "click",
+            () => {
+
+              editOptions
+                .classList
+                .remove(
+                  "visible"
+                );
+
+
+              mostrarEtapa(
+                Number(
+                  button.dataset.editStep
+                )
+              );
+
+            }
+          );
+
+        }
+      );
+
+
+    /* ENVIAR PEDIDO */
+
+    document
+      .getElementById(
+        "enviarPedido"
+      )
+      .addEventListener(
+        "click",
+        enviarPedido
+      );
+
+
+    async function enviarPedido() {
+
+      const botao =
+        document.getElementById(
+          "enviarPedido"
+        );
+
+      const success =
+        document.getElementById(
+          "pedidoSuccess"
+        );
+
+      const errorBox =
+        document.getElementById(
+          "pedidoError"
+        );
+
+
+      success.style.display =
+        "none";
+
+      errorBox.style.display =
+        "none";
+
+
+      const projeto =
+        document
+          .getElementById(
+            "pedidoProjeto"
+          )
+          .value
+          .trim();
+
+      const titulo =
+        document
+          .getElementById(
+            "pedidoTitulo"
+          )
+          .value
+          .trim();
+
+      const descricao =
+        document
+          .getElementById(
+            "pedidoDescricao"
+          )
+          .value
+          .trim();
+
+      const link =
+        document
+          .getElementById(
+            "pedidoLink"
+          )
+          .value
+          .trim();
+
+
+      if (
+        !projeto ||
+        !titulo ||
+        !descricao
+      ) {
+
+        errorBox.textContent =
+          "Existem campos obrigatórios faltando.";
+
+        errorBox.style.display =
+          "block";
+
+        return;
+
+      }
+
+
+      botao.disabled =
+        true;
+
+      botao.textContent =
+        "Enviando...";
+
+
+      try {
+
+        const {
+          data: pedido,
+          error: pedidoError
+        } =
+          await supabaseClient
+            .from("pedidos")
+            .insert({
+              user_id:
+                usuarioAtual.id,
+
+              projeto:
+                projeto,
+
+              titulo:
+                titulo,
+
+              descricao:
+                descricao,
+
+              link:
+                link || null,
+
+              status:
+                "pendente"
+            })
+            .select()
+            .single();
+
+
+        if (pedidoError) {
+
+          throw pedidoError;
+
+        }
+
+
+        for (
+          const arquivo
+          of arquivosSelecionados
+        ) {
+
+          const nomeSeguro =
+            arquivo.name
+              .replace(
+                /[^a-zA-Z0-9._-]/g,
+                "_"
+              );
+
+
+          const arquivoPath =
+            `${usuarioAtual.id}/${pedido.id}/${Date.now()}-${nomeSeguro}`;
+
+
+          const {
+            error: uploadError
+          } =
+            await supabaseClient
+              .storage
+              .from(
+                "pedido-anexos"
+              )
+              .upload(
+                arquivoPath,
+                arquivo,
+                {
+                  cacheControl:
+                    "3600",
+
+                  upsert:
+                    false
+                }
+              );
+
+
+          if (uploadError) {
+
+            throw uploadError;
+
+          }
+
+
+          const {
+            error: anexoError
+          } =
+            await supabaseClient
+              .from(
+                "pedido_anexos"
+              )
+              .insert({
+                pedido_id:
+                  pedido.id,
+
+                user_id:
+                  usuarioAtual.id,
+
+                nome_arquivo:
+                  arquivo.name,
+
+                tipo_arquivo:
+                  arquivo.type,
+
+                arquivo_path:
+                  arquivoPath
+              });
+
+
+          if (anexoError) {
+
+            throw anexoError;
+
+          }
+
+        }
+
+
+        success.style.display =
+          "block";
+
+
+        botao.textContent =
+          "Enviado ✓";
+
+
+        await carregarContadores();
+
+
+        setTimeout(
+          () => {
+
+            limparFormulario();
+
+            abrirPagina(
+              "pedidos"
+            );
+
+          },
+          1300
+        );
+
+
+      } catch (error) {
+
+        console.error(
+          "Erro ao enviar pedido:",
+          error
+        );
+
+
+        errorBox.textContent =
+          "Não foi possível enviar o pedido: " +
+          (
+            error.message ||
+            "erro desconhecido"
+          );
+
+
+        errorBox.style.display =
+          "block";
+
+
+        botao.disabled =
+          false;
+
+        botao.textContent =
+          "Enviar Pedido";
+
+      }
+
+    }
+
+
+    function limparFormulario() {
+
+      document
+        .getElementById(
+          "pedidoProjeto"
+        )
+        .value =
+          "";
+
+      document
+        .getElementById(
+          "pedidoTitulo"
+        )
+        .value =
+          "";
+
+      document
+        .getElementById(
+          "pedidoDescricao"
+        )
+        .value =
+          "";
+
+      document
+        .getElementById(
+          "pedidoLink"
+        )
+        .value =
+          "";
+
+      document
+        .getElementById(
+          "pedidoArquivos"
+        )
+        .value =
+          "";
+
+      document
+        .getElementById(
+          "selectedFiles"
+        )
+        .innerHTML =
+          "";
+
+      arquivosSelecionados =
+        [];
+
+      mostrarEtapa(1);
+
+
+      const botao =
+        document.getElementById(
+          "enviarPedido"
+        );
+
+
+      botao.disabled =
+        false;
+
+      botao.textContent =
+        "Enviar Pedido";
+
+
+      document
+        .getElementById(
+          "pedidoSuccess"
+        )
+        .style
+        .display =
+          "none";
+
+    }
+
+
+    /* CARREGAR PEDIDOS */
+
+    async function carregarPedidos() {
+
+      const lista =
+        document.getElementById(
+          "ordersList"
+        );
+
+
+      lista.innerHTML =
+        `
+          <div class="empty">
+            Carregando pedidos...
+          </div>
+        `;
+
+
+      const {
+        data,
+        error
+      } =
+        await supabaseClient
+          .from("pedidos")
+          .select("*")
+          .order(
+            "created_at",
+            {
+              ascending:
+                false
+            }
+          );
+
+
+      if (error) {
+
+        console.error(
+          error
+        );
+
+
+        lista.innerHTML =
+          `
+            <div class="empty">
+              Não foi possível carregar os pedidos.
+            </div>
+          `;
+
+        return;
+
+      }
+
+
+      if (
+        !data ||
+        data.length === 0
+      ) {
+
+        lista.innerHTML =
+          `
+            <div class="empty">
+              Você ainda não enviou nenhum pedido.
+            </div>
+          `;
+
+        pedidosCarregados = [];
+
+        return;
+
+      }
+
+
+      pedidosCarregados =
+        data;
+
+
+      lista.innerHTML =
+        "";
+
+
+      data.forEach(
+        pedido => {
+
+          const item =
+            document.createElement(
+              "div"
+            );
+
+
+          item.className =
+            "order-item";
+
+          item.dataset.pedidoId =
+            pedido.id;
+
+
+          const dataPedido =
+            new Date(
+              pedido.created_at
+            );
+
+
+          item.innerHTML =
+            `
+
+              <div>
+
+                <div class="order-title">
+                  ${escapeHtml(pedido.titulo)}
+                </div>
+
+                <div class="order-meta">
+
+                  ${escapeHtml(pedido.projeto)}
+
+                  ·
+
+                  ${dataPedido.toLocaleString(
+                    "pt-BR"
+                  )}
+
+                </div>
+
+              </div>
+
+
+              <div
+                class="
+                  status
+                  status-${pedido.status}
+                "
+              >
+                ${traduzirStatus(
+                  pedido.status
+                )}
+              </div>
+
+            `;
+
+
+          lista.appendChild(
+            item
+          );
+
+        }
+      );
+
+
+      aplicarFiltroPedidos();
+
+    }
+
+
+    function aplicarFiltroPedidos() {
+
+      const lista =
+        document.getElementById(
+          "ordersList"
+        );
+
+
+      const busca =
+        document
+          .getElementById(
+            "filtroPedidosBusca"
+          )
+          .value
+          .trim()
+          .toLowerCase();
+
+
+      const status =
+        document
+          .getElementById(
+            "filtroPedidosStatus"
+          )
+          .value;
+
+
+      const filtrados =
+        pedidosCarregados.filter(
+          pedido => {
+
+            const correspondeBusca =
+              pedido.titulo
+                .toLowerCase()
+                .includes(busca)
+              ||
+              pedido.projeto
+                .toLowerCase()
+                .includes(busca);
+
+
+            const correspondeStatus =
+              status === "todos"
+              ||
+              pedido.status === status;
+
+
+            return (
+              correspondeBusca &&
+              correspondeStatus
+            );
+
+          }
+        );
+
+
+      lista.innerHTML =
+        "";
+
+
+      if (filtrados.length === 0) {
+
+        lista.innerHTML = `
+          <div class="empty">
+            Nenhum pedido encontrado.
+          </div>
+        `;
+
+        return;
+      }
+
+
+      filtrados.forEach(
+        pedido => {
+
+          const item =
+            document.createElement(
+              "div"
+            );
+
+
+          item.className =
+            "order-item";
+
+
+          item.dataset.pedidoId =
+            pedido.id;
+
+
+          const dataPedido =
+            new Date(
+              pedido.created_at
+            );
+
+
+          item.innerHTML = `
+
+            <div>
+
+              <div class="order-title">
+                ${escapeHtml(pedido.titulo)}
+              </div>
+
+              <div class="order-meta">
+
+                ${escapeHtml(pedido.projeto)}
+
+                ·
+
+                ${dataPedido.toLocaleString(
+                  "pt-BR"
+                )}
+
+              </div>
+
+            </div>
+
+
+            <div
+              class="
+                status
+                status-${pedido.status}
+              "
+            >
+
+              ${traduzirStatus(
+                pedido.status
+              )}
+
+            </div>
+
+          `;
+
+
+          lista.appendChild(
+            item
+          );
+
+        }
+      );
+
+    }
+
+
+    document
+      .getElementById(
+        "filtroPedidosBusca"
+      )
+      .addEventListener(
+        "input",
+        aplicarFiltroPedidos
+      );
+
+
+    document
+      .getElementById(
+        "filtroPedidosStatus"
+      )
+      .addEventListener(
+        "change",
+        aplicarFiltroPedidos
+      );
+
+
+    async function carregarContadores() {
+
+      const {
+        data,
+        error
+      } =
+        await supabaseClient
+          .from("pedidos")
+          .select("status");
+
+
+      if (error) {
+
+        console.error(
+          error
+        );
+
+        return;
+
+      }
+
+
+      const pendentes =
+        data.filter(
+          pedido =>
+            pedido.status ===
+            "pendente"
+        ).length;
+
+
+      const concluidos =
+        data.filter(
+          pedido =>
+            pedido.status ===
+            "concluido"
+        ).length;
+
+
+      document
+        .getElementById(
+          "contadorPendentes"
+        )
+        .textContent =
+          pendentes;
+
+
+      document
+        .getElementById(
+          "contadorConcluidos"
+        )
+        .textContent =
+          concluidos;
+
+    }
+
+
+    /* CARREGAR ENTREGAS */
+
+    async function carregarEntregas() {
+
+      const lista =
+        document.getElementById("entregasLista");
+
+      if (!lista || !usuarioAtual)
+        return;
+
+      lista.innerHTML = `
+        <div class="empty-state">
+          Carregando entregas...
+        </div>
+      `;
+
+
+      const {
+        data: entregas,
+        error
+      } = await supabaseClient
+        .from("entregas")
+        .select("*")
+        .eq("user_id", usuarioAtual.id)
+        .order("created_at", {
+          ascending: false
+        });
+
+
+      if (error) {
+
+        console.error(
+          "Erro ao carregar entregas:",
+          error
+        );
+
+        lista.innerHTML = `
+          <div class="empty-state">
+            Não foi possível carregar suas entregas.
+          </div>
+        `;
+
+        return;
+      }
+
+
+      if (!entregas || entregas.length === 0) {
+
+        lista.innerHTML = `
+          <div class="empty-state">
+            Nenhuma entrega disponível no momento.
+          </div>
+        `;
+
+        return;
+      }
+
+
+      lista.innerHTML = "";
+
+
+      for (const entrega of entregas) {
+
+        const {
+          data: pedido
+        } = await supabaseClient
+          .from("pedidos")
+          .select("titulo, projeto")
+          .eq("id", entrega.pedido_id)
+          .single();
+
+
+        const item =
+          document.createElement("div");
+
+        item.className =
+          "entrega-card";
+
+
+        item.innerHTML = `
+
+          <div class="entrega-card-info">
+
+            <strong>
+              ${escapeHtml(entrega.titulo)}
+            </strong>
+
+            <span>
+              ${escapeHtml(
+                pedido?.titulo || "Pedido"
+              )}
+            </span>
+
+            <span>
+              ${new Date(
+                entrega.created_at
+              ).toLocaleString("pt-BR")}
+            </span>
+
+          </div>
+
+          <button
+            type="button"
+            class="entrega-ver-button"
+            data-entrega-id="${entrega.id}"
+          >
+            Ver entrega
+          </button>
+
+        `;
+
+
+        lista.appendChild(item);
+
+      }
+
+    }
+
+
+    /* ABRIR ENTREGA DETALHADA */
+
+    async function abrirEntregaDetalhada(entregaId) {
+
+      const {
+        data: entrega,
+        error
+      } = await supabaseClient
+        .from("entregas")
+        .select("*")
+        .eq("id", entregaId)
+        .single();
+
+
+      if (error || !entrega) {
+
+        console.error(error);
+
+        mostrarToast(
+          "Não foi possível carregar a entrega.",
+          "error"
+        );
+
+        return;
+      }
+
+
+      entregaAtual = entrega;
+
+
+      const {
+        data: pedido
+      } = await supabaseClient
+        .from("pedidos")
+        .select("titulo, projeto")
+        .eq("id", entrega.pedido_id)
+        .single();
+
+
+      document
+        .getElementById("entregaDetalheTitulo")
+        .textContent =
+          entrega.titulo;
+
+
+      document
+        .getElementById("entregaDetalhePedido")
+        .textContent =
+          pedido
+            ? `${pedido.titulo} • ${pedido.projeto}`
+            : "Pedido";
+
+
+      document
+        .getElementById("entregaDetalheDescricao")
+        .textContent =
+          entrega.descricao;
+
+
+      document
+        .getElementById("entregaDetalheData")
+        .textContent =
+          new Date(
+            entrega.created_at
+          ).toLocaleString("pt-BR");
+
+
+      const linkContainer =
+        document.getElementById(
+          "entregaDetalheLink"
+        );
+
+
+      if (entrega.link) {
+
+        const link =
+          document.createElement("a");
+
+        link.href =
+          entrega.link;
+
+        link.target =
+          "_blank";
+
+        link.rel =
+          "noopener noreferrer";
+
+        link.textContent =
+          "Abrir link enviado";
+
+
+        linkContainer.innerHTML =
+          "";
+
+        linkContainer.appendChild(
+          link
+        );
+
+      } else {
+
+        linkContainer.textContent =
+          "Nenhum link enviado.";
+
+      }
+
+
+      await carregarAnexosEntrega(
+        entrega.id
+      );
+
+
+      document
+        .getElementById("entregaDetalheModal")
+        .classList.add("visible");
+
+    }
+
+
+    async function carregarAnexosEntrega(entregaId) {
+
+      const container =
+        document.getElementById(
+          "entregaDetalheAnexos"
+        );
+
+
+      container.textContent =
+        "Carregando anexos...";
+
+
+      const {
+        data: anexos,
+        error
+      } = await supabaseClient
+        .from("entrega_anexos")
+        .select("*")
+        .eq("entrega_id", entregaId)
+        .order("created_at", {
+          ascending: true
+        });
+
+
+      if (error) {
+
+        console.error(error);
+
+        container.textContent =
+          "Não foi possível carregar os anexos.";
+
+        return;
+      }
+
+
+      if (!anexos || anexos.length === 0) {
+
+        anexosEntregaAtual = [];
+
+        container.textContent =
+          "Nenhum anexo enviado.";
+
+        return;
+      }
+
+
+      anexosEntregaAtual = anexos || [];
+
+
+      container.innerHTML = "";
+
+
+      for (const anexo of anexos) {
+
+        const {
+          data: signedData,
+          error: signedError
+        } = await supabaseClient
+          .storage
+          .from("entrega-anexos")
+          .createSignedUrl(
+            anexo.arquivo_path,
+            3600
+          );
+
+
+        const item =
+          document.createElement("div");
+
+        item.className =
+          "entrega-anexo-item";
+
+
+        const nome =
+          document.createElement("span");
+
+        nome.textContent =
+          anexo.nome_arquivo;
+
+
+        const botoes =
+          document.createElement("div");
+
+        botoes.className =
+          "entrega-anexo-botoes";
+
+
+        if (
+          !signedError &&
+          signedData?.signedUrl
+        ) {
+
+          const visualizar =
+            document.createElement("button");
+
+          visualizar.type =
+            "button";
+
+          visualizar.textContent =
+            "Visualizar";
+
+          visualizar.addEventListener(
+            "click",
+            () => {
+
+              window.open(
+                signedData.signedUrl,
+                "_blank",
+                "noopener,noreferrer"
+              );
+
+            }
+          );
+
+
+          const baixar =
+            document.createElement("button");
+
+          baixar.type =
+            "button";
+
+          baixar.textContent =
+            "Baixar";
+
+          baixar.addEventListener(
+            "click",
+            () => {
+
+              const link =
+                document.createElement("a");
+
+              link.href =
+                signedData.signedUrl;
+
+              link.download =
+                anexo.nome_arquivo;
+
+              link.target =
+                "_blank";
+
+              link.click();
+
+            }
+          );
+
+
+          botoes.appendChild(
+            visualizar
+          );
+
+          botoes.appendChild(
+            baixar
+          );
+
+        }
+
+
+        item.appendChild(nome);
+        item.appendChild(botoes);
+
+        container.appendChild(item);
+
+      }
+
+    }
+
+
+    document
+      .getElementById("entregasLista")
+      .addEventListener(
+        "click",
+        event => {
+
+          const botao =
+            event.target.closest(
+              ".entrega-ver-button"
+            );
+
+          if (!botao)
+            return;
+
+
+          abrirEntregaDetalhada(
+            Number(
+              botao.dataset.entregaId
+            )
+          );
+
+        }
+      );
+
+
+    document
+      .getElementById("entregaDetalheClose")
+      .addEventListener(
+        "click",
+        () => {
+
+          document
+            .getElementById("entregaDetalheModal")
+            .classList.remove("visible");
+
+        }
+      );
+
+
+    /* =========================================================
+       MODAL PEDIDO DO CLIENTE
+    ========================================================= */
+
+    async function abrirPedidoCliente(pedidoId) {
+
+      const {
+        data: pedido,
+        error
+      } = await supabaseClient
+        .from("pedidos")
+        .select("*")
+        .eq("id", pedidoId)
+        .single();
+
+
+      if (error || !pedido) {
+
+        console.error(
+          "Erro ao carregar pedido:",
+          error
+        );
+
+        mostrarToast(
+          "Não foi possível abrir o pedido.",
+          "error"
+        );
+
+        return;
+      }
+
+
+      document
+        .getElementById("pedidoClienteTitulo")
+        .textContent =
+          pedido.titulo;
+
+
+      document
+        .getElementById("pedidoClienteProjeto")
+        .textContent =
+          pedido.projeto;
+
+
+      document
+        .getElementById("pedidoClienteDescricao")
+        .textContent =
+          pedido.descricao;
+
+
+      document
+        .getElementById("pedidoClienteData")
+        .textContent =
+          new Date(
+            pedido.created_at
+          ).toLocaleString("pt-BR");
+
+
+      const statusContainer =
+        document.getElementById(
+          "pedidoClienteStatus"
+        );
+
+
+      let statusTexto =
+        "Pendente";
+
+      let statusClasse =
+        "status-pendente";
+
+
+      if (
+        pedido.status ===
+        "em_andamento"
+      ) {
+
+        statusTexto =
+          "Em andamento";
+
+        statusClasse =
+          "status-andamento";
+
+      }
+
+
+      if (
+        pedido.status ===
+        "concluido"
+      ) {
+
+        statusTexto =
+          "Concluído";
+
+        statusClasse =
+          "status-concluido";
+
+      }
+
+
+      statusContainer.innerHTML = `
+        <span class="status ${statusClasse}">
+          ${statusTexto}
+        </span>
+      `;
+
+
+      const linkContainer =
+        document.getElementById(
+          "pedidoClienteLink"
+        );
+
+
+      if (pedido.link) {
+
+        linkContainer.innerHTML = "";
+
+        const link =
+          document.createElement("a");
+
+        link.href =
+          pedido.link;
+
+        link.target =
+          "_blank";
+
+        link.rel =
+          "noopener noreferrer";
+
+        link.textContent =
+          "Abrir link enviado";
+
+        linkContainer.appendChild(link);
+
+      } else {
+
+        linkContainer.textContent =
+          "Nenhum link enviado.";
+
+      }
+
+
+      await carregarAnexosPedidoCliente(
+        pedido.id
+      );
+
+
+      const areaEntrega =
+        document.getElementById(
+          "pedidoClienteEntrega"
+        );
+
+
+      areaEntrega.style.display =
+        "none";
+
+
+      if (
+        pedido.status ===
+        "concluido"
+      ) {
+
+        await carregarEntregaPedidoCliente(
+          pedido.id
+        );
+
+      }
+
+
+      document
+        .getElementById("pedidoClienteModal")
+        .classList.add("active");
+
+    }
+
+
+    async function carregarAnexosPedidoCliente(
+      pedidoId
+    ) {
+
+      const container =
+        document.getElementById(
+          "pedidoClienteAnexos"
+        );
+
+
+      container.textContent =
+        "Carregando anexos...";
+
+
+      const {
+        data: anexos,
+        error
+      } = await supabaseClient
+        .from("pedido_anexos")
+        .select("*")
+        .eq("pedido_id", pedidoId)
+        .order("created_at", {
+          ascending: true
+        });
+
+
+      if (error) {
+
+        console.error(error);
+
+        container.textContent =
+          "Não foi possível carregar os anexos.";
+
+        return;
+      }
+
+
+      if (!anexos || anexos.length === 0) {
+
+        container.textContent =
+          "Nenhum anexo enviado.";
+
+        return;
+      }
+
+
+      container.innerHTML = "";
+
+
+      for (const anexo of anexos) {
+
+        const {
+          data: signedData
+        } = await supabaseClient
+          .storage
+          .from("pedido-anexos")
+          .createSignedUrl(
+            anexo.arquivo_path,
+            3600
+          );
+
+
+        const item =
+          document.createElement("div");
+
+        item.className =
+          "pedido-cliente-anexo";
+
+
+        const nome =
+          document.createElement("span");
+
+        nome.textContent =
+          anexo.nome_arquivo;
+
+
+        const botao =
+          document.createElement("button");
+
+        botao.type =
+          "button";
+
+        botao.textContent =
+          "Visualizar";
+
+
+        if (signedData?.signedUrl) {
+
+          botao.addEventListener(
+            "click",
+            () => {
+
+              window.open(
+                signedData.signedUrl,
+                "_blank",
+                "noopener,noreferrer"
+              );
+
+            }
+          );
+
+        } else {
+
+          botao.disabled =
+            true;
+
+          botao.textContent =
+            "Indisponível";
+
+        }
+
+
+        item.appendChild(nome);
+        item.appendChild(botao);
+
+        container.appendChild(item);
+
+      }
+
+    }
+
+
+    async function carregarEntregaPedidoCliente(
+      pedidoId
+    ) {
+
+      const {
+        data: entrega,
+        error
+      } = await supabaseClient
+        .from("entregas")
+        .select("*")
+        .eq("pedido_id", pedidoId)
+        .maybeSingle();
+
+
+      if (error || !entrega) {
+
+        if (error) {
+          console.error(error);
+        }
+
+        return;
+      }
+
+
+      document
+        .getElementById(
+          "pedidoClienteEntregaTitulo"
+        )
+        .textContent =
+          entrega.titulo;
+
+
+      document
+        .getElementById(
+          "pedidoClienteEntregaDescricao"
+        )
+        .textContent =
+          entrega.descricao;
+
+
+      document
+        .getElementById(
+          "pedidoClienteEntregaData"
+        )
+        .textContent =
+          new Date(
+            entrega.created_at
+          ).toLocaleString("pt-BR");
+
+
+      const linkContainer =
+        document.getElementById(
+          "pedidoClienteEntregaLink"
+        );
+
+
+      if (entrega.link) {
+
+        linkContainer.innerHTML = "";
+
+        const link =
+          document.createElement("a");
+
+        link.href =
+          entrega.link;
+
+        link.target =
+          "_blank";
+
+        link.rel =
+          "noopener noreferrer";
+
+        link.textContent =
+          "Abrir link da entrega";
+
+        linkContainer.appendChild(link);
+
+      } else {
+
+        linkContainer.textContent =
+          "Nenhum link enviado.";
+
+      }
+
+
+      await carregarAnexosEntregaPedidoCliente(
+        entrega.id
+      );
+
+
+      document
+        .getElementById(
+          "pedidoClienteEntrega"
+        )
+        .style.display =
+          "block";
+
+    }
+
+
+    async function carregarAnexosEntregaPedidoCliente(
+      entregaId
+    ) {
+
+      const container =
+        document.getElementById(
+          "pedidoClienteEntregaAnexos"
+        );
+
+
+      container.textContent =
+        "Carregando anexos...";
+
+
+      const {
+        data: anexos,
+        error
+      } = await supabaseClient
+        .from("entrega_anexos")
+        .select("*")
+        .eq("entrega_id", entregaId)
+        .order("created_at", {
+          ascending: true
+        });
+
+
+      if (error) {
+
+        console.error(error);
+
+        container.textContent =
+          "Não foi possível carregar os anexos.";
+
+        return;
+      }
+
+
+      if (!anexos || anexos.length === 0) {
+
+        container.textContent =
+          "Nenhum anexo enviado.";
+
+        return;
+      }
+
+
+      container.innerHTML = "";
+
+
+      for (const anexo of anexos) {
+
+        const {
+          data: signedData
+        } = await supabaseClient
+          .storage
+          .from("entrega-anexos")
+          .createSignedUrl(
+            anexo.arquivo_path,
+            3600
+          );
+
+
+        const item =
+          document.createElement("div");
+
+        item.className =
+          "pedido-cliente-anexo";
+
+
+        const nome =
+          document.createElement("span");
+
+        nome.textContent =
+          anexo.nome_arquivo;
+
+
+        const botao =
+          document.createElement("button");
+
+        botao.type =
+          "button";
+
+        botao.textContent =
+          "Visualizar";
+
+
+        if (signedData?.signedUrl) {
+
+          botao.addEventListener(
+            "click",
+            () => {
+
+              window.open(
+                signedData.signedUrl,
+                "_blank",
+                "noopener,noreferrer"
+              );
+
+            }
+          );
+
+        } else {
+
+          botao.disabled =
+            true;
+
+          botao.textContent =
+            "Indisponível";
+
+        }
+
+
+        item.appendChild(nome);
+        item.appendChild(botao);
+
+        container.appendChild(item);
+
+      }
+
+    }
+
+
+    document
+      .getElementById("ordersList")
+      .addEventListener(
+        "click",
+        event => {
+
+          const item =
+            event.target.closest(".order-item");
+
+          if (!item) return;
+
+          abrirPedidoCliente(
+            Number(item.dataset.pedidoId)
+          );
+
+        }
+      );
+
+
+    document
+      .getElementById("fecharPedidoCliente")
+      .addEventListener(
+        "click",
+        () => {
+
+          document
+            .getElementById(
+              "pedidoClienteModal"
+            )
+            .classList.remove("active");
+
+        }
+      );
+
+
+    document
+      .getElementById("pedidoClienteModal")
+      .addEventListener(
+        "click",
+        event => {
+
+          if (
+            event.target.id ===
+            "pedidoClienteModal"
+          ) {
+
+            event.currentTarget
+              .classList.remove("active");
+
+          }
+
+        }
+      );
+
+
+    /* =========================================================
+       GERAR RELATÓRIO PDF
+    ========================================================= */
+
+    async function urlParaBase64(url) {
+
+      const resposta =
+        await fetch(url);
+
+      const blob =
+        await resposta.blob();
+
+
+      return await new Promise(
+        (resolve, reject) => {
+
+          const reader =
+            new FileReader();
+
+
+          reader.onloadend =
+            () => resolve(
+              reader.result
+            );
+
+
+          reader.onerror =
+            reject;
+
+
+          reader.readAsDataURL(
+            blob
+          );
+
+        }
+      );
+
+    }
+
+
+    async function gerarRelatorioPDF() {
+
+      if (!entregaAtual) {
+        mostrarToast(
+          "Nenhuma entrega selecionada.",
+          "error"
+        );
+        return;
+      }
+
+      const botao =
+        document.getElementById("exportarRelatorioButton");
+
+      const textoOriginal =
+        botao.textContent;
+
+      botao.disabled = true;
+      botao.textContent = "Gerando PDF...";
+
+
+      try {
+
+        const {
+          jsPDF
+        } = window.jspdf;
+
+
+        const pdf =
+          new jsPDF({
+            orientation: "portrait",
+            unit: "mm",
+            format: "a4"
+          });
+
+
+        const larguraPagina =
+          pdf.internal.pageSize.getWidth();
+
+        const alturaPagina =
+          pdf.internal.pageSize.getHeight();
+
+        const margem =
+          18;
+
+        const larguraConteudo =
+          larguraPagina - margem * 2;
+
+
+        let y = 0;
+
+
+        function novaPaginaSeNecessario(alturaNecessaria = 20) {
+
+          if (
+            y + alturaNecessaria >
+            alturaPagina - 18
+          ) {
+
+            pdf.addPage();
+
+            y = 20;
+
+            desenharCabecalhoSecundario();
+
+          }
+
+        }
+
+
+        function desenharCabecalhoSecundario() {
+
+          pdf.setFont("helvetica", "bold");
+          pdf.setFontSize(10);
+
+          pdf.setTextColor(
+            88,
+            101,
+            242
+          );
+
+          pdf.text(
+            "ShiroDev - Relatório de Entrega",
+            margem,
+            12
+          );
+
+
+          pdf.setDrawColor(
+            225,
+            228,
+            235
+          );
+
+          pdf.line(
+            margem,
+            15,
+            larguraPagina - margem,
+            15
+          );
+
+        }
+
+
+        pdf.setFillColor(
+          17,
+          21,
+          32
+        );
+
+        pdf.rect(
+          0,
+          0,
+          larguraPagina,
+          48,
+          "F"
+        );
+
+
+        pdf.setFont(
+          "helvetica",
+          "bold"
+        );
+
+        pdf.setFontSize(
+          23
+        );
+
+        pdf.setTextColor(
+          255,
+          255,
+          255
+        );
+
+        pdf.text(
+          "ShiroDev",
+          margem,
+          20
+        );
+
+
+        pdf.setFontSize(
+          11
+        );
+
+        pdf.setTextColor(
+          175,
+          183,
+          204
+        );
+
+        pdf.text(
+          "Relatório de Entrega",
+          margem,
+          28
+        );
+
+
+        pdf.setFontSize(
+          9
+        );
+
+        pdf.text(
+          new Date(
+            entregaAtual.created_at
+          ).toLocaleString("pt-BR"),
+          margem,
+          37
+        );
+
+
+        y = 62;
+
+
+        pdf.setTextColor(
+          30,
+          35,
+          48
+        );
+
+        pdf.setFont(
+          "helvetica",
+          "bold"
+        );
+
+        pdf.setFontSize(
+          20
+        );
+
+
+        const tituloLinhas =
+          pdf.splitTextToSize(
+            entregaAtual.titulo,
+            larguraConteudo
+          );
+
+
+        pdf.text(
+          tituloLinhas,
+          margem,
+          y
+        );
+
+
+        y +=
+          tituloLinhas.length * 8 + 4;
+
+
+        const pedidoTexto =
+          document
+            .getElementById(
+              "entregaDetalhePedido"
+            )
+            .textContent;
+
+
+        pdf.setFont(
+          "helvetica",
+          "normal"
+        );
+
+        pdf.setFontSize(
+          10
+        );
+
+        pdf.setTextColor(
+          105,
+          112,
+          130
+        );
+
+
+        const pedidoLinhas =
+          pdf.splitTextToSize(
+            pedidoTexto,
+            larguraConteudo
+          );
+
+
+        pdf.text(
+          pedidoLinhas,
+          margem,
+          y
+        );
+
+
+        y +=
+          pedidoLinhas.length * 5 + 10;
+
+
+        novaPaginaSeNecessario(30);
+
+
+        pdf.setFont(
+          "helvetica",
+          "bold"
+        );
+
+        pdf.setFontSize(
+          10
+        );
+
+        pdf.setTextColor(
+          88,
+          101,
+          242
+        );
+
+        pdf.text(
+          "DESCRIÇÃO",
+          margem,
+          y
+        );
+
+
+        y += 7;
+
+
+        pdf.setFont(
+          "helvetica",
+          "normal"
+        );
+
+        pdf.setFontSize(
+          11
+        );
+
+        pdf.setTextColor(
+          45,
+          50,
+          65
+        );
+
+
+        const descricaoLinhas =
+          pdf.splitTextToSize(
+            entregaAtual.descricao,
+            larguraConteudo
+          );
+
+
+        descricaoLinhas.forEach(
+          linha => {
+
+            novaPaginaSeNecessario(7);
+
+            pdf.text(
+              linha,
+              margem,
+              y
+            );
+
+            y += 6;
+
+          }
+        );
+
+
+        y += 8;
+
+
+        if (entregaAtual.link) {
+
+          novaPaginaSeNecessario(22);
+
+
+          pdf.setFont(
+            "helvetica",
+            "bold"
+          );
+
+          pdf.setFontSize(
+            10
+          );
+
+          pdf.setTextColor(
+            88,
+            101,
+            242
+          );
+
+          pdf.text(
+            "LINK",
+            margem,
+            y
+          );
+
+
+          y += 7;
+
+
+          pdf.setFont(
+            "helvetica",
+            "normal"
+          );
+
+          pdf.setFontSize(
+            10
+          );
+
+          pdf.setTextColor(
+            70,
+            85,
+            200
+          );
+
+
+          pdf.textWithLink(
+            entregaAtual.link,
+            margem,
+            y,
+            {
+              url: entregaAtual.link
+            }
+          );
+
+
+          y += 14;
+
+        }
+
+
+        novaPaginaSeNecessario(25);
+
+
+        pdf.setFont(
+          "helvetica",
+          "bold"
+        );
+
+        pdf.setFontSize(
+          10
+        );
+
+        pdf.setTextColor(
+          88,
+          101,
+          242
+        );
+
+        pdf.text(
+          "ANEXOS",
+          margem,
+          y
+        );
+
+
+        y += 8;
+
+
+        if (
+          !anexosEntregaAtual ||
+          anexosEntregaAtual.length === 0
+        ) {
+
+          pdf.setFont(
+            "helvetica",
+            "normal"
+          );
+
+          pdf.setTextColor(
+            100,
+            105,
+            120
+          );
+
+          pdf.text(
+            "Nenhum anexo enviado.",
+            margem,
+            y
+          );
+
+
+          y += 10;
+
+        }
+
+
+        for (
+          const anexo
+          of anexosEntregaAtual
+        ) {
+
+          novaPaginaSeNecessario(35);
+
+
+          const {
+            data: signedData,
+            error
+          } =
+            await supabaseClient
+              .storage
+              .from("entrega-anexos")
+              .createSignedUrl(
+                anexo.arquivo_path,
+                3600
+              );
+
+
+          if (
+            error ||
+            !signedData?.signedUrl
+          ) {
+
+            continue;
+
+          }
+
+
+          const url =
+            signedData.signedUrl;
+
+
+          pdf.setFont(
+            "helvetica",
+            "bold"
+          );
+
+          pdf.setFontSize(
+            10
+          );
+
+          pdf.setTextColor(
+            35,
+            40,
+            55
+          );
+
+
+          pdf.text(
+            anexo.nome_arquivo,
+            margem,
+            y
+          );
+
+
+          y += 6;
+
+
+          if (
+            anexo.tipo_arquivo &&
+            anexo.tipo_arquivo
+              .startsWith("image/")
+          ) {
+
+            try {
+
+              const imagemBase64 =
+                await urlParaBase64(
+                  url
+                );
+
+
+              const propriedades =
+                pdf.getImageProperties(
+                  imagemBase64
+                );
+
+
+              let larguraImagem =
+                larguraConteudo;
+
+
+              let alturaImagem =
+                (
+                  propriedades.height *
+                  larguraImagem
+                )
+                /
+                propriedades.width;
+
+
+              const alturaMaxima =
+                115;
+
+
+              if (
+                alturaImagem >
+                alturaMaxima
+              ) {
+
+                alturaImagem =
+                  alturaMaxima;
+
+                larguraImagem =
+                  (
+                    propriedades.width *
+                    alturaImagem
+                  )
+                  /
+                  propriedades.height;
+
+              }
+
+
+              novaPaginaSeNecessario(
+                alturaImagem + 12
+              );
+
+
+              pdf.addImage(
+                imagemBase64,
+                propriedades.fileType,
+                margem,
+                y,
+                larguraImagem,
+                alturaImagem
+              );
+
+
+              y +=
+                alturaImagem + 10;
+
+            }
+            catch (erroImagem) {
+
+              console.error(
+                erroImagem
+              );
+
+              pdf.setFont(
+                "helvetica",
+                "normal"
+              );
+
+              pdf.setTextColor(
+                100,
+                105,
+                120
+              );
+
+              pdf.textWithLink(
+                "Abrir imagem",
+                margem,
+                y,
+                {
+                  url
+                }
+              );
+
+
+              y += 10;
+
+            }
+
+          }
+
+          else if (
+            anexo.tipo_arquivo &&
+            anexo.tipo_arquivo
+              .startsWith("video/")
+          ) {
+
+            pdf.setFillColor(
+              244,
+              245,
+              249
+            );
+
+
+            pdf.roundedRect(
+              margem,
+              y,
+              larguraConteudo,
+              22,
+              3,
+              3,
+              "F"
+            );
+
+
+            pdf.setFont(
+              "helvetica",
+              "bold"
+            );
+
+            pdf.setFontSize(
+              10
+            );
+
+            pdf.setTextColor(
+              45,
+              50,
+              65
+            );
+
+
+            pdf.text(
+              "Vídeo anexado",
+              margem + 6,
+              y + 8
+            );
+
+
+            pdf.setFont(
+              "helvetica",
+              "normal"
+            );
+
+            pdf.setTextColor(
+              88,
+              101,
+              242
+            );
+
+
+            pdf.textWithLink(
+              "Abrir vídeo",
+              margem + 6,
+              y + 16,
+              {
+                url
+              }
+            );
+
+
+            y += 30;
+
+          }
+
+        }
+
+
+        const totalPaginas =
+          pdf.internal.getNumberOfPages();
+
+
+        for (
+          let pagina = 1;
+          pagina <= totalPaginas;
+          pagina++
+        ) {
+
+          pdf.setPage(
+            pagina
+          );
+
+
+          pdf.setFontSize(
+            8
+          );
+
+          pdf.setTextColor(
+            145,
+            150,
+            165
+          );
+
+
+          pdf.text(
+            `ShiroDev • Página ${pagina} de ${totalPaginas}`,
+            margem,
+            alturaPagina - 8
+          );
+
+        }
+
+
+        const nomeArquivo =
+          entregaAtual.titulo
+            .normalize("NFD")
+            .replace(
+              /[\u0300-\u036f]/g,
+              ""
+            )
+            .replace(
+              /[^a-zA-Z0-9_-]/g,
+              "_"
+            );
+
+
+        pdf.save(
+          `ShiroDev_${nomeArquivo}.pdf`
+        );
+
+      }
+      catch (error) {
+
+        console.error(
+          "Erro ao gerar relatório:",
+          error
+        );
+
+
+        mostrarToast(
+          "Não foi possível gerar o relatório PDF.",
+          "error"
+        );
+
+      }
+      finally {
+
+        botao.disabled =
+          false;
+
+        botao.textContent =
+          textoOriginal;
+
+      }
+
+    }
+
+
+    document
+      .getElementById("exportarRelatorioButton")
+      .addEventListener(
+        "click",
+        gerarRelatorioPDF
+      );
+
+
+    function traduzirStatus(
+      status
+    ) {
+
+      if (
+        status === "pendente"
+      ) {
+
+        return "Pendente";
+
+      }
+
+
+      if (
+        status ===
+        "em_andamento"
+      ) {
+
+        return "Em andamento";
+
+      }
+
+
+      if (
+        status === "concluido"
+      ) {
+
+        return "Concluído";
+
+      }
+
+
+      return status;
+
+    }
+
+
+    function escapeHtml(texto) {
+
+      const div =
+        document.createElement(
+          "div"
+        );
+
+
+      div.textContent =
+        texto ?? "";
+
+
+      return div.innerHTML;
+
+    }
+
+
+    /* LOGOUT */
+
+    logoutButton.addEventListener(
+      "click",
+      async () => {
+
+        if (realtimePedidosChannel) {
+          supabaseClient.removeChannel(
+            realtimePedidosChannel
+          );
+        }
+
+        if (realtimeEntregasChannel) {
+          supabaseClient.removeChannel(
+            realtimeEntregasChannel
+          );
+        }
+
+        await supabaseClient
+          .auth
+          .signOut();
+
+
+        window.location.href =
+          "index.html";
+
+      }
+    );
+
+
+    verificarLogin();
+
+  </script>
+
+</body>
+</html>
