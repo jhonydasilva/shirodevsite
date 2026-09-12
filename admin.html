@@ -1283,6 +1283,205 @@
 
 
     /* =========================================================
+       STATUS DA CONTA - ADMIN
+    ========================================================= */
+
+    .cliente-status-conta {
+      margin-bottom: 25px;
+
+      padding: 22px;
+
+      border:
+        1px solid rgba(255,255,255,0.07);
+
+      border-radius: 14px;
+
+      background:
+        rgba(255,255,255,0.02);
+    }
+
+    .cliente-status-header {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+
+      gap: 20px;
+
+      margin-bottom: 22px;
+    }
+
+    .cliente-status-header h3 {
+      margin-bottom: 5px;
+
+      font-size: 17px;
+    }
+
+    .cliente-status-header p {
+      color: #7f899f;
+
+      font-size: 12px;
+    }
+
+    .cliente-status-badge {
+      padding: 7px 11px;
+
+      border-radius: 999px;
+
+      font-size: 11px;
+      font-weight: 700;
+    }
+
+    .cliente-status-badge.status-ok {
+      background:
+        rgba(34,197,94,0.12);
+
+      color: #4ade80;
+    }
+
+    .cliente-status-badge.status-limitado {
+      background:
+        rgba(245,158,11,0.13);
+
+      color: #fbbf24;
+    }
+
+    .cliente-status-badge.status-restrito {
+      background:
+        rgba(249,115,22,0.13);
+
+      color: #fb923c;
+    }
+
+    .cliente-status-badge.status-suspenso {
+      background:
+        rgba(239,68,68,0.13);
+
+      color: #f87171;
+    }
+
+    .cliente-status-grid {
+      display: grid;
+
+      grid-template-columns:
+        220px
+        minmax(0, 1fr);
+
+      gap: 18px;
+    }
+
+    .cliente-status-field {
+      display: grid;
+
+      gap: 8px;
+    }
+
+    .cliente-status-field label {
+      color: #b4bbca;
+
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .cliente-status-field label span {
+      margin-left: 4px;
+
+      color: #667085;
+
+      font-weight: 400;
+    }
+
+    .cliente-status-field select,
+    .cliente-status-field textarea {
+      width: 100%;
+
+      padding: 11px 12px;
+
+      border:
+        1px solid rgba(255,255,255,0.08);
+
+      border-radius: 9px;
+
+      outline: none;
+
+      background: #0c1019;
+
+      color: white;
+
+      font-family: inherit;
+    }
+
+    .cliente-status-field textarea {
+      resize: vertical;
+    }
+
+    .cliente-status-field select:focus,
+    .cliente-status-field textarea:focus {
+      border-color:
+        rgba(88,101,242,0.55);
+
+      box-shadow:
+        0 0 0 3px
+        rgba(88,101,242,0.08);
+    }
+
+    .cliente-status-footer {
+      margin-top: 20px;
+
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+
+      gap: 15px;
+    }
+
+    .cliente-status-footer p {
+      color: #6f7990;
+
+      font-size: 11px;
+    }
+
+    .cliente-status-save {
+      padding: 10px 16px;
+
+      border: 0;
+
+      border-radius: 8px;
+
+      background: #5865f2;
+
+      color: white;
+
+      font-weight: 700;
+
+      cursor: pointer;
+    }
+
+    .cliente-status-save:hover {
+      background: #6974f5;
+    }
+
+    .cliente-status-save:disabled {
+      opacity: 0.55;
+
+      cursor: not-allowed;
+    }
+
+    @media (max-width: 700px) {
+
+      .cliente-status-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .cliente-status-footer {
+        align-items: stretch;
+
+        flex-direction: column;
+      }
+
+    }
+
+
+    /* =========================================================
        RESPONSIVO
     ========================================================= */
 
@@ -1916,6 +2115,95 @@
             </div>
 
 
+            <div class="cliente-status-conta">
+
+              <div class="cliente-status-header">
+
+                <div>
+                  <h3>Status da conta</h3>
+                  <p>
+                    Defina o nível de acesso atual desta conta.
+                  </p>
+                </div>
+
+                <span
+                  class="cliente-status-badge status-ok"
+                  id="clienteStatusBadge"
+                >
+                  Tudo certo
+                </span>
+
+              </div>
+
+
+              <div class="cliente-status-grid">
+
+                <div class="cliente-status-field">
+
+                  <label for="clienteStatusSelect">
+                    Status
+                  </label>
+
+                  <select id="clienteStatusSelect">
+
+                    <option value="ok">
+                      Tudo certo
+                    </option>
+
+                    <option value="limitado">
+                      Limitado
+                    </option>
+
+                    <option value="restrito">
+                      Restrito
+                    </option>
+
+                    <option value="suspenso">
+                      Suspenso
+                    </option>
+
+                  </select>
+
+                </div>
+
+
+                <div class="cliente-status-field">
+
+                  <label for="clienteStatusMotivo">
+                    Motivo
+                    <span>opcional</span>
+                  </label>
+
+                  <textarea
+                    id="clienteStatusMotivo"
+                    rows="4"
+                    placeholder="Ex: Aguardando regularização de pagamento..."
+                  ></textarea>
+
+                </div>
+
+              </div>
+
+
+              <div class="cliente-status-footer">
+
+                <p id="clienteStatusAtualizacao">
+                  Status atual da conta.
+                </p>
+
+                <button
+                  type="button"
+                  id="salvarStatusCliente"
+                  class="cliente-status-save"
+                >
+                  Salvar status
+                </button>
+
+              </div>
+
+            </div>
+
+
             <div class="cliente-historico">
 
               <div class="cliente-historico-header">
@@ -2251,6 +2539,8 @@
     let pedidoAtual = null;
 
     let arquivosEntregaSelecionados = [];
+
+    let clientePerfilAtual = null;
 
     let realtimeAdminPedidos = null;
 
@@ -2960,6 +3250,9 @@
       }
 
 
+      clientePerfilAtual = cliente;
+
+
       const {
         data: pedidos,
         error: erroPedidos
@@ -3197,6 +3490,9 @@
       }
 
 
+      await carregarStatusCliente(userId);
+
+
       lista.style.display =
         "none";
 
@@ -3274,6 +3570,299 @@
               botao.dataset.pedidoId
             )
           );
+
+        }
+      );
+
+
+    /* =========================================================
+       STATUS DA CONTA DO CLIENTE
+    ========================================================= */
+
+    async function carregarStatusCliente(
+      userId
+    ) {
+
+      const {
+        data,
+        error
+      } =
+        await supabaseClient
+          .from("status_contas")
+          .select("*")
+          .eq(
+            "user_id",
+            userId
+          )
+          .maybeSingle();
+
+
+      if (error) {
+
+        console.error(
+          "Erro ao carregar status:",
+          error
+        );
+
+        mostrarToast(
+          "Não foi possível carregar o status da conta.",
+          "error"
+        );
+
+        return;
+      }
+
+
+      const status =
+        data?.status || "ok";
+
+      const motivo =
+        data?.motivo || "";
+
+
+      document
+        .getElementById(
+          "clienteStatusSelect"
+        )
+        .value =
+          status;
+
+
+      document
+        .getElementById(
+          "clienteStatusMotivo"
+        )
+        .value =
+          motivo;
+
+
+      atualizarBadgeStatusCliente(
+        status
+      );
+
+
+      const dataAtualizacao =
+        document.getElementById(
+          "clienteStatusAtualizacao"
+        );
+
+
+      if (data?.updated_at) {
+
+        dataAtualizacao.textContent =
+          "Última atualização: " +
+          new Date(
+            data.updated_at
+          ).toLocaleString(
+            "pt-BR"
+          );
+
+      } else {
+
+        dataAtualizacao.textContent =
+          "Status padrão: Tudo certo";
+
+      }
+
+    }
+
+
+    function atualizarBadgeStatusCliente(
+      status
+    ) {
+
+      const badge =
+        document.getElementById(
+          "clienteStatusBadge"
+        );
+
+
+      const dados = {
+
+        ok: {
+          texto: "Tudo certo",
+          classe: "status-ok"
+        },
+
+        limitado: {
+          texto: "Limitado",
+          classe: "status-limitado"
+        },
+
+        restrito: {
+          texto: "Restrito",
+          classe: "status-restrito"
+        },
+
+        suspenso: {
+          texto: "Suspenso",
+          classe: "status-suspenso"
+        }
+
+      };
+
+
+      const atual =
+        dados[status] ||
+        dados.ok;
+
+
+      badge.className =
+        "cliente-status-badge " +
+        atual.classe;
+
+
+      badge.textContent =
+        atual.texto;
+
+    }
+
+
+    document
+      .getElementById(
+        "clienteStatusSelect"
+      )
+      .addEventListener(
+        "change",
+        event => {
+
+          atualizarBadgeStatusCliente(
+            event.target.value
+          );
+
+        }
+      );
+
+
+    document
+      .getElementById(
+        "salvarStatusCliente"
+      )
+      .addEventListener(
+        "click",
+        async () => {
+
+          if (!clientePerfilAtual) {
+
+            mostrarToast(
+              "Nenhum cliente selecionado.",
+              "error"
+            );
+
+            return;
+          }
+
+
+          const botao =
+            document.getElementById(
+              "salvarStatusCliente"
+            );
+
+
+          const status =
+            document              .getElementById(
+                "clienteStatusSelect"
+              )
+              .value;
+
+
+          const motivo =
+            document
+              .getElementById(
+                "clienteStatusMotivo"
+              )
+              .value
+              .trim();
+
+
+          botao.disabled = true;
+
+          botao.textContent =
+            "Salvando...";
+
+
+          try {
+
+            const {
+              error
+            } =
+              await supabaseClient
+                .from(
+                  "status_contas"
+                )
+                .upsert(
+                  {
+                    user_id:
+                      clientePerfilAtual.user_id,
+
+                    status:
+                      status,
+
+                    motivo:
+                      motivo || null,
+
+                    updated_at:
+                      new Date()
+                        .toISOString()
+                  },
+                  {
+                    onConflict:
+                      "user_id"
+                  }
+                );
+
+
+            if (error) {
+              throw error;
+            }
+
+
+            atualizarBadgeStatusCliente(
+              status
+            );
+
+
+            document
+              .getElementById(
+                "clienteStatusAtualizacao"
+              )
+              .textContent =
+                "Atualizado em " +
+                new Date()
+                  .toLocaleString(
+                    "pt-BR"
+                  );
+
+
+            mostrarToast(
+              "Status da conta atualizado.",
+              "success"
+            );
+
+          }
+          catch (error) {
+
+            console.error(
+              "Erro ao salvar status:",
+              error
+            );
+
+
+            mostrarToast(
+              "Não foi possível salvar o status.",
+              "error"
+            );
+
+          }
+          finally {
+
+            botao.disabled =
+              false;
+
+            botao.textContent =
+              "Salvar status";
+
+          }
 
         }
       );

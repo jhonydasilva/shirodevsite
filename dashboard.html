@@ -3591,9 +3591,15 @@
 
                 <h1>Status da Conta</h1>
 
-                <div class="account-status-card">
+                <div
+                  class="account-status-card"
+                  id="accountStatusCard"
+                >
 
-                  <div class="account-status-icon">
+                  <div
+                    class="account-status-icon"
+                    id="accountStatusIcon"
+                  >
                     ✓
                   </div>
 
@@ -3601,10 +3607,12 @@
 
                     <h2>
                       Sua conta está
-                      <span>toda em ordem</span>
+                      <span id="accountStatusTitle">
+                        toda em ordem
+                      </span>
                     </h2>
 
-                    <p>
+                    <p id="accountStatusDescription">
                       Sua conta ShiroDev está ativa e pode acessar
                       normalmente o painel do cliente.
                     </p>
@@ -3616,28 +3624,40 @@
 
                 <div class="account-status-line">
 
-                  <div class="account-status-step active">
+                  <div
+                    class="account-status-step"
+                    data-account-status="ok"
+                  >
                     <span>✓</span>
                     <p>Tudo certo!</p>
                   </div>
 
                   <div class="account-status-bar"></div>
 
-                  <div class="account-status-step">
+                  <div
+                    class="account-status-step"
+                    data-account-status="limitado"
+                  >
                     <span></span>
                     <p>Limitado</p>
                   </div>
 
                   <div class="account-status-bar"></div>
 
-                  <div class="account-status-step">
+                  <div
+                    class="account-status-step"
+                    data-account-status="restrito"
+                  >
                     <span></span>
                     <p>Restrito</p>
                   </div>
 
                   <div class="account-status-bar"></div>
 
-                  <div class="account-status-step">
+                  <div
+                    class="account-status-step"
+                    data-account-status="suspenso"
+                  >
                     <span></span>
                     <p>Suspenso</p>
                   </div>
@@ -5107,6 +5127,8 @@
 
       await carregarConfiguracoesUsuario();
 
+      await carregarStatusConta();
+
 
       app.classList.add(
         "visible"
@@ -5134,6 +5156,260 @@
       await carregarEntregas();
 
       iniciarRealtimeCliente();
+
+    }
+
+
+    /* =========================================================
+       STATUS DA CONTA
+    ========================================================= */
+
+    async function carregarStatusConta() {
+
+      if (!usuarioAtual) {
+        return;
+      }
+
+
+      const {
+        data,
+        error
+      } =
+        await supabaseClient
+          .from("status_contas")
+          .select("*")
+          .eq(
+            "user_id",
+            usuarioAtual.id
+          )
+          .maybeSingle();
+
+
+      if (error) {
+
+        console.error(
+          "Erro ao carregar status da conta:",
+          error
+        );
+
+        return;
+      }
+
+
+      const status =
+        data?.status || "ok";
+
+      const motivo =
+        data?.motivo || null;
+
+
+      renderizarStatusConta(
+        status,
+        motivo
+      );
+
+    }
+
+
+    function renderizarStatusConta(
+      status,
+      motivo
+    ) {
+
+      const titulo =
+        document.getElementById(
+          "accountStatusTitle"
+        );
+
+      const descricao =
+        document.getElementById(
+          "accountStatusDescription"
+        );
+
+      const icone =
+        document.getElementById(
+          "accountStatusIcon"
+        );
+
+
+      const estados = {
+
+        ok: {
+          titulo:
+            "toda em ordem",
+
+          descricao:
+            "Sua conta ShiroDev está ativa e pode acessar normalmente o painel do cliente.",
+
+          icone:
+            "✓",
+
+          cor:
+            "#4ade80",
+
+          fundo:
+            "rgba(34,197,94,0.16)"
+        },
+
+
+        limitado: {
+          titulo:
+            "limitada",
+
+          descricao:
+            motivo ||
+            "Alguns recursos da sua conta estão temporariamente limitados.",
+
+          icone:
+            "!",
+
+          cor:
+            "#fbbf24",
+
+          fundo:
+            "rgba(245,158,11,0.16)"
+        },
+
+
+        restrito: {
+          titulo:
+            "restrita",
+
+          descricao:
+            motivo ||
+            "Sua conta possui restrições e alguns recursos podem não estar disponíveis.",
+
+          icone:
+            "!",
+
+          cor:
+            "#fb923c",
+
+          fundo:
+            "rgba(249,115,22,0.16)"
+        },
+
+
+        suspenso: {
+          titulo:
+            "suspensa",
+
+          descricao:
+            motivo ||
+            "O acesso desta conta foi suspenso.",
+
+          icone:
+            "×",
+
+          cor:
+            "#f87171",
+
+          fundo:
+            "rgba(239,68,68,0.16)"
+        }
+
+      };
+
+
+      const atual =
+        estados[status] ||
+        estados.ok;
+
+
+      titulo.textContent =
+        atual.titulo;
+
+
+      descricao.textContent =
+        atual.descricao;
+
+
+      icone.textContent =
+        atual.icone;
+
+
+      icone.style.color =
+        atual.cor;
+
+
+      icone.style.background =
+        atual.fundo;
+
+
+      titulo.style.color =
+        atual.cor;
+
+
+      const ordem = [
+        "ok",
+        "limitado",
+        "restrito",
+        "suspenso"
+      ];
+
+
+      const indiceAtual =
+        ordem.indexOf(status);
+
+
+      document
+        .querySelectorAll(
+          ".account-status-step"
+        )
+        .forEach(
+          (
+            step,
+            index
+          ) => {
+
+            const circulo =
+              step.querySelector(
+                "span"
+              );
+
+
+            step.classList.remove(
+              "active"
+            );
+
+
+            circulo.textContent =
+              "";
+
+
+            circulo.style.background =
+              "";
+
+            circulo.style.color =
+              "";
+
+
+            if (
+              index <= indiceAtual
+            ) {
+
+              step.classList.add(
+                "active"
+              );
+
+
+              circulo.textContent =
+                index === indiceAtual
+                  ? atual.icone
+                  : "✓";
+
+
+              circulo.style.background =
+                atual.cor;
+
+
+              circulo.style.color =
+                "#07100a";
+
+            }
+
+          }
+        );
 
     }
 
@@ -9003,36 +9279,46 @@
 
       settingsPage.classList.add("active");
 
-      document.getElementById(
-        "settingsUserEmail"
-      ).textContent =
-        usuarioAtual?.email || "";
+      document
+        .getElementById(
+          "settingsUserEmail"
+        )
+        .textContent =
+          usuarioAtual?.email || "";
 
 
-      document.getElementById(
-        "settingsAccountEmail"
-      ).textContent =
-        usuarioAtual?.email || "-";
+      document
+        .getElementById(
+          "settingsAccountEmail"
+        )
+        .textContent =
+          usuarioAtual?.email || "-";
 
 
       if (clienteAtual) {
 
-        document.getElementById(
-          "settingsUserName"
-        ).textContent =
-          clienteAtual.nome || "Cliente";
+        document
+          .getElementById(
+            "settingsUserName"
+          )
+          .textContent =
+            clienteAtual.nome || "Cliente";
 
 
-        document.getElementById(
-          "settingsAccountName"
-        ).textContent =
-          clienteAtual.nome || "-";
+        document
+          .getElementById(
+            "settingsAccountName"
+          )
+          .textContent =
+            clienteAtual.nome || "-";
 
 
-        document.getElementById(
-          "settingsAccountProject"
-        ).textContent =
-          clienteAtual.projeto || "-";
+        document
+          .getElementById(
+            "settingsAccountProject"
+          )
+          .textContent =
+            clienteAtual.projeto || "-";
 
       }
 
