@@ -42,20 +42,102 @@
       color: white;
     }
 
+
+    /* =========================================================
+       TELA DE CARREGAMENTO
+    ========================================================= */
+
     .loading {
       position: fixed;
       inset: 0;
+      z-index: 999999;
 
       display: flex;
       align-items: center;
       justify-content: center;
 
-      background: #080b14;
+      background:
+        radial-gradient(
+          circle at center,
+          rgba(88, 101, 242, 0.08),
+          transparent 35%
+        ),
+        #050810;
 
-      color: #9ca6bc;
+      opacity: 1;
 
-      z-index: 9999;
+      transition:
+        opacity 0.45s ease,
+        visibility 0.45s ease;
     }
+
+    .loading.saindo {
+      opacity: 0;
+      visibility: hidden;
+    }
+
+    .loading-content {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+
+      gap: 20px;
+    }
+
+    .loading-logo {
+      width: 120px;
+      height: 120px;
+
+      object-fit: contain;
+
+      filter:
+        drop-shadow(
+          0 15px 30px
+          rgba(0,0,0,0.45)
+        );
+
+      animation:
+        adminCopoFlutuando
+        2.2s
+        ease-in-out
+        infinite;
+    }
+
+    .loading-text {
+      color: white;
+
+      font-size: 24px;
+      font-weight: 800;
+
+      letter-spacing: 0.5px;
+    }
+
+    .loading-text span {
+      color: #5865f2;
+    }
+
+    @keyframes adminCopoFlutuando {
+
+      0%,
+      100% {
+        transform:
+          translateY(0)
+          rotate(-2deg);
+      }
+
+      50% {
+        transform:
+          translateY(-18px)
+          rotate(2deg);
+      }
+
+    }
+
+
+    /* =========================================================
+       LAYOUT DO APP
+    ========================================================= */
 
     .app {
       display: none;
@@ -315,6 +397,71 @@
 
     .admin-overview-list {
       min-height: 120px;
+    }
+
+
+    /* =========================================================
+       FILTROS
+    ========================================================= */
+
+    .admin-filtros {
+      margin-bottom: 18px;
+
+      display: flex;
+      align-items: center;
+
+      gap: 10px;
+    }
+
+    .admin-filtro-busca {
+      flex: 1;
+
+      display: flex;
+      align-items: center;
+
+      gap: 9px;
+
+      padding: 0 13px;
+
+      border:
+        1px solid
+        rgba(255,255,255,0.08);
+
+      border-radius: 10px;
+
+      background:
+        rgba(255,255,255,0.03);
+    }
+
+    .admin-filtro-busca span {
+      color: #737e95;
+      font-size: 18px;
+    }
+
+    .admin-filtro-busca input {
+      width: 100%;
+
+      padding: 12px 0;
+
+      border: 0;
+      outline: 0;
+
+      background: transparent;
+
+      color: white;
+    }
+
+    .admin-filtro-busca input::placeholder {
+      color: #687287;
+    }
+
+    .admin-filtro-busca:focus-within {
+      border-color:
+        rgba(88,101,242,0.55);
+
+      box-shadow:
+        0 0 0 3px
+        rgba(88,101,242,0.08);
     }
 
 
@@ -1193,7 +1340,19 @@
     class="loading"
     id="loading"
   >
-    Verificando acesso administrativo...
+    <div class="loading-content">
+
+      <img
+        src="assets/copo.png"
+        alt="ShiroDev"
+        class="loading-logo"
+      >
+
+      <div class="loading-text">
+        Shiro<span>Dev</span>
+      </div>
+
+    </div>
   </div>
 
 
@@ -1418,6 +1577,22 @@
             Pedidos enviados pelos clientes aguardando atendimento.
           </p>
 
+
+          <div class="admin-filtros">
+
+            <div class="admin-filtro-busca">
+              <span>⌕</span>
+
+              <input
+                type="text"
+                id="filtroPendenciasBusca"
+                placeholder="Buscar por cliente, pedido ou projeto..."
+              >
+            </div>
+
+          </div>
+
+
           <div class="table-box">
 
             <table>
@@ -1488,6 +1663,22 @@
             Pedidos que você já começou a atender.
           </p>
 
+
+          <div class="admin-filtros">
+
+            <div class="admin-filtro-busca">
+              <span>⌕</span>
+
+              <input
+                type="text"
+                id="filtroAndamentoBusca"
+                placeholder="Buscar por cliente, pedido ou projeto..."
+              >
+            </div>
+
+          </div>
+
+
           <div class="table-box">
 
             <table>
@@ -1534,6 +1725,22 @@
             Pedidos que já foram finalizados e entregues.
           </p>
 
+
+          <div class="admin-filtros">
+
+            <div class="admin-filtro-busca">
+              <span>⌕</span>
+
+              <input
+                type="text"
+                id="filtroConcluidosBusca"
+                placeholder="Buscar por cliente, pedido ou projeto..."
+              >
+            </div>
+
+          </div>
+
+
           <div class="table-box">
 
             <table>
@@ -1579,6 +1786,21 @@
           <p class="subtitle">
             Clientes cadastrados no sistema.
           </p>
+
+
+          <div class="admin-filtros">
+
+            <div class="admin-filtro-busca">
+              <span>⌕</span>
+
+              <input
+                type="text"
+                id="filtroClientesBusca"
+                placeholder="Buscar cliente ou projeto..."
+              >
+            </div>
+
+          </div>
 
 
           <div
@@ -2032,6 +2254,14 @@
 
     let realtimeAdminPedidos = null;
 
+    let pendenciasCarregadas = [];
+
+    let andamentoCarregados = [];
+
+    let concluidosCarregados = [];
+
+    let clientesCarregados = [];
+
 
     async function verificarAdmin() {
 
@@ -2099,13 +2329,26 @@
         user.email;
 
 
-      loading.style.display =
-        "none";
-
-
       app.classList.add(
         "visible"
       );
+
+
+      setTimeout(() => {
+
+        loading.classList.add(
+          "saindo"
+        );
+
+
+        setTimeout(() => {
+
+          loading.style.display =
+            "none";
+
+        }, 450);
+
+      }, 900);
 
 
       await carregarPendencias();
@@ -2431,6 +2674,9 @@
       container.innerHTML = "";
 
 
+      clientesCarregados = [];
+
+
       for (const cliente of clientes) {
 
         const {
@@ -2457,6 +2703,15 @@
             pedido =>
               pedido.status === "concluido"
           ).length || 0;
+
+
+        clientesCarregados.push({
+          ...cliente,
+
+          total_pedidos: totalPedidos,
+          em_andamento: emAndamento,
+          concluidos: concluidos
+        });
 
 
         const card =
@@ -2541,7 +2796,125 @@
 
       }
 
+
+      aplicarFiltroClientes();
+
     }
+
+
+    /* =========================================================
+       FILTRO DE CLIENTES
+    ========================================================= */
+
+    function aplicarFiltroClientes() {
+
+      const busca =
+        document
+          .getElementById(
+            "filtroClientesBusca"
+          )
+          .value
+          .trim()
+          .toLowerCase();
+
+
+      const cards =
+        document
+          .querySelectorAll(
+            "#adminClientesLista .admin-cliente-card"
+          );
+
+
+      cards.forEach((card, index) => {
+
+        const cliente =
+          clientesCarregados[index];
+
+        if (!cliente) {
+          card.style.display = "none";
+          return;
+        }
+
+
+        const nome =
+          (cliente.nome || "")
+            .toLowerCase();
+
+
+        const projeto =
+          (cliente.projeto || "")
+            .toLowerCase();
+
+
+        const encontrou =
+          nome.includes(busca)
+          ||
+          projeto.includes(busca);
+
+
+        card.style.display =
+          encontrou
+            ? ""
+            : "none";
+
+      });
+
+
+      const algumaVisivel =
+        Array
+          .from(cards)
+          .some(
+            card =>
+              card.style.display !== "none"
+          );
+
+
+      let mensagem =
+        document.getElementById(
+          "clientesFiltroEmpty"
+        );
+
+
+      if (!mensagem) {
+
+        mensagem =
+          document.createElement("div");
+
+        mensagem.id =
+          "clientesFiltroEmpty";
+
+        mensagem.className =
+          "clientes-empty";
+
+        mensagem.textContent =
+          "Nenhum cliente encontrado.";
+
+        document
+          .getElementById(
+            "adminClientesLista"
+          )
+          .appendChild(mensagem);
+
+      }
+
+
+      mensagem.style.display =
+        clientesCarregados.length > 0
+        && !algumaVisivel
+          ? "block"
+          : "none";
+
+    }
+
+
+    document
+      .getElementById(
+        "filtroClientesBusca"
+      )
+      .addEventListener(
+        "input",
+        aplicarFiltroClientes
+      );
 
 
     /* =========================================================
@@ -2993,6 +3366,9 @@
       }
 
 
+      pendenciasCarregadas = [];
+
+
       if (
         !pedidos ||
         pedidos.length === 0
@@ -3000,6 +3376,8 @@
 
         empty.style.display =
           "block";
+
+        aplicarFiltroPendencias();
 
         return;
 
@@ -3026,6 +3404,14 @@
               pedido.user_id
             )
             .single();
+
+
+        pendenciasCarregadas.push({
+          ...pedido,
+
+          cliente_nome:
+            cliente?.nome || "Cliente"
+        });
 
 
         const tr =
@@ -3093,7 +3479,121 @@
 
       }
 
+
+      aplicarFiltroPendencias();
+
     }
+
+
+    /* =========================================================
+       FILTRO DE PENDÊNCIAS
+    ========================================================= */
+
+    function aplicarFiltroPendencias() {
+
+      const busca =
+        document
+          .getElementById(
+            "filtroPendenciasBusca"
+          )
+          .value
+          .trim()
+          .toLowerCase();
+
+
+      const linhas =
+        document
+          .querySelectorAll(
+            "#pedidosBody tr"
+          );
+
+
+      linhas.forEach((linha, index) => {
+
+        const pedido =
+          pendenciasCarregadas[index];
+
+        if (!pedido) {
+          linha.style.display =
+            "none";
+
+          return;
+        }
+
+
+        const cliente =
+          (pedido.cliente_nome || "")
+            .toLowerCase();
+
+
+        const titulo =
+          (pedido.titulo || "")
+            .toLowerCase();
+
+
+        const projeto =
+          (pedido.projeto || "")
+            .toLowerCase();
+
+
+        const encontrou =
+          cliente.includes(busca)
+          ||
+          titulo.includes(busca)
+          ||
+          projeto.includes(busca);
+
+
+        linha.style.display =
+          encontrou
+            ? ""
+            : "none";
+
+      });
+
+
+      const algumaVisivel =
+        Array
+          .from(linhas)
+          .some(
+            linha =>
+              linha.style.display !== "none"
+          );
+
+
+      const empty =
+        document.getElementById(
+          "empty"
+        );
+
+
+      if (
+        pendenciasCarregadas.length > 0
+      ) {
+
+        empty.style.display =
+          algumaVisivel
+            ? "none"
+            : "block";
+
+        if (!algumaVisivel) {
+          empty.textContent =
+            "Nenhuma pendência encontrada.";
+        }
+
+      }
+
+    }
+
+
+    document
+      .getElementById(
+        "filtroPendenciasBusca"
+      )
+      .addEventListener(
+        "input",
+        aplicarFiltroPendencias
+      );
 
 
     /* =========================================================
@@ -3136,10 +3636,15 @@
       }
 
 
+      andamentoCarregados = [];
+
+
       if (!pedidos || pedidos.length === 0) {
 
         andamentoEmpty.style.display =
           "block";
+
+        aplicarFiltroAndamento();
 
         return;
       }
@@ -3158,6 +3663,14 @@
           .select("nome")
           .eq("user_id", pedido.user_id)
           .single();
+
+
+        andamentoCarregados.push({
+          ...pedido,
+
+          cliente_nome:
+            cliente?.nome || "Cliente"
+        });
 
 
         const tr =
@@ -3216,7 +3729,117 @@
 
       }
 
+
+      aplicarFiltroAndamento();
+
     }
+
+
+    /* =========================================================
+       FILTRO DE EM ANDAMENTO
+    ========================================================= */
+
+    function aplicarFiltroAndamento() {
+
+      const busca =
+        document
+          .getElementById(
+            "filtroAndamentoBusca"
+          )
+          .value
+          .trim()
+          .toLowerCase();
+
+
+      const linhas =
+        document
+          .querySelectorAll(
+            "#andamentoBody tr"
+          );
+
+
+      linhas.forEach((linha, index) => {
+
+        const pedido =
+          andamentoCarregados[index];
+
+        if (!pedido) {
+          linha.style.display = "none";
+          return;
+        }
+
+
+        const cliente =
+          (pedido.cliente_nome || "")
+            .toLowerCase();
+
+        const titulo =
+          (pedido.titulo || "")
+            .toLowerCase();
+
+        const projeto =
+          (pedido.projeto || "")
+            .toLowerCase();
+
+
+        const encontrou =
+          cliente.includes(busca)
+          ||
+          titulo.includes(busca)
+          ||
+          projeto.includes(busca);
+
+
+        linha.style.display =
+          encontrou
+            ? ""
+            : "none";
+
+      });
+
+
+      const algumaVisivel =
+        Array
+          .from(linhas)
+          .some(
+            linha =>
+              linha.style.display !== "none"
+          );
+
+
+      const empty =
+        document.getElementById(
+          "andamentoEmpty"
+        );
+
+
+      if (
+        andamentoCarregados.length > 0
+      ) {
+
+        empty.style.display =
+          algumaVisivel
+            ? "none"
+            : "block";
+
+        if (!algumaVisivel) {
+          empty.textContent =
+            "Nenhum pedido em andamento encontrado.";
+        }
+
+      }
+
+    }
+
+
+    document
+      .getElementById(
+        "filtroAndamentoBusca"
+      )
+      .addEventListener(
+        "input",
+        aplicarFiltroAndamento
+      );
 
 
     /* =========================================================
@@ -3260,10 +3883,15 @@
       }
 
 
+      concluidosCarregados = [];
+
+
       if (!pedidos || pedidos.length === 0) {
 
         concluidosEmpty.style.display =
           "block";
+
+        aplicarFiltroConcluidos();
 
         return;
       }
@@ -3282,6 +3910,14 @@
           .select("nome")
           .eq("user_id", pedido.user_id)
           .single();
+
+
+        concluidosCarregados.push({
+          ...pedido,
+
+          cliente_nome:
+            cliente?.nome || "Cliente"
+        });
 
 
         const tr =
@@ -3342,7 +3978,117 @@
 
       }
 
+
+      aplicarFiltroConcluidos();
+
     }
+
+
+    /* =========================================================
+       FILTRO DE CONCLUÍDOS
+    ========================================================= */
+
+    function aplicarFiltroConcluidos() {
+
+      const busca =
+        document
+          .getElementById(
+            "filtroConcluidosBusca"
+          )
+          .value
+          .trim()
+          .toLowerCase();
+
+
+      const linhas =
+        document
+          .querySelectorAll(
+            "#concluidosBody tr"
+          );
+
+
+      linhas.forEach((linha, index) => {
+
+        const pedido =
+          concluidosCarregados[index];
+
+        if (!pedido) {
+          linha.style.display = "none";
+          return;
+        }
+
+
+        const cliente =
+          (pedido.cliente_nome || "")
+            .toLowerCase();
+
+        const titulo =
+          (pedido.titulo || "")
+            .toLowerCase();
+
+        const projeto =
+          (pedido.projeto || "")
+            .toLowerCase();
+
+
+        const encontrou =
+          cliente.includes(busca)
+          ||
+          titulo.includes(busca)
+          ||
+          projeto.includes(busca);
+
+
+        linha.style.display =
+          encontrou
+            ? ""
+            : "none";
+
+      });
+
+
+      const algumaVisivel =
+        Array
+          .from(linhas)
+          .some(
+            linha =>
+              linha.style.display !== "none"
+          );
+
+
+      const empty =
+        document.getElementById(
+          "concluidosEmpty"
+        );
+
+
+      if (
+        concluidosCarregados.length > 0
+      ) {
+
+        empty.style.display =
+          algumaVisivel
+            ? "none"
+            : "block";
+
+        if (!algumaVisivel) {
+          empty.textContent =
+            "Nenhum pedido concluído encontrado.";
+        }
+
+      }
+
+    }
+
+
+    document
+      .getElementById(
+        "filtroConcluidosBusca"
+      )
+      .addEventListener(
+        "input",
+        aplicarFiltroConcluidos
+      );
 
 
     function escapeHtml(
@@ -4252,6 +4998,28 @@
 
 
         if (entregaError) {
+
+          if (
+            entregaError.code === "23505"
+          ) {
+
+            mostrarToast(
+              "Este pedido já possui uma entrega.",
+              "warning"
+            );
+
+            document
+              .getElementById("entregaModal")
+              .classList.remove("visible");
+
+            await carregarPendencias();
+            await carregarEmAndamento();
+            await carregarConcluidos();
+            await carregarVisaoGeral();
+
+            return;
+          }
+
           throw entregaError;
         }
 

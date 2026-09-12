@@ -291,6 +291,57 @@
       font-size: 14px;
     }
 
+    .settings-button {
+      width: 38px;
+      height: 38px;
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      flex-shrink: 0;
+
+      border:
+        1px solid rgba(255,255,255,0.09);
+
+      border-radius: 10px;
+
+      background:
+        rgba(255,255,255,0.04);
+
+      color: #9ca6bc;
+
+      cursor: pointer;
+
+      transition:
+        background 0.2s ease,
+        color 0.2s ease,
+        border-color 0.2s ease,
+        transform 0.25s ease;
+    }
+
+    .settings-button:hover {
+      background:
+        rgba(88,101,242,0.14);
+
+      border-color:
+        rgba(88,101,242,0.30);
+
+      color: #8e96ff;
+    }
+
+    .settings-button:hover svg {
+      transform: rotate(45deg);
+    }
+
+    .settings-button svg {
+      transition: transform 0.35s ease;
+    }
+
+    .settings-button:active {
+      transform: scale(0.94);
+    }
+
     .logout-button {
       padding: 10px 15px;
 
@@ -1665,6 +1716,10 @@
       border-color: rgba(88,101,242,0.40);
     }
 
+    .toast.warning {
+      border-color: rgba(234,179,8,0.35);
+    }
+
     .toast-icon {
       font-size: 17px;
     }
@@ -1689,7 +1744,1461 @@
     }
 
 
+    /* =========================================================
+       CONFIGURAÇÕES
+    ========================================================= */
+
+    .settings-page {
+      display: none;
+    }
+
+    .settings-page.active {
+      display: block;
+    }
+
+    .settings-shell {
+      min-height: calc(100vh - 72px);
+
+      display: grid;
+      grid-template-columns: 280px 1fr;
+
+      margin: -45px calc((100vw - 250px - min(1100px, 92%)) / -2) -70px;
+
+      background: #05070c;
+    }
+
+    .settings-sidebar {
+      min-height: calc(100vh - 72px);
+
+      padding: 28px 16px;
+
+      border-right:
+        1px solid rgba(255,255,255,0.07);
+
+      background: #07090f;
+    }
+
+    .settings-user-card {
+      display: flex;
+      align-items: center;
+
+      gap: 12px;
+
+      margin-bottom: 18px;
+      padding: 8px;
+    }
+
+    .settings-avatar {
+      width: 42px;
+      height: 42px;
+
+      overflow: hidden;
+
+      border-radius: 50%;
+
+      background:
+        rgba(88,101,242,0.12);
+
+      box-shadow:
+        0 0 0 2px
+        rgba(88,101,242,0.25);
+    }
+
+    .settings-avatar img {
+      width: 100%;
+      height: 100%;
+
+      object-fit: contain;
+    }
+
+    .settings-user-card > div:last-child {
+      min-width: 0;
+
+      display: flex;
+      flex-direction: column;
+
+      gap: 3px;
+    }
+
+    .settings-user-card strong {
+      font-size: 14px;
+    }
+
+    .settings-user-card span {
+      max-width: 180px;
+
+      overflow: hidden;
+
+      color: #7f899e;
+
+      font-size: 11px;
+
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .settings-search {
+      height: 40px;
+
+      display: flex;
+      align-items: center;
+
+      gap: 9px;
+
+      margin-bottom: 14px;
+      padding: 0 11px;
+
+      border:
+        1px solid rgba(255,255,255,0.10);
+
+      border-radius: 8px;
+
+      background: #020307;
+
+      color: #7f899c;
+    }
+
+    .settings-search input {
+      width: 100%;
+
+      border: 0;
+      outline: 0;
+
+      background: transparent;
+
+      color: white;
+    }
+
+    .settings-menu {
+      display: flex;
+      flex-direction: column;
+
+      gap: 5px;
+    }
+
+    .settings-menu-item,
+    .settings-submenu-item {
+      width: 100%;
+
+      border: 0;
+
+      color: #9da5b7;
+
+      text-align: left;
+
+      transition: 0.2s;
+    }
+
+    .settings-menu-item {
+      padding: 11px 12px;
+
+      display: flex;
+      align-items: center;
+
+      gap: 10px;
+
+      border-radius: 8px;
+
+      background: transparent;
+
+      font-size: 14px;
+    }
+
+    .settings-menu-item:hover,
+    .settings-menu-item.active {
+      background:
+        rgba(255,255,255,0.07);
+
+      color: white;
+    }
+
+    .settings-submenu {
+      margin: -2px 0 9px 18px;
+
+      padding-left: 12px;
+
+      border-left:
+        1px solid rgba(255,255,255,0.10);
+    }
+
+    .settings-submenu-item {
+      padding: 8px 9px;
+
+      background: transparent;
+
+      font-size: 13px;
+    }
+
+    .settings-submenu-item:hover,
+    .settings-submenu-item.active {
+      color: white;
+    }
+
+    .settings-main {
+      min-width: 0;
+
+      position: relative;
+
+      padding:
+        48px
+        clamp(35px, 7vw, 105px)
+        80px;
+
+      overflow-y: auto;
+    }
+
+    .settings-close {
+      width: 38px;
+      height: 38px;
+
+      position: absolute;
+
+      top: 22px;
+      right: 28px;
+
+      display: grid;
+      place-items: center;
+
+      border:
+        1px solid rgba(255,255,255,0.08);
+
+      border-radius: 50%;
+
+      background:
+        rgba(255,255,255,0.035);
+
+      color: #9ca5b6;
+
+      font-size: 26px;
+
+      transition: 0.2s;
+    }
+
+    .settings-close:hover {
+      background:
+        rgba(255,255,255,0.08);
+
+      color: white;
+    }
+
+    .settings-section {
+      display: none;
+
+      max-width: 850px;
+    }
+
+    .settings-section.active {
+      display: block;
+    }
+
+    .settings-section h1 {
+      margin-bottom: 35px;
+
+      font-size: 26px;
+      font-weight: 500;
+    }
+
+    .settings-description {
+      margin-top: -22px;
+      margin-bottom: 28px;
+
+      color: #8d96a8;
+
+      font-size: 14px;
+      line-height: 1.6;
+    }
+
+
+    /* CONTA */
+
+    .settings-account-list {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .settings-account-row {
+      min-height: 72px;
+
+      display: grid;
+
+      grid-template-columns:
+        180px
+        1fr
+        auto;
+
+      align-items: center;
+
+      gap: 20px;
+
+      border-bottom:
+        1px solid rgba(255,255,255,0.07);
+    }
+
+    .settings-account-row > span {
+      color: #a1a9b8;
+
+      font-size: 14px;
+    }
+
+    .settings-account-value strong {
+      color: #e5e7eb;
+
+      font-size: 14px;
+      font-weight: 500;
+    }
+
+    .settings-edit-button {
+      padding: 9px 18px;
+
+      border:
+        1px solid rgba(255,255,255,0.10);
+
+      border-radius: 8px;
+
+      background:
+        rgba(255,255,255,0.045);
+
+      color: white;
+    }
+
+    .settings-edit-button:disabled {
+      opacity: 0.45;
+      cursor: default;
+    }
+
+
+    /* STATUS */
+
+    .account-status-card {
+      display: flex;
+      align-items: center;
+
+      gap: 18px;
+
+      margin-bottom: 32px;
+      padding: 24px;
+
+      border:
+        1px solid rgba(255,255,255,0.07);
+
+      border-radius: 12px;
+
+      background:
+        rgba(255,255,255,0.025);
+    }
+
+    .account-status-icon {
+      width: 52px;
+      height: 52px;
+
+      display: grid;
+      place-items: center;
+
+      flex-shrink: 0;
+
+      border-radius: 50%;
+
+      background:
+        rgba(34,197,94,0.16);
+
+      color: #4ade80;
+
+      font-size: 25px;
+      font-weight: 700;
+    }
+
+    .account-status-card h2 {
+      margin-bottom: 8px;
+
+      font-size: 19px;
+      font-weight: 500;
+    }
+
+    .account-status-card h2 span {
+      color: #4ade80;
+    }
+
+    .account-status-card p {
+      color: #8f98aa;
+
+      font-size: 13px;
+      line-height: 1.6;
+    }
+
+    .account-status-line {
+      display: flex;
+      align-items: flex-start;
+    }
+
+    .account-status-step {
+      width: 95px;
+
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+
+      gap: 9px;
+
+      color: #6f7787;
+
+      font-size: 11px;
+    }
+
+    .account-status-step > span {
+      width: 20px;
+      height: 20px;
+
+      display: grid;
+      place-items: center;
+
+      border-radius: 50%;
+
+      background: #2b2e35;
+    }
+
+    .account-status-step.active {
+      color: #d4d8e0;
+    }
+
+    .account-status-step.active > span {
+      background: #35ad6d;
+
+      color: #06120b;
+    }
+
+    .account-status-bar {
+      height: 4px;
+
+      flex: 1;
+
+      margin-top: 8px;
+
+      background: #292c33;
+    }
+
+
+    /* DISPOSITIVOS */
+
+    .settings-devices {
+      display: grid;
+
+      gap: 10px;
+    }
+
+    .settings-device-card {
+      padding: 16px;
+
+      display: grid;
+
+      grid-template-columns:
+        auto
+        1fr
+        auto;
+
+      align-items: center;
+
+      gap: 14px;
+
+      border:
+        1px solid rgba(255,255,255,0.07);
+
+      border-radius: 11px;
+
+      background:
+        rgba(255,255,255,0.025);
+    }
+
+    .settings-device-icon {
+      width: 42px;
+      height: 42px;
+
+      display: grid;
+      place-items: center;
+
+      border-radius: 9px;
+
+      background:
+        rgba(255,255,255,0.05);
+
+      font-size: 20px;
+    }
+
+    .settings-device-card strong {
+      display: block;
+
+      margin-bottom: 4px;
+
+      font-size: 14px;
+    }
+
+    .settings-device-card p {
+      color: #7f899c;
+
+      font-size: 12px;
+    }
+
+    .settings-current-device {
+      padding: 6px 9px;
+
+      border-radius: 999px;
+
+      background:
+        rgba(34,197,94,0.12);
+
+      color: #4ade80;
+
+      font-size: 11px;
+    }
+
+
+    /* NOTIFICAÇÕES */
+
+    .settings-group {
+      padding: 28px 0;
+
+      border-bottom:
+        1px solid rgba(255,255,255,0.08);
+    }
+
+    .settings-group h2 {
+      margin-bottom: 20px;
+
+      font-size: 20px;
+      font-weight: 500;
+    }
+
+    .settings-toggle-row {
+      min-height: 70px;
+
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+
+      gap: 30px;
+    }
+
+    .settings-toggle-row strong {
+      display: block;
+
+      margin-bottom: 5px;
+
+      font-size: 14px;
+      font-weight: 500;
+    }
+
+    .settings-toggle-row p {
+      max-width: 620px;
+
+      color: #7f899c;
+
+      font-size: 12px;
+      line-height: 1.5;
+    }
+
+
+    /* SWITCH */
+
+    .switch {
+      width: 42px;
+      height: 24px;
+
+      position: relative;
+
+      flex-shrink: 0;
+    }
+
+    .switch input {
+      width: 0;
+      height: 0;
+
+      opacity: 0;
+    }
+
+    .slider {
+      position: absolute;
+
+      inset: 0;
+
+      border-radius: 999px;
+
+      background: #20232a;
+
+      cursor: pointer;
+
+      transition: 0.2s;
+    }
+
+    .slider::before {
+      content: "";
+
+      width: 18px;
+      height: 18px;
+
+      position: absolute;
+
+      left: 3px;
+      top: 3px;
+
+      border-radius: 50%;
+
+      background: white;
+
+      transition: 0.2s;
+    }
+
+    .switch input:checked + .slider {
+      background: #5865f2;
+    }
+
+    .switch input:checked + .slider::before {
+      transform: translateX(18px);
+    }
+
+
+    /* =========================================================
+       CORREÇÃO - CONFIGURAÇÕES EM TELA CHEIA
+    ========================================================= */
+
+    .settings-page {
+      position: fixed;
+      inset: 0;
+
+      z-index: 99990;
+
+      display: none;
+
+      align-items: center;
+      justify-content: center;
+
+      padding: 35px;
+
+      background:
+        rgba(2, 4, 9, 0.78);
+
+      backdrop-filter:
+        blur(9px);
+
+      -webkit-backdrop-filter:
+        blur(9px);
+
+      opacity: 0;
+
+      transition:
+        opacity 0.22s ease;
+    }
+
+    .settings-page.active {
+      display: flex;
+
+      opacity: 1;
+    }
+
+
+    /* ESTRUTURA PRINCIPAL */
+
+    .settings-shell {
+      width:
+        min(
+          1180px,
+          96vw
+        );
+
+      height:
+        min(
+          760px,
+          90vh
+        );
+
+      display: grid;
+
+      grid-template-columns:
+        300px
+        minmax(0, 1fr);
+
+      overflow: hidden;
+
+      margin: 0;
+
+      border:
+        1px solid
+        rgba(255,255,255,0.09);
+
+      border-radius: 18px;
+
+      background: #07090f;
+
+      box-shadow:
+        0 30px 100px
+        rgba(0,0,0,0.65);
+
+      animation:
+        settingsModalEntrada
+        0.25s ease;
+    }
+
+    @keyframes settingsModalEntrada {
+
+      from {
+        opacity: 0;
+
+        transform:
+          scale(0.97)
+          translateY(12px);
+      }
+
+      to {
+        opacity: 1;
+
+        transform:
+          scale(1)
+          translateY(0);
+      }
+
+    }
+
+
+    /* =========================================================
+       LADO ESQUERDO
+    ========================================================= */
+
+    .settings-sidebar {
+      height: 100%;
+
+      overflow-y: auto;
+
+      display: flex;
+      flex-direction: column;
+
+      align-items: flex-end;
+
+      padding:
+        55px
+        20px
+        40px;
+
+      border-right: none;
+
+      background: #080a10;
+    }
+
+
+    /* TODO O CONTEÚDO DA SIDEBAR TERÁ ESSA LARGURA */
+
+    .settings-user-card,
+    .settings-search,
+    .settings-menu {
+      width: 240px;
+    }
+
+
+    /* USUÁRIO */
+
+    .settings-user-card {
+      display: flex;
+
+      align-items: center;
+
+      gap: 12px;
+
+      margin-bottom: 18px;
+
+      padding:
+        8px
+        10px;
+    }
+
+    .settings-avatar {
+      width: 46px;
+      height: 46px;
+
+      flex-shrink: 0;
+
+      border-radius: 50%;
+
+      overflow: hidden;
+
+      background:
+        linear-gradient(
+          135deg,
+          rgba(88,101,242,0.30),
+          rgba(134,92,246,0.15)
+        );
+
+      box-shadow:
+        0 0 0 2px rgba(88,101,242,0.25),
+        0 0 22px rgba(88,101,242,0.13);
+    }
+
+    .settings-avatar img {
+      width: 100%;
+      height: 100%;
+
+      object-fit: contain;
+    }
+
+    .settings-user-card strong {
+      display: block;
+
+      margin-bottom: 3px;
+
+      color: #f2f3f5;
+
+      font-size: 14px;
+    }
+
+    .settings-user-card span {
+      display: block;
+
+      max-width: 160px;
+
+      overflow: hidden;
+
+      color: #949ba4;
+
+      font-size: 11px;
+
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+
+    /* BUSCA */
+
+    .settings-search {
+      height: 38px;
+
+      display: flex;
+
+      align-items: center;
+
+      gap: 8px;
+
+      margin-bottom: 12px;
+
+      padding: 0 11px;
+
+      border:
+        1px solid rgba(255,255,255,0.08);
+
+      border-radius: 7px;
+
+      background: #040509;
+    }
+
+    .settings-search span {
+      color: #80848e;
+    }
+
+    .settings-search input {
+      width: 100%;
+
+      border: 0;
+      outline: 0;
+
+      background: transparent;
+
+      color: #dbdee1;
+
+      font-size: 13px;
+    }
+
+    .settings-search input::placeholder {
+      color: #6d717b;
+    }
+
+
+    /* MENU */
+
+    .settings-menu {
+      display: flex;
+
+      flex-direction: column;
+
+      gap: 3px;
+    }
+
+    .settings-menu-item {
+      width: 100%;
+
+      min-height: 38px;
+
+      padding: 0 10px;
+
+      display: flex;
+
+      align-items: center;
+
+      gap: 10px;
+
+      border: 0;
+
+      border-radius: 6px;
+
+      background: transparent;
+
+      color: #b5bac1;
+
+      font-size: 14px;
+
+      text-align: left;
+
+      transition: 0.15s;
+    }
+
+    .settings-menu-item:hover {
+      background:
+        rgba(255,255,255,0.05);
+
+      color: #dbdee1;
+    }
+
+    .settings-menu-item.active {
+      background:
+        rgba(255,255,255,0.09);
+
+      color: white;
+    }
+
+
+    /* SUBMENU */
+
+    .settings-submenu {
+      margin:
+        0
+        0
+        8px
+        14px;
+
+      padding-left: 10px;
+
+      border-left:
+        2px solid
+        rgba(255,255,255,0.08);
+    }
+
+    .settings-submenu-item {
+      width: 100%;
+
+      padding:
+        7px
+        7px;
+
+      border: 0;
+
+      background: transparent;
+
+      color: #8e9297;
+
+      font-size: 12px;
+
+      text-align: left;
+    }
+
+    .settings-submenu-item:hover {
+      color: #dcddde;
+    }
+
+    .settings-submenu-item.active {
+      color: white;
+    }
+
+
+    /* =========================================================
+       LADO DIREITO
+    ========================================================= */
+
+    .settings-main {
+      height: 100%;
+
+      position: relative;
+
+      overflow-y: auto;
+
+      padding:
+        70px
+        80px
+        100px;
+
+      background: #05070b;
+
+      scrollbar-width: thin;
+
+      scrollbar-color:
+        #3f4147
+        transparent;
+    }
+
+    .settings-main::-webkit-scrollbar {
+      width: 8px;
+    }
+
+    .settings-main::-webkit-scrollbar-track {
+      background: transparent;
+    }
+
+    .settings-main::-webkit-scrollbar-thumb {
+      border-radius: 20px;
+
+      background: #3f4147;
+    }
+
+
+    /* BOTÃO X */
+
+    .settings-close {
+      width: 38px;
+      height: 38px;
+
+      position: absolute;
+
+      top: 22px;
+      right: 22px;
+
+      z-index: 50;
+
+      display: flex;
+
+      align-items: center;
+      justify-content: center;
+
+      border:
+        1px solid
+        rgba(255,255,255,0.14);
+
+      border-radius: 50%;
+
+      background:
+        rgba(255,255,255,0.025);
+
+      color: #b5bac1;
+
+      font-size: 25px;
+
+      cursor: pointer;
+
+      transition:
+        0.2s;
+    }
+
+    .settings-close:hover {
+      background:
+        rgba(255,255,255,0.08);
+
+      color: white;
+
+      transform:
+        rotate(90deg);
+    }
+
+
+    /* =========================================================
+       CONTEÚDO
+    ========================================================= */
+
+    .settings-section {
+      display: none;
+
+      width: min(760px, calc(100% - 40px));
+
+      max-width: none;
+
+      animation:
+        settingsEntrada
+        0.18s
+        ease;
+    }
+
+    .settings-section.active {
+      display: block;
+    }
+
+    @keyframes settingsEntrada {
+
+      from {
+        opacity: 0;
+
+        transform:
+          translateY(5px);
+      }
+
+      to {
+        opacity: 1;
+
+        transform:
+          translateY(0);
+      }
+
+    }
+
+
+    .settings-section h1 {
+      margin:
+        0
+        0
+        35px;
+
+      color: #f2f3f5;
+
+      font-size: 25px;
+      font-weight: 500;
+    }
+
+
+    /* =========================================================
+       INFORMAÇÕES DA CONTA
+    ========================================================= */
+
+    .settings-account-list {
+      width: 100%;
+    }
+
+    .settings-account-row {
+      min-height: 74px;
+
+      display: grid;
+
+      grid-template-columns:
+        165px
+        minmax(0, 1fr)
+        auto;
+
+      align-items: center;
+
+      gap: 18px;
+
+      border-bottom:
+        1px solid
+        rgba(255,255,255,0.08);
+    }
+
+    .settings-account-row > span {
+      color: #dbdee1;
+
+      font-size: 13px;
+    }
+
+    .settings-account-value {
+      min-width: 0;
+    }
+
+    .settings-account-value strong {
+      display: block;
+
+      overflow: hidden;
+
+      color: #e6e8eb;
+
+      font-size: 13px;
+      font-weight: 400;
+
+      text-overflow: ellipsis;
+
+      white-space: nowrap;
+    }
+
+    .settings-edit-button {
+      min-width: 94px;
+
+      padding:
+        9px
+        17px;
+
+      border:
+        1px solid
+        rgba(255,255,255,0.10);
+
+      border-radius: 7px;
+
+      background: #17191f;
+
+      color: #f2f3f5;
+
+      font-size: 13px;
+
+      cursor: pointer;
+
+      transition: 0.15s;
+    }
+
+    .settings-edit-button:hover:not(:disabled) {
+      background: #20232a;
+    }
+
+    .settings-edit-button:disabled {
+      color: #777b84;
+
+      cursor: default;
+
+      opacity: 0.7;
+    }
+
+
+    /* =========================================================
+       MODAL EDITAR CONTA
+    ========================================================= */
+
+    .account-edit-modal {
+      position: fixed;
+      inset: 0;
+
+      z-index: 100000;
+
+      display: none;
+
+      align-items: center;
+      justify-content: center;
+
+      padding: 20px;
+
+      background:
+        rgba(0,0,0,0.68);
+
+      backdrop-filter: blur(7px);
+    }
+
+    .account-edit-modal.active {
+      display: flex;
+    }
+
+    .account-edit-box {
+      width: min(480px, 95vw);
+
+      position: relative;
+
+      padding: 28px;
+
+      border:
+        1px solid rgba(255,255,255,0.10);
+
+      border-radius: 16px;
+
+      background: #111318;
+
+      box-shadow:
+        0 30px 80px
+        rgba(0,0,0,0.60);
+
+      animation:
+        accountModalEntrada
+        0.2s ease;
+    }
+
+    @keyframes accountModalEntrada {
+
+      from {
+        opacity: 0;
+        transform:
+          scale(0.97)
+          translateY(8px);
+      }
+
+      to {
+        opacity: 1;
+        transform:
+          scale(1)
+          translateY(0);
+      }
+
+    }
+
+    .account-edit-box h2 {
+      margin-bottom: 8px;
+
+      color: #f2f3f5;
+
+      font-size: 22px;
+    }
+
+    .account-edit-box > p {
+      margin-bottom: 24px;
+
+      color: #949ba4;
+
+      font-size: 13px;
+      line-height: 1.5;
+    }
+
+    .account-edit-box label {
+      display: block;
+
+      margin-bottom: 8px;
+
+      color: #dbdee1;
+
+      font-size: 13px;
+      font-weight: 600;
+    }
+
+    .account-edit-box input {
+      width: 100%;
+
+      padding: 12px 13px;
+
+      border:
+        1px solid rgba(255,255,255,0.12);
+
+      border-radius: 8px;
+
+      outline: none;
+
+      background: #080a0f;
+
+      color: white;
+
+      transition: 0.2s;
+    }
+
+    .account-edit-box input:focus {
+      border-color: #5865f2;
+
+      box-shadow:
+        0 0 0 3px
+        rgba(88,101,242,0.12);
+    }
+
+    .account-edit-close {
+      width: 34px;
+      height: 34px;
+
+      position: absolute;
+
+      top: 16px;
+      right: 16px;
+
+      border: 0;
+
+      border-radius: 50%;
+
+      background:
+        rgba(255,255,255,0.05);
+
+      color: #aeb4bd;
+
+      font-size: 22px;
+    }
+
+    .account-edit-close:hover {
+      background:
+        rgba(255,255,255,0.10);
+
+      color: white;
+    }
+
+    .account-edit-actions {
+      margin-top: 25px;
+
+      display: flex;
+
+      justify-content: flex-end;
+
+      gap: 10px;
+    }
+
+    .account-edit-cancel,
+    .account-edit-save {
+      padding: 10px 18px;
+
+      border: 0;
+
+      border-radius: 8px;
+
+      font-weight: 600;
+    }
+
+    .account-edit-cancel {
+      background:
+        rgba(255,255,255,0.06);
+
+      color: white;
+    }
+
+    .account-edit-save {
+      background: #5865f2;
+
+      color: white;
+    }
+
+    .account-edit-save:hover {
+      background: #6873f4;
+    }
+
+    .account-edit-save:disabled {
+      opacity: 0.55;
+      cursor: not-allowed;
+    }
+
+
     /* RESPONSIVO */
+
+    @media (max-width: 900px) {
+
+      .settings-shell {
+        grid-template-columns:
+          220px
+          minmax(0, 1fr);
+      }
+
+      .settings-sidebar {
+        align-items: stretch;
+
+        padding:
+          45px
+          12px;
+      }
+
+      .settings-user-card,
+      .settings-search,
+      .settings-menu {
+        width: 100%;
+      }
+
+      .settings-main {
+        padding:
+          70px
+          35px
+          80px;
+      }
+
+    }
+
+
+    @media (max-width: 650px) {
+
+      .settings-shell {
+        grid-template-columns:
+          170px
+          minmax(0, 1fr);
+      }
+
+      .settings-user-card span {
+        display: none;
+      }
+
+      .settings-main {
+        padding:
+          65px
+          20px
+          70px;
+      }
+
+      .settings-account-row {
+        grid-template-columns: 1fr;
+
+        gap: 7px;
+
+        padding:
+          15px
+          0;
+      }
+
+      .settings-edit-button {
+        width: max-content;
+      }
+
+    }
+
+
+    /* RESPONSIVO GERAL */
 
     @media (max-width: 850px) {
 
@@ -1882,6 +3391,26 @@
           ></span>
 
           <button
+            type="button"
+            class="settings-button"
+            id="settingsButton"
+            title="Configurações"
+            aria-label="Abrir configurações"
+          >
+            <svg
+              viewBox="0 0 24 24"
+              width="20"
+              height="20"
+              aria-hidden="true"
+            >
+              <path
+                fill="currentColor"
+                d="M19.14 12.94a7.43 7.43 0 0 0 .05-.94 7.43 7.43 0 0 0-.05-.94l2.03-1.58a.5.5 0 0 0 .12-.64l-1.92-3.32a.5.5 0 0 0-.61-.22l-2.39.96a7.3 7.3 0 0 0-1.63-.94L14.38 2.8a.49.49 0 0 0-.49-.4h-3.84a.49.49 0 0 0-.49.4L9.2 5.32a7.3 7.3 0 0 0-1.63.94L5.18 5.3a.5.5 0 0 0-.61.22L2.65 8.84a.5.5 0 0 0 .12.64l2.03 1.58a7.43 7.43 0 0 0-.05.94c0 .32.02.63.05.94l-2.03 1.58a.5.5 0 0 0-.12.64l1.92 3.32a.5.5 0 0 0 .61.22l2.39-.96c.5.39 1.05.7 1.63.94l.36 2.52c.04.23.24.4.49.4h3.84c.25 0 .45-.17.49-.4l.36-2.52a7.3 7.3 0 0 0 1.63-.94l2.39.96a.5.5 0 0 0 .61-.22l1.92-3.32a.5.5 0 0 0-.12-.64l-2.03-1.58ZM12 15.5A3.5 3.5 0 1 1 12 8a3.5 3.5 0 0 1 0 7.5Z"
+              />
+            </svg>
+          </button>
+
+          <button
             class="logout-button"
             id="logoutButton"
           >
@@ -1894,6 +3423,525 @@
 
 
       <main class="content">
+
+
+        <!-- CONFIGURAÇÕES -->
+
+        <section class="settings-page" id="settingsPage">
+
+          <div class="settings-shell">
+
+            <aside class="settings-sidebar">
+
+              <div class="settings-user-card">
+                <div class="settings-avatar">
+                  <img src="assets/copo.png" alt="ShiroDev">
+                </div>
+
+                <div>
+                  <strong id="settingsUserName">Cliente</strong>
+                  <span id="settingsUserEmail"></span>
+                </div>
+              </div>
+
+
+              <div class="settings-search">
+                <span>⌕</span>
+                <input
+                  type="text"
+                  id="settingsSearch"
+                  placeholder="Buscar"
+                >
+              </div>
+
+
+              <div class="settings-menu">
+
+                <button
+                  class="settings-menu-item active"
+                  data-settings-section="conta"
+                >
+                  <span>👤</span>
+                  Conta
+                </button>
+
+                <div class="settings-submenu">
+
+                  <button
+                    class="settings-submenu-item active"
+                    data-settings-section="conta"
+                  >
+                    Informações da conta
+                  </button>
+
+                  <button
+                    class="settings-submenu-item"
+                    data-settings-section="status"
+                  >
+                    Status da Conta
+                  </button>
+
+                  <button
+                    class="settings-submenu-item"
+                    data-settings-section="dispositivos"
+                  >
+                    Dispositivos conectados
+                  </button>
+
+                </div>
+
+
+                <button
+                  class="settings-menu-item"
+                  data-settings-section="notificacoes"
+                >
+                  <span>🔔</span>
+                  Notificações
+                </button>
+
+              </div>
+
+            </aside>
+
+
+            <div class="settings-main">
+
+              <button
+                type="button"
+                class="settings-close"
+                id="settingsClose"
+                aria-label="Fechar configurações"
+              >
+                ×
+              </button>
+
+
+              <!-- CONTA -->
+
+              <section
+                class="settings-section active"
+                id="settings-conta"
+              >
+
+                <h1>Informações da conta</h1>
+
+                <div class="settings-account-list">
+
+                  <div class="settings-account-row">
+                    <span>Nome</span>
+
+                    <div class="settings-account-value">
+                      <strong id="settingsAccountName">-</strong>
+                    </div>
+
+                    <button
+                      type="button"
+                      class="settings-edit-button"
+                      id="settingsEditName"
+                    >
+                      Editar
+                    </button>
+                  </div>
+
+
+                  <div class="settings-account-row">
+                    <span>E-mail</span>
+
+                    <div class="settings-account-value">
+                      <strong id="settingsAccountEmail">-</strong>
+                    </div>
+
+                    <button
+                      type="button"
+                      class="settings-edit-button"
+                      disabled
+                    >
+                      Gerenciado
+                    </button>
+                  </div>
+
+
+                  <div class="settings-account-row">
+                    <span>Projeto</span>
+
+                    <div class="settings-account-value">
+                      <strong id="settingsAccountProject">-</strong>
+                    </div>
+
+                    <button
+                      type="button"
+                      class="settings-edit-button"
+                      disabled
+                    >
+                      Gerenciado
+                    </button>
+                  </div>
+
+                </div>
+
+              </section>
+
+
+              <!-- STATUS -->
+
+              <section
+                class="settings-section"
+                id="settings-status"
+              >
+
+                <h1>Status da Conta</h1>
+
+                <div class="account-status-card">
+
+                  <div class="account-status-icon">
+                    ✓
+                  </div>
+
+                  <div>
+
+                    <h2>
+                      Sua conta está
+                      <span>toda em ordem</span>
+                    </h2>
+
+                    <p>
+                      Sua conta ShiroDev está ativa e pode acessar
+                      normalmente o painel do cliente.
+                    </p>
+
+                  </div>
+
+                </div>
+
+
+                <div class="account-status-line">
+
+                  <div class="account-status-step active">
+                    <span>✓</span>
+                    <p>Tudo certo!</p>
+                  </div>
+
+                  <div class="account-status-bar"></div>
+
+                  <div class="account-status-step">
+                    <span></span>
+                    <p>Limitado</p>
+                  </div>
+
+                  <div class="account-status-bar"></div>
+
+                  <div class="account-status-step">
+                    <span></span>
+                    <p>Restrito</p>
+                  </div>
+
+                  <div class="account-status-bar"></div>
+
+                  <div class="account-status-step">
+                    <span></span>
+                    <p>Suspenso</p>
+                  </div>
+
+                </div>
+
+              </section>
+
+
+              <!-- DISPOSITIVOS -->
+
+              <section
+                class="settings-section"
+                id="settings-dispositivos"
+              >
+
+                <h1>Dispositivos conectados</h1>
+
+                <p class="settings-description">
+                  Estes são os dispositivos usados recentemente
+                  para acessar sua conta ShiroDev.
+                </p>
+
+                <div
+                  class="settings-devices"
+                  id="settingsDevicesList"
+                >
+
+                  <div class="settings-device-card">
+
+                    <div class="settings-device-icon">
+                      💻
+                    </div>
+
+                    <div>
+                      <strong>Dispositivo atual</strong>
+                      <p>
+                        Navegador atual
+                      </p>
+                    </div>
+
+                    <span class="settings-current-device">
+                      Atual
+                    </span>
+
+                  </div>
+
+                </div>
+
+              </section>
+
+
+              <!-- NOTIFICAÇÕES -->
+
+              <section
+                class="settings-section"
+                id="settings-notificacoes"
+              >
+
+                <h1>Notificações</h1>
+
+                <p class="settings-description">
+                  Escolha como deseja receber avisos sobre seus pedidos
+                  e entregas.
+                </p>
+
+
+                <div class="settings-group">
+
+                  <h2>Visão geral</h2>
+
+
+                  <div class="settings-toggle-row">
+
+                    <div>
+                      <strong>
+                        Notificações no painel
+                      </strong>
+
+                      <p>
+                        Exibir notificações dentro da área do cliente.
+                      </p>
+                    </div>
+
+                    <label class="switch">
+                      <input
+                        type="checkbox"
+                        id="notificationPanel"
+                        checked
+                      >
+
+                      <span class="slider"></span>
+                    </label>
+
+                  </div>
+
+
+                  <div class="settings-toggle-row">
+
+                    <div>
+                      <strong>
+                        Avisar quando um pedido entrar em atendimento
+                      </strong>
+
+                      <p>
+                        Receba um aviso quando a ShiroDev iniciar
+                        seu pedido.
+                      </p>
+                    </div>
+
+                    <label class="switch">
+                      <input
+                        type="checkbox"
+                        id="notificationProgress"
+                        checked
+                      >
+
+                      <span class="slider"></span>
+                    </label>
+
+                  </div>
+
+
+                  <div class="settings-toggle-row">
+
+                    <div>
+                      <strong>
+                        Avisar quando uma entrega estiver pronta
+                      </strong>
+
+                      <p>
+                        Receba um aviso assim que um trabalho for
+                        concluído.
+                      </p>
+                    </div>
+
+                    <label class="switch">
+                      <input
+                        type="checkbox"
+                        id="notificationDelivery"
+                        checked
+                      >
+
+                      <span class="slider"></span>
+                    </label>
+
+                  </div>
+
+                </div>
+
+
+                <div class="settings-group">
+
+                  <h2>Sons</h2>
+
+
+                  <div class="settings-toggle-row">
+
+                    <div>
+                      <strong>
+                        Som de nova entrega
+                      </strong>
+
+                      <p>
+                        Reproduzir um efeito sonoro quando uma nova
+                        entrega chegar.
+                      </p>
+                    </div>
+
+                    <label class="switch">
+                      <input
+                        type="checkbox"
+                        id="notificationSound"
+                      >
+
+                      <span class="slider"></span>
+                    </label>
+
+                  </div>
+
+                </div>
+
+
+                <div class="settings-group">
+
+                  <h2>E-mail</h2>
+
+
+                  <div class="settings-toggle-row">
+
+                    <div>
+                      <strong>
+                        E-mails de atualização
+                      </strong>
+
+                      <p>
+                        Receber avisos sobre mudanças importantes
+                        no seu pedido.
+                      </p>
+                    </div>
+
+                    <label class="switch">
+                      <input
+                        type="checkbox"
+                        id="notificationEmail"
+                      >
+
+                      <span class="slider"></span>
+                    </label>
+
+                  </div>
+
+
+                  <div class="settings-toggle-row">
+
+                    <div>
+                      <strong>
+                        E-mails de marketing
+                      </strong>
+
+                      <p>
+                        Receber novidades, promoções e conteúdos
+                        especiais da ShiroDev.
+                      </p>
+                    </div>
+
+                    <label class="switch">
+                      <input
+                        type="checkbox"
+                        id="notificationEmailMarketing"
+                      >
+
+                      <span class="slider"></span>
+                    </label>
+
+                  </div>
+
+
+                  <div class="settings-toggle-row">
+
+                    <div>
+                      <strong>
+                        Dicas e tutoriais
+                      </strong>
+
+                      <p>
+                        Receber dicas úteis e tutoriais sobre
+                        os serviços da ShiroDev.
+                      </p>
+                    </div>
+
+                    <label class="switch">
+                      <input
+                        type="checkbox"
+                        id="notificationEmailTips"
+                      >
+
+                      <span class="slider"></span>
+                    </label>
+
+                  </div>
+
+                </div>
+
+
+                <div class="settings-group">
+
+                  <h2>Avançado</h2>
+
+
+                  <div class="settings-toggle-row">
+
+                    <div>
+                      <strong>
+                        Notificações em tempo real
+                      </strong>
+
+                      <p>
+                        Atualizar automaticamente pedidos e entregas
+                        enquanto o painel estiver aberto.
+                      </p>
+                    </div>
+
+                    <label class="switch">
+                      <input
+                        type="checkbox"
+                        id="notificationRealtime"
+                        checked
+                      >
+
+                      <span class="slider"></span>
+                    </label>
+
+                  </div>
+
+                </div>
+
+              </section>
+
+            </div>
+
+          </div>
+
+        </section>
 
 
         <!-- INÍCIO -->
@@ -2492,6 +4540,65 @@
   </div>
 
 
+  <!-- =========================================================
+       MODAL EDITAR NOME
+  ========================================================= -->
+
+  <div
+    class="account-edit-modal"
+    id="accountEditNameModal"
+  >
+    <div class="account-edit-box">
+
+      <button
+        type="button"
+        class="account-edit-close"
+        id="accountEditNameClose"
+      >
+        ×
+      </button>
+
+      <h2>Editar nome</h2>
+
+      <p>
+        Altere o nome que aparece na sua área do cliente.
+      </p>
+
+      <label for="accountEditNameInput">
+        Nome
+      </label>
+
+      <input
+        type="text"
+        id="accountEditNameInput"
+        maxlength="60"
+        placeholder="Digite seu nome"
+      >
+
+      <div class="account-edit-actions">
+
+        <button
+          type="button"
+          class="account-edit-cancel"
+          id="accountEditNameCancel"
+        >
+          Cancelar
+        </button>
+
+        <button
+          type="button"
+          class="account-edit-save"
+          id="accountEditNameSave"
+        >
+          Salvar
+        </button>
+
+      </div>
+
+    </div>
+  </div>
+
+
   <div
     class="file-preview-modal"
     id="filePreviewModal"
@@ -2759,6 +4866,20 @@
 
     let usuarioAtual = null;
     let clienteAtual = null;
+
+    const CONFIG_PADRAO = {
+      notificacoes_painel: true,
+      notificar_atendimento: true,
+      notificar_entrega: true,
+      som_entrega: false,
+      email_atualizacoes: true,
+      email_marketing: false,
+      email_dicas: false,
+      realtime_ativo: true
+    };
+
+    let configuracoesUsuario = { ...CONFIG_PADRAO };
+
     let arquivosSelecionados = [];
     let etapaAtual = 1;
     let entregaAtual = null;
@@ -2984,6 +5105,9 @@
           cliente.descricao;
 
 
+      await carregarConfiguracoesUsuario();
+
+
       app.classList.add(
         "visible"
       );
@@ -3015,6 +5139,210 @@
 
 
     /* =========================================================
+       CONFIGURAÇÕES DO USUÁRIO
+    ========================================================= */
+
+    async function carregarConfiguracoesUsuario() {
+
+      if (!usuarioAtual) return;
+
+      const { data, error } = await supabaseClient
+        .from("configuracoes")
+        .select("*")
+        .eq("user_id", usuarioAtual.id)
+        .maybeSingle();
+
+      if (error) {
+        console.error(error);
+        return;
+      }
+
+      if (!data) {
+
+        const { data: novaConfig, error: erroCriar } =
+          await supabaseClient
+            .from("configuracoes")
+            .insert({
+              user_id: usuarioAtual.id
+            })
+            .select()
+            .single();
+
+        if (erroCriar) {
+          console.error(erroCriar);
+          return;
+        }
+
+        configuracoesUsuario = novaConfig;
+
+      } else {
+
+        configuracoesUsuario = data;
+
+      }
+
+      atualizarInterfaceConfiguracoes();
+
+    }
+
+
+    function atualizarInterfaceConfiguracoes() {
+
+      const mapa = {
+
+        notificationPanel:
+          configuracoesUsuario.notificacoes_painel,
+
+        notificationProgress:
+          configuracoesUsuario.notificar_atendimento,
+
+        notificationDelivery:
+          configuracoesUsuario.notificar_entrega,
+
+        notificationSound:
+          configuracoesUsuario.som_entrega,
+
+        notificationEmail:
+          configuracoesUsuario.email_atualizacoes,
+
+        notificationEmailMarketing:
+          configuracoesUsuario.email_marketing,
+
+        notificationEmailTips:
+          configuracoesUsuario.email_dicas,
+
+        notificationRealtime:
+          configuracoesUsuario.realtime_ativo
+
+      };
+
+      Object.entries(mapa).forEach(([id, valor]) => {
+
+        const el = document.getElementById(id);
+
+        if (el) {
+          el.checked = !!valor;
+        }
+
+      });
+
+    }
+
+
+    async function salvarConfiguracao(chave, valor) {
+
+      configuracoesUsuario[chave] = valor;
+
+      const { error } =
+        await supabaseClient
+          .from("configuracoes")
+          .update({
+            [chave]: valor,
+            updated_at: new Date()
+          })
+          .eq("user_id", usuarioAtual.id);
+
+      if (error) {
+
+        console.error(error);
+
+        mostrarToast(
+          "Erro ao salvar configuração.",
+          "error"
+        );
+
+        return;
+
+      }
+
+      mostrarToast(
+        "Configuração salva.",
+        "success"
+      );
+
+    }
+
+
+    document.getElementById("notificationPanel")
+      .addEventListener("change", e => {
+        salvarConfiguracao("notificacoes_painel", e.target.checked);
+      });
+
+    document.getElementById("notificationProgress")
+      .addEventListener("change", e => {
+        salvarConfiguracao("notificar_atendimento", e.target.checked);
+      });
+
+    document.getElementById("notificationDelivery")
+      .addEventListener("change", e => {
+        salvarConfiguracao("notificar_entrega", e.target.checked);
+      });
+
+    document
+      .getElementById("notificationSound")
+      .addEventListener(
+        "change",
+        async event => {
+
+          const ativo =
+            event.target.checked;
+
+
+          await salvarConfiguracao(
+            "som_entrega",
+            ativo
+          );
+
+
+          if (ativo) {
+
+            try {
+
+              audioEntrega.pause();
+              audioEntrega.currentTime = 0;
+
+              await audioEntrega.play();
+
+              console.log(
+                "🔊 Som de teste reproduzido."
+              );
+
+            } catch (error) {
+
+              console.error(
+                "Erro no som de teste:",
+                error
+              );
+
+            }
+
+          }
+
+        }
+      );
+
+    document.getElementById("notificationEmail")
+      .addEventListener("change", e => {
+        salvarConfiguracao("email_atualizacoes", e.target.checked);
+      });
+
+    document.getElementById("notificationEmailMarketing")
+      .addEventListener("change", e => {
+        salvarConfiguracao("email_marketing", e.target.checked);
+      });
+
+    document.getElementById("notificationEmailTips")
+      .addEventListener("change", e => {
+        salvarConfiguracao("email_dicas", e.target.checked);
+      });
+
+    document.getElementById("notificationRealtime")
+      .addEventListener("change", e => {
+        salvarConfiguracao("realtime_ativo", e.target.checked);
+      });
+
+
+    /* =========================================================
        TOASTS
     ========================================================= */
 
@@ -3040,6 +5368,9 @@
 
       if (tipo === "info")
         icone = "◆";
+
+      if (tipo === "warning")
+        icone = "⚠";
 
 
       toast.innerHTML = `
@@ -3111,6 +5442,10 @@
             },
             async payload => {
 
+              if (!configuracoesUsuario.realtime_ativo) {
+                return;
+              }
+
               console.log(
                 "Pedido atualizado em tempo real:",
                 payload
@@ -3151,9 +5486,7 @@
 
       realtimeEntregasChannel =
         supabaseClient
-          .channel(
-            `entregas-${usuarioAtual.id}`
-          )
+          .channel(`entregas-${usuarioAtual.id}`)
           .on(
             "postgres_changes",
             {
@@ -3169,16 +5502,64 @@
                 payload
               );
 
+              console.log(
+                "Config atual:",
+                configuracoesUsuario
+              );
+
+              console.log(
+                "som_entrega:",
+                configuracoesUsuario?.som_entrega
+              );
+
               await carregarEntregas();
 
-              mostrarToast(
-                "Uma nova entrega está disponível.",
-                "success"
-              );
+
+              if (
+                configuracoesUsuario
+                  ?.notificacoes_painel
+                &&
+                configuracoesUsuario
+                  ?.notificar_entrega
+              ) {
+
+                mostrarToast(
+                  "Uma nova entrega está disponível.",
+                  "success"
+                );
+
+              }
+
+
+              if (
+                configuracoesUsuario
+                  ?.som_entrega === true
+              ) {
+
+                console.log(
+                  "🔊 Chamando som da entrega..."
+                );
+
+                await tocarSomEntrega();
+
+              } else {
+
+                console.log(
+                  "🔇 Som de entrega está desligado na configuração."
+                );
+
+              }
 
             }
           )
-          .subscribe();
+          .subscribe(status => {
+
+            console.log(
+              "Realtime entregas:",
+              status
+            );
+
+          });
 
     }
 
@@ -4644,6 +7025,8 @@
 
       if (!entregas || entregas.length === 0) {
 
+        entregasCarregadas = [];
+
         lista.innerHTML = `
           <div class="empty-state">
             Nenhuma entrega disponível no momento.
@@ -4655,6 +7038,8 @@
 
 
       lista.innerHTML = "";
+
+      entregasCarregadas = [];
 
 
       for (const entrega of entregas) {
@@ -4668,51 +7053,164 @@
           .single();
 
 
-        const item =
-          document.createElement("div");
+        entregasCarregadas.push({
+          ...entrega,
 
-        item.className =
-          "entrega-card";
+          pedido_titulo:
+            pedido?.titulo || "Pedido",
 
-
-        item.innerHTML = `
-
-          <div class="entrega-card-info">
-
-            <strong>
-              ${escapeHtml(entrega.titulo)}
-            </strong>
-
-            <span>
-              ${escapeHtml(
-                pedido?.titulo || "Pedido"
-              )}
-            </span>
-
-            <span>
-              ${new Date(
-                entrega.created_at
-              ).toLocaleString("pt-BR")}
-            </span>
-
-          </div>
-
-          <button
-            type="button"
-            class="entrega-ver-button"
-            data-entrega-id="${entrega.id}"
-          >
-            Ver entrega
-          </button>
-
-        `;
-
-
-        lista.appendChild(item);
+          pedido_projeto:
+            pedido?.projeto || ""
+        });
 
       }
 
+
+      aplicarFiltroEntregas();
+
     }
+
+
+    function aplicarFiltroEntregas() {
+
+      const lista =
+        document.getElementById(
+          "entregasLista"
+        );
+
+
+      const busca =
+        document
+          .getElementById(
+            "filtroEntregasBusca"
+          )
+          .value
+          .trim()
+          .toLowerCase();
+
+
+      const filtradas =
+        entregasCarregadas.filter(
+          entrega => {
+
+            const tituloEntrega =
+              (entrega.titulo || "")
+                .toLowerCase();
+
+
+            const tituloPedido =
+              (entrega.pedido_titulo || "")
+                .toLowerCase();
+
+
+            const projeto =
+              (entrega.pedido_projeto || "")
+                .toLowerCase();
+
+
+            return (
+              tituloEntrega.includes(busca)
+              ||
+              tituloPedido.includes(busca)
+              ||
+              projeto.includes(busca)
+            );
+
+          }
+        );
+
+
+      lista.innerHTML =
+        "";
+
+
+      if (filtradas.length === 0) {
+
+        lista.innerHTML = `
+          <div class="empty-state">
+            Nenhuma entrega encontrada.
+          </div>
+        `;
+
+        return;
+      }
+
+
+      filtradas.forEach(
+        entrega => {
+
+          const item =
+            document.createElement(
+              "div"
+            );
+
+
+          item.className =
+            "entrega-card";
+
+
+          item.innerHTML = `
+
+            <div class="entrega-card-info">
+
+              <strong>
+                ${escapeHtml(
+                  entrega.titulo
+                )}
+              </strong>
+
+              <span>
+                ${escapeHtml(
+                  entrega.pedido_titulo
+                )}
+              </span>
+
+              <span>
+                ${escapeHtml(
+                  entrega.pedido_projeto
+                )}
+              </span>
+
+              <span>
+                ${new Date(
+                  entrega.created_at
+                ).toLocaleString(
+                  "pt-BR"
+                )}
+              </span>
+
+            </div>
+
+
+            <button
+              type="button"
+              class="entrega-ver-button"
+              data-entrega-id="${entrega.id}"
+            >
+              Ver entrega
+            </button>
+
+          `;
+
+
+          lista.appendChild(
+            item
+          );
+
+        }
+      );
+
+    }
+
+
+    document
+      .getElementById(
+        "filtroEntregasBusca"
+      )
+      .addEventListener(
+        "input",
+        aplicarFiltroEntregas
+      );
 
 
     /* ABRIR ENTREGA DETALHADA */
@@ -6477,6 +8975,348 @@
     }
 
 
+    /* =========================================================
+       CONFIGURAÇÕES (UI)
+    ========================================================= */
+
+    const settingsButton =
+      document.getElementById("settingsButton");
+
+    const settingsPage =
+      document.getElementById("settingsPage");
+
+    const settingsClose =
+      document.getElementById("settingsClose");
+
+    const mainPages =
+      document.querySelectorAll(".page");
+
+    const settingsMenuItems =
+      document.querySelectorAll(
+        "[data-settings-section]"
+      );
+
+
+    function abrirConfiguracoes() {
+
+      document.body.style.overflow = "hidden";
+
+      settingsPage.classList.add("active");
+
+      document.getElementById(
+        "settingsUserEmail"
+      ).textContent =
+        usuarioAtual?.email || "";
+
+
+      document.getElementById(
+        "settingsAccountEmail"
+      ).textContent =
+        usuarioAtual?.email || "-";
+
+
+      if (clienteAtual) {
+
+        document.getElementById(
+          "settingsUserName"
+        ).textContent =
+          clienteAtual.nome || "Cliente";
+
+
+        document.getElementById(
+          "settingsAccountName"
+        ).textContent =
+          clienteAtual.nome || "-";
+
+
+        document.getElementById(
+          "settingsAccountProject"
+        ).textContent =
+          clienteAtual.projeto || "-";
+
+      }
+
+    }
+
+
+    function fecharConfiguracoes() {
+
+      settingsPage.classList.remove("active");
+
+      document.body.style.overflow = "";
+
+    }
+
+
+    function abrirSecaoConfiguracoes(secao) {
+
+      document
+        .querySelectorAll(".settings-section")
+        .forEach(section => {
+          section.classList.remove("active");
+        });
+
+
+      document
+        .getElementById(
+          `settings-${secao}`
+        )
+        .classList.add("active");
+
+
+      settingsMenuItems.forEach(item => {
+
+        item.classList.toggle(
+          "active",
+          item.dataset.settingsSection === secao
+        );
+
+      });
+
+    }
+
+
+    settingsButton.addEventListener(
+      "click",
+      abrirConfiguracoes
+    );
+
+
+    settingsClose.addEventListener(
+      "click",
+      fecharConfiguracoes
+    );
+
+
+    settingsPage.addEventListener(
+      "click",
+      event => {
+
+        if (
+          event.target ===
+          settingsPage
+        ) {
+
+          fecharConfiguracoes();
+
+        }
+
+      }
+    );
+
+
+    settingsMenuItems.forEach(item => {
+
+      item.addEventListener(
+        "click",
+        () => {
+
+          abrirSecaoConfiguracoes(
+            item.dataset.settingsSection
+          );
+
+        }
+      );
+
+    });
+
+
+    /* =========================================================
+       EDITAR NOME DO CLIENTE
+    ========================================================= */
+
+    const accountEditNameModal =
+      document.getElementById(
+        "accountEditNameModal"
+      );
+
+    const accountEditNameInput =
+      document.getElementById(
+        "accountEditNameInput"
+      );
+
+    const accountEditNameSave =
+      document.getElementById(
+        "accountEditNameSave"
+      );
+
+
+    function abrirModalEditarNome() {
+
+      accountEditNameInput.value =
+        clienteAtual?.nome || "";
+
+      accountEditNameModal
+        .classList
+        .add("active");
+
+      setTimeout(() => {
+        accountEditNameInput.focus();
+      }, 100);
+
+    }
+
+
+    function fecharModalEditarNome() {
+
+      accountEditNameModal
+        .classList
+        .remove("active");
+
+    }
+
+
+    document
+      .getElementById("settingsEditName")
+      .addEventListener(
+        "click",
+        abrirModalEditarNome
+      );
+
+
+    document
+      .getElementById("accountEditNameClose")
+      .addEventListener(
+        "click",
+        fecharModalEditarNome
+      );
+
+
+    document
+      .getElementById("accountEditNameCancel")
+      .addEventListener(
+        "click",
+        fecharModalEditarNome
+      );
+
+
+    accountEditNameModal.addEventListener(
+      "click",
+      event => {
+
+        if (
+          event.target ===
+          accountEditNameModal
+        ) {
+          fecharModalEditarNome();
+        }
+
+      }
+    );
+
+
+    accountEditNameSave.addEventListener(
+      "click",
+      async () => {
+
+        const novoNome =
+          accountEditNameInput
+            .value
+            .trim();
+
+        if (
+          novoNome.length < 2
+          || novoNome.length > 60
+        ) {
+
+          mostrarToast(
+            "Digite um nome válido.",
+            "warning"
+          );
+
+          return;
+        }
+
+
+        accountEditNameSave.disabled = true;
+
+        accountEditNameSave.textContent =
+          "Salvando...";
+
+
+        try {
+
+          const {
+            error
+          } =
+            await supabaseClient
+              .rpc(
+                "atualizar_meu_nome",
+                {
+                  novo_nome: novoNome
+                }
+              );
+
+
+          if (error) {
+            throw error;
+          }
+
+
+          clienteAtual.nome =
+            novoNome;
+
+
+          document
+            .getElementById(
+              "settingsAccountName"
+            )
+            .textContent =
+              novoNome;
+
+
+          document
+            .getElementById(
+              "settingsUserName"
+            )
+            .textContent =
+              novoNome;
+
+
+          document
+            .getElementById(
+              "welcomeTitle"
+            )
+            .textContent =
+              `Bem-vindo, ${novoNome}.`;
+
+
+          fecharModalEditarNome();
+
+
+          mostrarToast(
+            "Nome atualizado com sucesso!",
+            "success"
+          );
+
+        }
+        catch (error) {
+
+          console.error(
+            "Erro ao atualizar nome:",
+            error
+          );
+
+          mostrarToast(
+            "Não foi possível atualizar o nome.",
+            "error"
+          );
+
+        }
+        finally {
+
+          accountEditNameSave.disabled =
+            false;
+
+          accountEditNameSave.textContent =
+            "Salvar";
+
+        }
+
+      }
+    );
+
+
     /* LOGOUT */
 
     logoutButton.addEventListener(
@@ -6505,6 +9345,137 @@
 
       }
     );
+
+
+    /* =========================================================
+       SOM DE NOTIFICAÇÃO DE ENTREGA
+    ========================================================= */
+
+    const audioEntrega =
+      new Audio(
+        "assets/audio/notificacao.mp3"
+      );
+
+    console.log(
+      "Caminho do áudio:",
+      audioEntrega.src
+    );
+
+    audioEntrega.addEventListener(
+      "canplaythrough",
+      () => {
+        console.log(
+          "Áudio carregado e pronto."
+        );
+      }
+    );
+
+    audioEntrega.addEventListener(
+      "error",
+      () => {
+        console.error(
+          "Erro ao carregar MP3:",
+          audioEntrega.error
+        );
+      }
+    );
+
+    audioEntrega.preload = "auto";
+    audioEntrega.volume = 0.75;
+
+    let audioEntregaDesbloqueado = false;
+
+
+    async function desbloquearAudioEntrega() {
+
+      if (audioEntregaDesbloqueado) {
+        return;
+      }
+
+      try {
+
+        const volumeOriginal =
+          audioEntrega.volume;
+
+        audioEntrega.volume = 0;
+
+        await audioEntrega.play();
+
+        audioEntrega.pause();
+
+        audioEntrega.currentTime = 0;
+
+        audioEntrega.volume =
+          volumeOriginal;
+
+        audioEntregaDesbloqueado = true;
+
+        console.log(
+          "Som de notificações desbloqueado."
+        );
+
+      } catch (error) {
+
+        console.warn(
+          "Áudio ainda bloqueado:",
+          error
+        );
+
+      }
+
+    }
+
+
+    document.addEventListener(
+      "pointerdown",
+      desbloquearAudioEntrega,
+      { once: true }
+    );
+
+    document.addEventListener(
+      "keydown",
+      desbloquearAudioEntrega,
+      { once: true }
+    );
+
+
+    async function tocarSomEntrega() {
+
+      console.log(
+        "Tentando tocar som..."
+      );
+
+      console.log(
+        "som_entrega:",
+        configuracoesUsuario?.som_entrega
+      );
+
+      console.log(
+        "readyState:",
+        audioEntrega.readyState
+      );
+
+      try {
+
+        audioEntrega.currentTime = 0;
+
+        await audioEntrega.play();
+
+        console.log(
+          "Som reproduzido com sucesso."
+        );
+
+      } catch (error) {
+
+        console.error(
+          "PLAY FALHOU:",
+          error.name,
+          error.message
+        );
+
+      }
+
+    }
 
 
     verificarLogin();
