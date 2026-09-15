@@ -5883,6 +5883,452 @@ if (refreshRecentActivity) {
 
 
 /* =========================================================
+   DETALHES DO CLIENTE
+========================================================= */
+
+const clientDetailsModal =
+  document.getElementById(
+    "clientDetailsModal"
+  );
+
+const clientDetailsClose =
+  document.getElementById(
+    "clientDetailsClose"
+  );
+
+
+function fecharDetalhesCliente() {
+
+  clientDetailsModal
+    ?.classList
+    .remove(
+      "visible"
+    );
+
+}
+
+
+async function abrirDetalhesCliente(
+  userId
+) {
+
+  try {
+
+    const {
+      data: cliente,
+      error: clienteError
+    } =
+      await supabaseClient
+        .from("clientes")
+        .select("*")
+        .eq(
+          "user_id",
+          userId
+        )
+        .maybeSingle();
+
+
+    if (clienteError) {
+      throw clienteError;
+    }
+
+
+    if (!cliente) {
+
+      mostrarToast(
+        "Cliente não encontrado.",
+        "error"
+      );
+
+      return;
+    }
+
+
+    /* PEDIDOS DO CLIENTE */
+
+    const {
+      data: pedidos,
+      error: pedidosError
+    } =
+      await supabaseClient
+        .from("pedidos")
+        .select("*")
+        .eq(
+          "user_id",
+          userId
+        )
+        .order(
+          "created_at",
+          {
+            ascending: false
+          }
+        );
+
+
+    if (pedidosError) {
+      throw pedidosError;
+    }
+
+
+    /* STATUS DA CONTA */
+
+    let statusConta =
+      "Normal";
+
+
+    const {
+      data: statusData
+    } =
+      await supabaseClient
+        .from("status_contas")
+        .select("*")
+        .eq(
+          "user_id",
+          userId
+        )
+        .maybeSingle();
+
+
+    if (statusData?.status) {
+
+      const mapaStatus = {
+        ok: "Normal",
+        limitado: "Limitado",
+        restrito: "Restrito",
+        suspenso: "Suspenso"
+      };
+
+
+      statusConta =
+        mapaStatus[
+          statusData.status
+        ] ||
+        statusData.status;
+
+    }
+
+
+    /* CONTADORES */
+
+    const listaPedidos =
+      pedidos || [];
+
+
+    const pendentes =
+      listaPedidos.filter(
+        pedido =>
+          pedido.status ===
+          "pendente"
+      ).length;
+
+
+    const andamento =
+      listaPedidos.filter(
+        pedido =>
+          pedido.status ===
+          "em_andamento"
+      ).length;
+
+
+    const concluidos =
+      listaPedidos.filter(
+        pedido =>
+          pedido.status ===
+          "concluido"
+      ).length;
+
+
+    /* PREENCHER CABEÇALHO */
+
+    const nome =
+      cliente.nome ||
+      "Cliente";
+
+
+    const avatar =
+      nome
+        .trim()
+        .charAt(0)
+        .toUpperCase();
+
+
+    document.getElementById(
+      "clientDetailsAvatar"
+    ).textContent =
+      avatar;
+
+
+    document.getElementById(
+      "clientDetailsName"
+    ).textContent =
+      nome;
+
+
+    /*
+     * A tabela clientes não possui
+     * coluna de e-mail.
+     *
+     * Por enquanto mostramos o ID
+     * da conta no local do e-mail.
+     */
+
+    document.getElementById(
+      "clientDetailsEmail"
+    ).textContent =
+      `ID: ${userId}`;
+
+
+    document.getElementById(
+      "clientDetailsProject"
+    ).textContent =
+      cliente.projeto ||
+      "-";
+
+
+    document.getElementById(
+      "clientDetailsStatusBadge"
+    ).textContent =
+      cliente.status ||
+      "Ativo";
+
+
+    document.getElementById(
+      "clientDetailsAccountStatus"
+    ).textContent =
+      statusConta;
+
+
+    /* DATA DE CADASTRO */
+
+    const cadastro =
+      cliente.created_at
+        ? new Date(
+            cliente.created_at
+          ).toLocaleDateString(
+            "pt-BR",
+            {
+              day: "2-digit",
+              month: "2-digit",
+              year: "numeric"
+            }
+          )
+        : "-";
+
+
+    document.getElementById(
+      "clientDetailsCreatedAt"
+    ).textContent =
+      cadastro;
+
+
+    /* CONTADORES */
+
+    document.getElementById(
+      "clientOrdersPending"
+    ).textContent =
+      pendentes;
+
+
+    document.getElementById(
+      "clientOrdersProgress"
+    ).textContent =
+      andamento;
+
+
+    document.getElementById(
+      "clientOrdersCompleted"
+    ).textContent =
+      concluidos;
+
+
+    document.getElementById(
+      "clientDetailsOrdersCount"
+    ).textContent =
+      `${listaPedidos.length} ${
+        listaPedidos.length === 1
+          ? "pedido"
+          : "pedidos"
+      }`;
+
+
+    /* ÚLTIMOS PEDIDOS */
+
+    const latestOrders =
+      document.getElementById(
+        "clientLatestOrders"
+      );
+
+
+    if (
+      !listaPedidos.length
+    ) {
+
+      latestOrders.innerHTML = `
+        <div class="client-latest-empty">
+          Nenhum pedido encontrado.
+        </div>
+      `;
+
+    }
+    else {
+
+      latestOrders.innerHTML =
+        "";
+
+
+      listaPedidos
+        .slice(
+          0,
+          5
+        )
+        .forEach(
+          pedido => {
+
+            const item =
+              document.createElement(
+                "div"
+              );
+
+
+            item.className =
+              "client-latest-order";
+
+
+            const statusMap = {
+              pendente: "Pendente",
+              em_andamento:
+                "Em andamento",
+              concluido:
+                "Concluído"
+            };
+
+
+            const data =
+              pedido.created_at
+                ? new Date(
+                    pedido.created_at
+                  ).toLocaleDateString(
+                    "pt-BR"
+                  )
+                : "";
+
+
+            item.innerHTML = `
+
+              <div class="client-latest-order-info">
+
+                <strong>
+                  ${escapeHtml(
+                    pedido.titulo ||
+                    "Pedido"
+                  )}
+                </strong>
+
+                <span>
+                  ${data}
+                </span>
+
+              </div>
+
+              <div class="client-latest-order-status">
+                ${
+                  statusMap[
+                    pedido.status
+                  ] ||
+                  pedido.status
+                }
+              </div>
+
+            `;
+
+
+            item.addEventListener(
+              "click",
+              async () => {
+
+                fecharDetalhesCliente();
+
+
+                await abrirPedidoDetalhado(
+                  Number(
+                    pedido.id
+                  )
+                );
+
+              }
+            );
+
+
+            latestOrders
+              .appendChild(
+                item
+              );
+
+          }
+        );
+
+    }
+
+
+    clientDetailsModal
+      ?.classList
+      .add(
+        "visible"
+      );
+
+  }
+  catch (error) {
+
+    console.error(
+      "Erro ao abrir cliente:",
+      error
+    );
+
+
+    mostrarToast(
+      "Não foi possível carregar o cliente.",
+      "error"
+    );
+
+  }
+
+}
+
+
+if (clientDetailsClose) {
+
+  clientDetailsClose
+    .addEventListener(
+      "click",
+      fecharDetalhesCliente
+    );
+
+}
+
+
+if (clientDetailsModal) {
+
+  clientDetailsModal
+    .addEventListener(
+      "click",
+      event => {
+
+        if (
+          event.target ===
+          clientDetailsModal
+        ) {
+
+          fecharDetalhesCliente();
+
+        }
+
+      }
+    );
+
+}
+
+
+/* =========================================================
    INICIALIZAÇÃO DO ADMIN
 ========================================================= */
 
